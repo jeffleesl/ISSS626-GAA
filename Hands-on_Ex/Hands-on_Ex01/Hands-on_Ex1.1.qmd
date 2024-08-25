@@ -175,6 +175,7 @@ preschool3414 <- st_transform(preschool,
 Next, let us display the content of preschool3414 sf data frame as shown below.
 
 ```{r}
+#| echo: false
 preschool3414 <- st_transform(preschool, 
                               crs = 3414)
 st_geometry(preschool3414)
