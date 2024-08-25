@@ -156,10 +156,9 @@ In geospatial analytics, it is very common for us to transform the original data
 Let us take preschool simple feature data frame as an example. The print below reveals that it is in wgs84 coordinate system.
 
 ```{r}
+#| echo: false
 preschool3414 <- st_transform(preschool, 
                               crs = 3414)
-
-#| echo: false
 st_geometry(preschool3414)
 ```
 
@@ -176,7 +175,6 @@ preschool3414 <- st_transform(preschool,
 Next, let us display the content of preschool3414 sf data frame as shown below.
 
 ```{r}
-#| echo: false
 preschool3414 <- st_transform(preschool, 
                               crs = 3414)
 st_geometry(preschool3414)
