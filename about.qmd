@@ -1,9 +1,7 @@
 ---
-title: "About"
+title: "About Me"
 ---
-
-## About Me
 
 [![LinkedIn](https://cdn-icons-png.flaticon.com/512/174/174857.png)](https://www.linkedin.com/in/your-profile/)
 
-I am passionate about data science and financial crime surveillance...
+I am passionate about data science and financial crime surveillance.
