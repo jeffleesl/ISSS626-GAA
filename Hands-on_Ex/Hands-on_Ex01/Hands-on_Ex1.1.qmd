@@ -43,7 +43,7 @@ The code chunk below uses [*st_read()*](https://www.rdocumentation.org/packages
 
 ```{r}
 cyclingpath = st_read(dsn = "data/geospatial", 
-                  layer = "CyclingPathGazette")
+                        layer = "CyclingPathGazette")
 
 ```
 
@@ -134,6 +134,8 @@ Although `mpsz` data frame is projected in svy21 but when we read until the end 
 In order to assign the correct EPSG code to `mpsz` data frame, *st_set_crs()* of **sf** package is used as shown in the code chunk below.
 
 ```{r}
+#| warning: false
+#| message: false
 mpsz3414 <- st_set_crs(mpsz, 3414)
 
 ```

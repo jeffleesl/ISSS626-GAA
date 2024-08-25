@@ -5,7 +5,7 @@ website:
   title: "ISSS626-GAA"
   navbar:
     left:
-     - text: "Hands-on Exercise 1"
+     - text: "Hands-on Exercise"
        menu: 
          - text: "Hands-on Exercise 1.1"
            href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex1.1.html"
@@ -14,8 +14,11 @@ website:
     right:
       - href: index.qmd
         text: Home
-      - text: |
-          [![LinkedIn](https://cdn-icons-png.flaticon.com/512/174/174857.png)](https://www.linkedin.com/in/your-profile/)
+      - format:
+          html:
+            footer:
+              - text: |
+                  [![LinkedIn](https://cdn-icons-png.flaticon.com/512/174/174857.png)](https://www.linkedin.com/in/jeffreyleeshaolin/)
 
 format:
   html:
