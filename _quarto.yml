@@ -14,9 +14,7 @@ website:
     right:
       - href: index.qmd
         text: Home
-      - icons:
-        - icon: linkedin
-          href: "https://www.linkedin.com/in/jeffreyleeshaolin/"
+      - about.qmd
 
 format:
   html:
