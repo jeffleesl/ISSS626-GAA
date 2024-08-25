@@ -2,6 +2,6 @@
 title: "About Me"
 ---
 
-[![LinkedIn](https://cdn-icons-png.flaticon.com/512/174/174857.png)](https://www.linkedin.com/in/your-profile/)
+[![LinkedIn](https://cdn-icons-png.flaticon.com/512/174/174857.png){width="196"}](https://www.linkedin.com/in/jeffreyleeshaolin/)
 
 I am passionate about data science and financial crime surveillance.
