@@ -14,11 +14,9 @@ website:
     right:
       - href: index.qmd
         text: Home
-      - format:
-          html:
-            footer:
-              - text: |
-                  [![LinkedIn](https://cdn-icons-png.flaticon.com/512/174/174857.png)](https://www.linkedin.com/in/jeffreyleeshaolin/)
+      - icons:
+        - icon: linkedin
+          href: "https://www.linkedin.com/in/jeffreyleeshaolin/"
 
 format:
   html:
