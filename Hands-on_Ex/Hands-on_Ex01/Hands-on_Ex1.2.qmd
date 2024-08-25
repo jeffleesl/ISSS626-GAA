@@ -60,9 +60,9 @@ Examine the content of `mpsz` by using the code chunk below.
 mpsz
 ```
 
-Notice that only the first ten records will be displayed. Do you know why?
+**Notice that only the first ten records will be displayed. Do you know why?**
 
-In R, data structures like data frames and sf objects have default print methods that limit the number of rows displayed. This is particularly useful when working with large datasets, as displaying the entire dataset can be overwhelming and impractical.
+*In R, data structures like data frames and sf objects have default print methods that limit the number of rows displayed. This is particularly useful when working with large datasets, as displaying the entire dataset can be overwhelming and impractical.*
 
 ## 2.3 Importing Attribute Data into R
 
@@ -71,8 +71,7 @@ Next, we will import *respopagsex2011to2020.csv* file into RStudio and save the 
 The task will be performed by using *read_csv()* function of **readr** package as shown in the code chunk below.
 
 ```{r}
-#| results: "hide"
-popdata <- read_csv("data/aspatial/respopagesextod2011to2020.csv")
+popdata <- read_csv("data/aspatial/respopagesextod2011to2020.csv", show_col_types = FALSE)
 ```
 
 Look at the data
@@ -154,7 +153,9 @@ Thing to learn from the code chunk above:
 write_rds(mpsz_pop2020, "data/rds/mpszpop2020.rds")
 ```
 
-R also has two native data formats—Rdata (sometimes shortened to RDA) and RDS. These formats are used when R objects are saved for later use. Rdata is used to save multiple R objects, while RDS is used to save a single R object. Find out more more about [RDS](https://search.r-project.org/CRAN/refmans/readr/html/read_rds.html).
+Thing to learn from the code chunk above:
+
+*R also has two native data formats—Rdata (sometimes shortened to RDA) and RDS. These formats are used when R objects are saved for later use. Rdata is used to save multiple R objects, while RDS is used to save a single R object. Find out more more about [RDS](https://search.r-project.org/CRAN/refmans/readr/html/read_rds.html).*
 
 # 3.Choropleth Mapping Geospatial Data Using tmap
 
@@ -290,7 +291,8 @@ tm_shape(mpsz_pop2020)+
           style = "quantile") +
   tm_borders(alpha = 0.5)
 ```
-Divides data into equal-sized groups based on quantiles.
+
+**Divides data into equal-sized groups based on quantiles.**
 
 In the code chunk below, equal data classification method is used.
 
@@ -302,7 +304,7 @@ tm_shape(mpsz_pop2020)+
   tm_borders(alpha = 0.5)
 ```
 
-Divides the range of data into equal intervals.
+**Divides the range of data into equal intervals.**
 
 Notice that the distribution of quantile data classification method are more evenly distributed then equal data classification method.
 
@@ -310,7 +312,7 @@ Notice that the distribution of quantile data classification method are more eve
 
 #### 3.3.1.1 Jenks
 
-Uses Jenks natural breaks optimization to find the best classification.
+**Uses Jenks natural breaks optimization to find the best classification.**
 
 ```{r}
 tm_shape(mpsz_pop2020)+
@@ -322,7 +324,7 @@ tm_shape(mpsz_pop2020)+
 
 #### 3.3.1.2 Standard Deviation
 
-Classifies data based on standard deviation from the mean.
+**Classifies data based on standard deviation from the mean.**
 
 ```{r}
 tm_shape(mpsz_pop2020)+
@@ -334,7 +336,7 @@ tm_shape(mpsz_pop2020)+
 
 #### 3.3.1.3 Pretty
 
-Rounds breaks to nice numbers.
+**Rounds breaks to nice numbers.**
 
 ```{r}
 tm_shape(mpsz_pop2020)+
@@ -344,7 +346,7 @@ tm_shape(mpsz_pop2020)+
   tm_borders(alpha = 0.5)
 ```
 
-Preparing choropleth maps by using similar classification method but with different numbers of classes (i.e. 2, 6, 10, 20). Compare the output maps, what observation can you draw
+### Preparing choropleth maps by using similar classification method but with different numbers of classes (i.e. 2, 6, 10, 20). Compare the output maps, what observation can you draw
 
 #### 3.3.1.4 Two Classes
 
@@ -385,6 +387,7 @@ tm_shape(mpsz_pop2020)+
           style = "sd") +
   tm_borders(alpha = 0.5)
 ```
+
 When the number of classes increases, not all dependencies are applied. Therefore, even with just 2 classes, different clusters can be illustrated.
 
 ### 3.3.2 Plotting choropleth map with custome break
@@ -402,6 +405,8 @@ With reference to the results above, we set break point at 0.60, 0.70, 0.80, and
 Now, we will plot the choropleth map by using the code chunk below.
 
 ```{r}
+#| warning: false
+#| message: false
 tm_shape(mpsz_pop2020)+
   tm_fill("DEPENDENCY",
           breaks = c(0, 0.60, 0.70, 0.80, 0.90, 1.00)) +
@@ -591,6 +596,8 @@ tmap_arrange(youngmap, agedmap, asp=1, ncol=2)
 Instead of creating small multiple choropleth map, you can also use selection funtion to map spatial objects meeting the selection criterion.
 
 ```{r}
+#| warning: false
+#| message: false
 tm_shape(mpsz_pop2020[mpsz_pop2020$REGION_N=="CENTRAL REGION", ])+
   tm_fill("DEPENDENCY", 
           style = "quantile", 
@@ -605,4 +612,3 @@ tm_shape(mpsz_pop2020[mpsz_pop2020$REGION_N=="CENTRAL REGION", ])+
             frame = FALSE) +
   tm_borders(alpha = 0.5)
 ```
-
