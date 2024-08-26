@@ -51,7 +51,7 @@ mpsz19_shp <- st_read(dsn = "data/",
 # Master Plan 2019 Subzone Boundary (No Sea) - KML
 
 ```{r}
-mpsz19_kml <- st_read("data/MasterPlan2019SubzoneBoundaryNoSeaKML.kml"
+mpsz19_kml <- st_read("data/MasterPlan2019SubzoneBoundaryNoSeaKML.kml")
 
 ```
 
