@@ -1,0 +1,62 @@
+---
+title: "In-class Exercise 1"
+author: "Lee Shao Lin Jeffrey"
+date: "Aug 20 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  messsage: false
+  freeze: true
+---
+
+## The Code
+
+```{r}
+pacman::p_load(tidyverse, sf, tmap, ggstatsplot)
+
+```
+
+## Working with Master Plan Planning Sub-zone Data
+
+### This code chunk imports shapefile.
+```{r}
+mpsz14_shp <- st_read(dsn = "data/",
+                      layer = "MP14_SUBZONE_WEB_PL")
+
+```
+
+### This code chunk imports kml file.
+```{r}
+mpsz14_kml <- st_read("data/MasterPlan2014SubzoneBoundaryWebKML.kml"
+
+```
+
+
+```{r}
+#| output: false
+st_write(mpsz14_shp,
+        "data/MP14_SUBZONE_WEB_PL.kml",
+        delete_dsn = TRUE)
+
+```
+
+# Master Plan 2019 Subzone Boundary (No Sea) - SHP
+```{r}
+mpsz19_shp <- st_read(dsn = "data/",
+                      layer = "MPSZ-2019")
+
+```
+
+# Master Plan 2019 Subzone Boundary (No Sea) - KML
+
+```{r}
+mpsz19_kml <- st_read("data/MasterPlan2019SubzoneBoundaryNoSeaKML.kml"
+
+```
+
+```{r}
+mpsz19_shp <- st_read(dsn = "data/",
+                      layer = "MPSZ-2019") %>%
+  st_transform(crs = 3414)
+```
