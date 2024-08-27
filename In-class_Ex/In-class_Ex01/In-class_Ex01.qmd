@@ -28,24 +28,25 @@ mpsz14_shp <- st_read(dsn = "data/",
 
 ### This code chunk imports kml file.
 ```{r}
-mpsz14_kml <- st_read("data/MasterPlan2014SubzoneBoundaryWebKML.kml"
+# mpsz14_kml <- st_read("data/MasterPlan2014SubzoneBoundaryWebKML.kml"
 
 ```
 
+However, the above file is corrupted. The below method could convert shapefil to kml file.
 
 ```{r}
 #| output: false
 st_write(mpsz14_shp,
         "data/MP14_SUBZONE_WEB_PL.kml",
         delete_dsn = TRUE)
-
 ```
 
 # Master Plan 2019 Subzone Boundary (No Sea) - SHP
+
+Import the 2019 shapefile
 ```{r}
 mpsz19_shp <- st_read(dsn = "data/",
                       layer = "MPSZ-2019")
-
 ```
 
 # Master Plan 2019 Subzone Boundary (No Sea) - KML
@@ -57,6 +58,7 @@ mpsz19_kml <- st_read("data/MasterPlan2019SubzoneBoundaryNoSeaKML.kml")
 
 ```{r}
 mpsz19_shp <- st_read(dsn = "data/",
-                      layer = "MPSZ-2019") %>%
+                  layer = "MPSZ-2019") %>%
   st_transform(crs = 3414)
 ```
+
