@@ -140,12 +140,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercise-1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Hands-on Exercise</span>
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">In-class Exercise</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise-1">    
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercise">    
         <li>
-    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex/In-class_Ex01.html">
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex01/In-class_Ex01.html">
  <span class="dropdown-text">In-class Exercise 1</span></a>
   </li>  
     </ul>
@@ -301,7 +301,7 @@ Geodetic CRS:  WGS 84</code></pre>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mpsz19_shp <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/"</span>,</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">layer =</span> <span class="st">"MPSZ-2019"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">layer =</span> <span class="st">"MPSZ-2019"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">3414</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `MPSZ-2019' from data source 

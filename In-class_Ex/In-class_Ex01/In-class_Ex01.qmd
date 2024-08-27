@@ -58,7 +58,7 @@ mpsz19_kml <- st_read("data/MasterPlan2019SubzoneBoundaryNoSeaKML.kml")
 
 ```{r}
 mpsz19_shp <- st_read(dsn = "data/",
-                  layer = "MPSZ-2019") %>%
+                layer = "MPSZ-2019") %>%
   st_transform(crs = 3414)
 ```
 
