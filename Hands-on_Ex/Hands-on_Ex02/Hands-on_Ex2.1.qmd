@@ -450,7 +450,15 @@ plot(kde_childcareSG_adaptive, main = "Adaptive bandwidth")
 The result is the same, we just convert it so that it is suitable for mapping purposes
 
 ```{r}
-gridded_kde_childcareSG_bw <- as.SpatialGridDataFrame.im(kde_childcareSG.bw)
+# gridded_kde_childcareSG_bw <- as.SpatialGridDataFrame.im(kde_childcareSG.bw)
+# spplot(gridded_kde_childcareSG_bw)
+```
+
+The above code doesn't work and I have changed to the below code:
+
+```{r}
+raster_kde_childcareSG_bw <- raster(kde_childcareSG.bw)
+gridded_kde_childcareSG_bw <- as(raster_kde_childcareSG_bw, "SpatialGridDataFrame")
 spplot(gridded_kde_childcareSG_bw)
 ```
 
