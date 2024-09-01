@@ -178,7 +178,7 @@ childcare_sp
 sg_sp
 ```
 
-Do you know what are the differences between Spatial\* classes and generic sp object?
+**Do you know what are the differences between Spatial\* classes and generic sp object?**
 
 Each Spatial class has a predefined structure, such as SpatialPoints, SpatialLines, SpatialPolygons, etc. This structure determines the type of geometric features represented (points, lines, polygons). Whereas,the sp object is a more generic representation of spatial data, capable of holding any type of geometric feature (points, lines, polygons). More details [here](https://mhweber.github.io/R-User-Group-Spatial-Workshop-2018/SpatialObjects.html).
 
@@ -187,6 +187,8 @@ Each Spatial class has a predefined structure, such as SpatialPoints, SpatialLin
 Now, we will use *as.ppp()* function of **spatstat** to convert the spatial data into **spatstat**’s ***ppp*** object format.
 
 ```{r}
+#| warning: false
+#| message: false
 childcare_ppp <- as.ppp(childcare_sf)
 childcare_ppp
 ```
@@ -194,6 +196,8 @@ childcare_ppp
 Now, let us plot ***childcare_ppp*** and examine the different.
 
 ```{r}
+#| warning: false
+#| message: false
 plot(childcare_ppp)
 ```
 
@@ -302,6 +306,8 @@ summary(childcareSG_ppp)
 Plot the newly derived childcareSG_ppp as shown below.
 
 ```{r}
+#| warning: false
+#| message: false
 plot(childcareSG_ppp)
 ```
 
@@ -409,6 +415,8 @@ By default, the kernel method used in *density.ppp()* is *gaussian*. But there a
 The code chunk below will be used to compute three more kernel density estimations by using these three kernel function.
 
 ```{r}
+#| warning: false
+#| message: false
 par(mfrow=c(2,2))
 plot(density(childcareSG_ppp.km, 
              sigma=bw.ppl, 
@@ -590,6 +598,8 @@ childcare_jw_ppp.km = rescale.ppp(childcare_jw_ppp, 1000, "km")
 The code chunk below is used to plot these four study areas and the locations of the childcare centres.
 
 ```{r}
+#| warning: false
+#| message: false
 par(mfrow=c(2,2))
 plot(childcare_pg_ppp.km, main="Punggol")
 plot(childcare_tm_ppp.km, main="Tampines")
