@@ -708,4 +708,3 @@ clarkevans.test(childcare_tm_ppp,
                 alternative=c("two.sided"),
                 nsim=999)
 ```
-
