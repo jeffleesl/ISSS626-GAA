@@ -240,6 +240,12 @@ The output object combined both the point and polygon feature in one ppp object 
 summary(childcareSG_ppp)
 ```
 
+Plot the newly derived childcareSG_ppp as shown below
+
+```{r}
+plot(childcareSG_ppp)
+```
+
 ### 5.4.1 Extracting study area
 
 The code chunk below will be used to extract the target planning areas.
@@ -389,7 +395,7 @@ The F function estimates the empty space function F(r) or its hazard rate h(r) f
 
 ### 8.1.1 Computing F-function estimation
 
-The code chunk below is used to compute F-function using Fest() of spatat package.
+The code chunk below is used to compute F-function using Fest() of **spatat** package.
 
 ```{r}
 F_CK = Fest(childcare_ck_ppp)
