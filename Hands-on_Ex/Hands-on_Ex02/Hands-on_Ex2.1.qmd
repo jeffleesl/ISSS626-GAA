@@ -36,7 +36,7 @@ Three data sets will be used. They are:
 
 -   `CostalOutline`, a polygon feature data showing the national boundary of Singapore. It is provided by SLA and is in ESRI shapefile format.
 
-# 3.Installing and Loading the R packages
+# 3. Installing and Loading the R packages
 
 In this hands-on exercise, five R packages will be used, they are:
 
