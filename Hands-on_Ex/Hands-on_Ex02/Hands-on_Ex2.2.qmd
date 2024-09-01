@@ -96,8 +96,8 @@ After checking the referencing system of each geospatial data data frame, it is 
 
 ```{r}
 #| echo: false
-tmap_mode("plot")  # Set tmap to static mode
 
+tmap_mode("plot")  # Set tmap to static mode
 tm_shape(mpsz_sf) +  # Plot Singapore boundaries
   tm_polygons() +  # Add polygon layer for Singapore
   tm_shape(childcare_sf) +  # Add childcare locations
@@ -198,7 +198,7 @@ childcare_ppp_jit <- rjitter(childcare_ppp,
                              drop=TRUE)
 ```
 
-Check if any dusplicated point in this geospatial data.
+Check if any duplicated point in this geospatial data.
 
 ```{r}
 any(duplicated(childcare_ppp_jit))
@@ -568,3 +568,14 @@ H1= The distribution of childcare services at Tampines are not randomly distribu
 The null hypothesis will be rejected if p-value is smaller than alpha value of 0.001.
 
 The code chunk below will be used to perform the hypothesis testing.
+
+```{r}
+L_tm.csr <- envelope(childcare_tm_ppp, Lest, nsim = 99, rank = 1, glocal=TRUE)
+```
+
+Then, plot the model output by using the code chun below.
+
+```{r}
+plot(L_tm.csr, . - r ~ r, 
+     xlab="d", ylab="L(d)-r", xlim=c(0,500))
+```

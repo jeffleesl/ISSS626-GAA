@@ -92,6 +92,23 @@ mpsz_sf <- st_read(dsn = "data",
 
 ## 4.2 Mapping the geospatial data sets
 
+After checking the referencing system of each geospatial data data frame, it is also useful for us to plot a map to show their spatial patterns.
+
+```{r}
+#| echo: false
+
+tmap_mode("plot")  # Set tmap to static mode
+tm_shape(mpsz_sf) +  # Plot Singapore boundaries
+  tm_polygons() +  # Add polygon layer for Singapore
+  tm_shape(childcare_sf) +  # Add childcare locations
+  tm_dots()  # Customize the size and transparency of the dots
+
+```
+
+Notice that all the geospatial layers are within the same map extend. This shows that their referencing system and coordinate values are referred to similar spatial context. This is very important in any geospatial analysis.
+
+Alternatively, we can also prepare a pin map by using the code chunk below.
+
 Plot a map to show their spatial patterns
 
 ```{r}
