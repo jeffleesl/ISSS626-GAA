@@ -56,6 +56,7 @@ Use the code chunk below to install and launch the five R packages.
 pacman::p_load(sf, raster, spatstat, tmap, tidyverse)
 
 ```
+
 ```{r}
 set.seed(1234)
 ```
