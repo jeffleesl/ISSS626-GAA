@@ -1,0 +1,53 @@
+---
+title: "In-class Exercise 2"
+author: "Lee Shao Lin Jeffrey"
+date: "Sep 02 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  messsage: false
+  freeze: true
+---
+
+## Issue 1: Installing maptools
+
+```{r}
+#| eval: false
+install.packages("maptools",
+                 repos = "https://packagemanager.posit.co/cran/2023-10-13")
+
+```
+```{r}
+pacman::p_load(sf, raster, spatstat, tmap, tidyverse)
+
+```
+
+```{r}
+childcare_sf <- st_read("data/child-care-services-geojson.geojson") %>%
+  st_transform(crs = 3414)
+```
+
+```{r}
+mpsz_sf <- st_read(dsn = "data", 
+                layer = "MP14_SUBZONE_WEB_PL") %>%
+  st_transform(crs = 3414)
+```
+
+```{r}
+sg_sf <- st_read(dsn = "data", 
+                 layer="CostalOutline") %>%
+  st_transform(crs = 3414)
+```
+
+```{r}
+sg_sf <- mpsz_sf %>%
+  st_union()
+```
+
+In order to ensure reproducibility, it is important to include the code chunk below before use
+
+```{r}
+set.seed(1234)
+```
+

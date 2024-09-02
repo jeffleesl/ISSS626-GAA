@@ -56,6 +56,9 @@ Use the code chunk below to install and launch the five R packages.
 pacman::p_load(sf, raster, spatstat, tmap, tidyverse)
 
 ```
+```{r}
+set.seed(1234)
+```
 
 # 4. Spatial Data Wrangling
 
@@ -480,6 +483,13 @@ The result is the same, we just convert it so that it is suitable for mapping pu
 ```
 
 The above code doesn't work and I have changed to the below code:
+
+```{r}
+gridded_kde_childcareSG_ad <- as (
+  kde_childcareSG_adaptive, "SpatialGridDataFrame")
+
+spplot(gridded_kde_childcareSG_ad)
+```
 
 ```{r}
 raster_kde_childcareSG_bw <- raster(kde_childcareSG.bw)

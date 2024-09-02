@@ -1,0 +1,25 @@
+---
+title: "Take Home Exercise 1"
+author: "Jeffrey Lee Shao Lin"
+date: "Aug 20 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  messsage: false
+  freeze: true
+---
+
+```{r}
+pacman::p_load(sf, raster, spatstat, tmap, tidyverse)
+```
+
+```{r}
+rdacc_sf <- read_csv("data/thai_road_accident_2019_2022.csv") %>%
+  filter(!is.na(longitude) & longitude != "",
+         !is.na(latitude) & latitude != "") %>%
+  st_as_sf(coords = c(
+    "longitude", "latitude"),
+    crs =4326) %>%
+  st_transform(crs = 32647)
+```
