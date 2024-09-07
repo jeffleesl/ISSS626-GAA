@@ -7,14 +7,16 @@ website:
     left:
      - text: "Hands-on Exercise"
        menu: 
-         - text: "Hands-on Exercise 1.1"
+         - text: "Hands-on Exercise 1.1: Geospatial Data Wrangling with R"
            href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex1.1.html"
-         - text: "Hands-on Exercise 1.2"
+         - text: "Hands-on Exercise 1.2: Choropleth Mapping with R"
            href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex1.2.html"
-         - text: "Hands-on Exercise 2.1"
+         - text: "Hands-on Exercise 2.1: 1st Order Spatial Point Patterns Analysis Methods"
            href: "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex2.1.html"   
-         - text: "Hands-on Exercise 2.2"
-           href: "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex2.2.html"             
+         - text: "Hands-on Exercise 2.2: 2nd Order Spatial Point Patterns Analysis Methods"
+           href: "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex2.2.html"
+         - text: "Hands-on Exercise 3: Network Constrained Spatial Point Patterns Analysis"
+           href: "Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex3.html"              
      - text: "In-class Exercise"
        menu: 
          - text: "In-class Exercise 1"
