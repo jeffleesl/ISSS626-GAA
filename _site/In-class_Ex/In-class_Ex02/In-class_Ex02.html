@@ -131,19 +131,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
         <li>
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex1.1.html">
- <span class="dropdown-text">Hands-on Exercise 1.1</span></a>
+ <span class="dropdown-text">Hands-on Exercise 1.1: Geospatial Data Wrangling with R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex1.2.html">
- <span class="dropdown-text">Hands-on Exercise 1.2</span></a>
+ <span class="dropdown-text">Hands-on Exercise 1.2: Choropleth Mapping with R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex2.1.html">
- <span class="dropdown-text">Hands-on Exercise 2.1</span></a>
+ <span class="dropdown-text">Hands-on Exercise 2.1: 1st Order Spatial Point Patterns Analysis Methods</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex2.2.html">
- <span class="dropdown-text">Hands-on Exercise 2.2</span></a>
+ <span class="dropdown-text">Hands-on Exercise 2.2: 2nd Order Spatial Point Patterns Analysis Methods</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex3.html">
+ <span class="dropdown-text">Hands-on Exercise 3: Network Constrained Spatial Point Patterns Analysis</span></a>
   </li>  
     </ul>
   </li>
@@ -196,6 +200,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#issue-1-installing-maptools" id="toc-issue-1-installing-maptools" class="nav-link active" data-scroll-target="#issue-1-installing-maptools">Issue 1: Installing maptools</a></li>
+  <li><a href="#issue-2-creating-coastal-outline" id="toc-issue-2-creating-coastal-outline" class="nav-link" data-scroll-target="#issue-2-creating-coastal-outline"><strong>Issue 2: Creating coastal outline</strong></a></li>
+  <li><a href="#working-with-st_union" id="toc-working-with-st_union" class="nav-link" data-scroll-target="#working-with-st_union"><strong>Working with <code>st_union()</code></strong></a></li>
+  <li><a href="#introducing-spatstat-package" id="toc-introducing-spatstat-package" class="nav-link" data-scroll-target="#introducing-spatstat-package">Introducing spatstat package</a></li>
+  <li><a href="#spatstat" id="toc-spatstat" class="nav-link" data-scroll-target="#spatstat">Spatstat</a>
+  <ul class="collapse">
+  <li><a href="#spatstat-sub-packages" id="toc-spatstat-sub-packages" class="nav-link" data-scroll-target="#spatstat-sub-packages"><strong>spatstat sub-packages</strong></a></li>
+  <li><a href="#creating-owin-object-from-sf-data.frame" id="toc-creating-owin-object-from-sf-data.frame" class="nav-link" data-scroll-target="#creating-owin-object-from-sf-data.frame"><strong>Creating <em>owin</em> object from sf data.frame</strong></a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -228,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 2, 2024</p>
+      <p class="date-modified">September 7, 2024</p>
     </div>
   </div>
     
@@ -239,12 +251,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="issue-1-installing-maptools" class="level2">
-<h2 class="anchored" data-anchor-id="issue-1-installing-maptools">Issue 1: Installing maptools</h2>
+<section id="issue-1-installing-maptools" class="level1">
+<h1>Issue 1: Installing maptools</h1>
+<p><strong>maptools</strong>&nbsp;is retired and binary is removed from CRAN. However, I can download from&nbsp;<a href="https://packagemanager.posit.co/client/#/repos/cran/setup?snapshot=2023-10-13&amp;distribution=windows&amp;r_environment=ide">Posit Public Package Manager</a>&nbsp;snapshots by using the code chunk below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"maptools"</span>,</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repos =</span> <span class="st">"https://packagemanager.posit.co/cran/2023-10-13"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>After the installation is completed, it is important to edit the code chunk as shown below in order to avoid&nbsp;<strong>maptools</strong>&nbsp;being download and install repetitively every time the Quarto document been rendered.</p>
+<p><img src="images/clipboard-4048344478.png" class="img-fluid"></p>
+</section>
+<section id="issue-2-creating-coastal-outline" class="level1">
+<h1><strong>Issue 2: Creating coastal outline</strong></h1>
+<p>In <strong>sf</strong> package, there are two functions allow us to combine multiple simple features into one simple features. They are <a href="https://r-spatial.github.io/sf/reference/geos_combine.html"><code>st_combine()</code></a> and <code>st_union()</code>.</p>
+<ul>
+<li><p><code>st_combine()</code> returns a single, combined geometry, with no resolved boundaries; returned geometries may well be invalid.</p></li>
+<li><p>If y is missing, <code>st_union(x)</code> returns a single geometry with resolved boundaries, else the geometries for all unioned pairs of x[i] and y[j].</p></li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, raster, spatstat, tmap, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -293,16 +316,64 @@ Bounding box:  xmin: 2663.926 ymin: 16357.98 xmax: 56047.79 ymax: 50244.03
 Projected CRS: SVY21</code></pre>
 </div>
 </div>
+</section>
+<section id="working-with-st_union" class="level1">
+<h1><strong>Working with <code>st_union()</code></strong></h1>
+<p>The code chunk below, <code>st_union()</code>is used to derive the coastal outline sf tibble data.frame.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sg_sf <span class="ot">&lt;-</span> mpsz_sf <span class="sc">%&gt;%</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_union</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_union</span>()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sg_sf) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="In-class_Ex02_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>sg_sf will look similar to the figure below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sg_sf) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="In-class_Ex02_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 <p>In order to ensure reproducibility, it is important to include the code chunk below before use</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="introducing-spatstat-package" class="level1">
+<h1>Introducing spatstat package</h1>
+<p><a href="https://spatstat.org/"><strong>spatstat</strong></a>&nbsp;R package is a comprehensive open-source toolbox for analysing Spatial Point Patterns. Focused mainly on two-dimensional point patterns, including multitype or marked points, in any spatial region.</p>
+</section>
+<section id="spatstat" class="level1">
+<h1>Spatstat</h1>
+<section id="spatstat-sub-packages" class="level3">
+<h3 class="anchored" data-anchor-id="spatstat-sub-packages"><strong>spatstat sub-packages</strong></h3>
+<ul>
+<li><p>The <a href="https://cran.r-project.org/web/packages/spatstat/index.html"><strong>spatstat</strong></a> package now contains only documentation and introductory material. It provides beginner’s introductions, vignettes, interactive demonstration scripts, and a few help files summarising the package.</p></li>
+<li><p>The <a href="https://isss626-ay2024-25aug.netlify.app/in-class_ex/in-class_ex02/in-class_ex02-sppa"><strong>spatstat.data</strong></a> package now contains all the datasets for spatstat.</p></li>
+<li><p>The <a href="https://cran.r-project.org/web/packages/spatstat.utils/index.html"><strong>spatstat.utils</strong></a> package contains basic utility functions for spatstat.</p></li>
+<li><p>The <a href="https://cran.r-project.org/web/packages/spatstat.univar/spatstat.univar.pdf"><strong>spatstat.univar</strong></a> package contains functions for estimating and manipulating probability distributions of one-dimensional random variables.</p></li>
+<li><p>The <a href="https://cran.r-project.org/web/packages/spatstat.sparse/spatstat.sparse.pdf"><strong>spatstat.sparse</strong></a> package contains functions for manipulating sparse arrays and performing linear algebra.</p></li>
+<li><p>The <a href="https://cran.r-project.org/web/packages/spatstat.geom/index.html"><strong>spatstat.geom</strong></a> package contains definitions of spatial objects (such as point patterns, windows and pixel images) and code which performs geometrical operations.</p></li>
+<li><p>The <a href="https://cran.r-project.org/web/packages/spatstat.random/index.html"><strong>spatstat.random</strong></a> package contains functions for random generation of spatial patterns and random simulation of models.</p></li>
+<li><p>The <a href="https://cran.r-project.org/web/packages/spatstat.explore/index.html"><strong>spatstat.explore</strong></a> package contains the code for exploratory data analysis and nonparametric analysis of spatial data.</p></li>
+<li><p>The <a href="https://cran.r-project.org/web/packages/spatstat.model/index.html"><strong>spatstat.model</strong></a> package contains the code for model-fitting, model diagnostics, and formal inference.</p></li>
+<li><p>The <a href="https://cran.r-project.org/web/packages/spatstat.linnet/index.html"><strong>spatstat.linnet</strong></a> package defines spatial data on a linear network, and performs geometrical operations and statistical analysis on such data.</p></li>
+</ul>
+</section>
+<section id="creating-owin-object-from-sf-data.frame" class="level2">
+<h2 class="anchored" data-anchor-id="creating-owin-object-from-sf-data.frame"><strong>Creating <em>owin</em> object from sf data.frame</strong></h2>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

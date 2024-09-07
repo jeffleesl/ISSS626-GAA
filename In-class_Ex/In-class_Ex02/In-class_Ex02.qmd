@@ -10,7 +10,9 @@ execute:
   freeze: true
 ---
 
-## Issue 1: Installing maptools
+# Issue 1: Installing maptools
+
+**maptools** is retired and binary is removed from CRAN. However, I can download from [Posit Public Package Manager](https://packagemanager.posit.co/client/#/repos/cran/setup?snapshot=2023-10-13&distribution=windows&r_environment=ide) snapshots by using the code chunk below.
 
 ```{r}
 #| eval: false
@@ -18,6 +20,19 @@ install.packages("maptools",
                  repos = "https://packagemanager.posit.co/cran/2023-10-13")
 
 ```
+
+After the installation is completed, it is important to edit the code chunk as shown below in order to avoid **maptools** being download and install repetitively every time the Quarto document been rendered.
+
+![](images/clipboard-4048344478.png)
+
+# **Issue 2: Creating coastal outline**
+
+In **sf** package, there are two functions allow us to combine multiple simple features into one simple features. They are [`st_combine()`](https://r-spatial.github.io/sf/reference/geos_combine.html) and `st_union()`.
+
+-   `st_combine()` returns a single, combined geometry, with no resolved boundaries; returned geometries may well be invalid.
+
+-   If y is missing, `st_union(x)` returns a single geometry with resolved boundaries, else the geometries for all unioned pairs of x\[i\] and y\[j\].
+
 ```{r}
 pacman::p_load(sf, raster, spatstat, tmap, tidyverse)
 
@@ -40,9 +55,20 @@ sg_sf <- st_read(dsn = "data",
   st_transform(crs = 3414)
 ```
 
+# **Working with `st_union()`**
+
+The code chunk below, `st_union()`is used to derive the coastal outline sf tibble data.frame.
+
 ```{r}
 sg_sf <- mpsz_sf %>%
   st_union()
+plot(sg_sf) 
+```
+
+sg_sf will look similar to the figure below.
+
+```{r}
+plot(sg_sf) 
 ```
 
 In order to ensure reproducibility, it is important to include the code chunk below before use
@@ -51,3 +77,32 @@ In order to ensure reproducibility, it is important to include the code chunk be
 set.seed(1234)
 ```
 
+# Introducing spatstat package
+
+[**spatstat**](https://spatstat.org/) R package is a comprehensive open-source toolbox for analysing Spatial Point Patterns. Focused mainly on two-dimensional point patterns, including multitype or marked points, in any spatial region.
+
+# Spatstat
+
+### **spatstat sub-packages**
+
+-   The [**spatstat**](https://cran.r-project.org/web/packages/spatstat/index.html) package now contains only documentation and introductory material. It provides beginner’s introductions, vignettes, interactive demonstration scripts, and a few help files summarising the package.
+
+-   The [**spatstat.data**](https://isss626-ay2024-25aug.netlify.app/in-class_ex/in-class_ex02/in-class_ex02-sppa) package now contains all the datasets for spatstat.
+
+-   The [**spatstat.utils**](https://cran.r-project.org/web/packages/spatstat.utils/index.html) package contains basic utility functions for spatstat.
+
+-   The [**spatstat.univar**](https://cran.r-project.org/web/packages/spatstat.univar/spatstat.univar.pdf) package contains functions for estimating and manipulating probability distributions of one-dimensional random variables.
+
+-   The [**spatstat.sparse**](https://cran.r-project.org/web/packages/spatstat.sparse/spatstat.sparse.pdf) package contains functions for manipulating sparse arrays and performing linear algebra.
+
+-   The [**spatstat.geom**](https://cran.r-project.org/web/packages/spatstat.geom/index.html) package contains definitions of spatial objects (such as point patterns, windows and pixel images) and code which performs geometrical operations.
+
+-   The [**spatstat.random**](https://cran.r-project.org/web/packages/spatstat.random/index.html) package contains functions for random generation of spatial patterns and random simulation of models.
+
+-   The [**spatstat.explore**](https://cran.r-project.org/web/packages/spatstat.explore/index.html) package contains the code for exploratory data analysis and nonparametric analysis of spatial data.
+
+-   The [**spatstat.model**](https://cran.r-project.org/web/packages/spatstat.model/index.html) package contains the code for model-fitting, model diagnostics, and formal inference.
+
+-   The [**spatstat.linnet**](https://cran.r-project.org/web/packages/spatstat.linnet/index.html) package defines spatial data on a linear network, and performs geometrical operations and statistical analysis on such data.
+
+## **Creating *owin* object from sf data.frame**
