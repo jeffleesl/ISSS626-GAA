@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jeffrey Lee Shao Lin">
-<meta name="dcterms.date" content="2024-08-20">
+<meta name="dcterms.date" content="2024-09-07">
 
 <title>ISSS626-GAA - Take Home Exercise 1</title>
 <style>
@@ -131,19 +131,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
         <li>
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex1.1.html">
- <span class="dropdown-text">Hands-on Exercise 1.1</span></a>
+ <span class="dropdown-text">Hands-on Exercise 1.1: Geospatial Data Wrangling with R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex1.2.html">
- <span class="dropdown-text">Hands-on Exercise 1.2</span></a>
+ <span class="dropdown-text">Hands-on Exercise 1.2: Choropleth Mapping with R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex2.1.html">
- <span class="dropdown-text">Hands-on Exercise 2.1</span></a>
+ <span class="dropdown-text">Hands-on Exercise 2.1: 1st Order Spatial Point Patterns Analysis Methods</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex2.2.html">
- <span class="dropdown-text">Hands-on Exercise 2.2</span></a>
+ <span class="dropdown-text">Hands-on Exercise 2.2: 2nd Order Spatial Point Patterns Analysis Methods</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../Hands-on_Ex/Hands-on_Ex03/Hands-on_Ex3.html">
+ <span class="dropdown-text">Hands-on Exercise 3: Network Constrained Spatial Point Patterns Analysis</span></a>
   </li>  
     </ul>
   </li>
@@ -159,6 +163,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li>
     <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex02/In-class_Ex02.html">
  <span class="dropdown-text">In-class Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../../In-class_Ex/In-class_Ex03/In-class_Ex03.html">
+ <span class="dropdown-text">In-class Exercise 3</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-take-home-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Take-Home Exercise</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
+        <li>
+    <a class="dropdown-item" href="../../Take-Home_Ex/Take-Home_Ex01/Take-Home_Ex01.html">
+ <span class="dropdown-text">Take-Home Exercise 1</span></a>
   </li>  
     </ul>
   </li>
@@ -180,7 +199,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#installing-and-loading-the-r-packages" id="toc-installing-and-loading-the-r-packages" class="nav-link active" data-scroll-target="#installing-and-loading-the-r-packages">3. Installing and Loading the R packages</a></li>
+  <li><a href="#data-import-and-preparation" id="toc-data-import-and-preparation" class="nav-link" data-scroll-target="#data-import-and-preparation">4. Data Import and Preparation</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -204,14 +230,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 20, 2024</p>
+      <p class="date">September 7, 2024</p>
     </div>
   </div>
   
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 2, 2024</p>
+      <p class="date-modified">September 9, 2024</p>
     </div>
   </div>
     
@@ -222,9 +248,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="installing-and-loading-the-r-packages" class="level1">
+<h1>3. Installing and Loading the R packages</h1>
+<p>In this hands-on exercise, five R packages will be used, they are:</p>
+<ul>
+<li><p><a href="https://r-spatial.github.io/sf/"><strong>sf</strong></a>, a relatively new R package specially designed to import, manage and process vector-based geospatial data in R.</p></li>
+<li><p><a href="https://spatstat.org/"><strong>spatstat</strong></a>, which has a wide range of useful functions for point pattern analysis. In this hands-on exercise, it will be used to perform 1st- and 2nd-order spatial point patterns analysis and derive kernel density estimation (KDE) layer.</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/raster/"><strong>raster</strong></a> which reads, writes, manipulates, analyses and model of gridded spatial data (i.e.&nbsp;raster). In this hands-on exercise, it will be used to convert image output generate by spatstat into raster format.</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/maptools/index.html"><strong>maptools</strong></a> which provides a set of tools for manipulating geographic data. In this hands-on exercise, we mainly use it to convert <em>Spatial</em> objects into <em>ppp</em> format of <strong>spatstat</strong>.</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/tmap/index.html"><strong>tmap</strong></a> which provides functions for plotting cartographic quality static point patterns maps or interactive maps by using <a href="https://leafletjs.com/">leaflet</a> API.</p></li>
+<li><p><a href="https://cran.r-project.org/web/packages/spNetwork/index.html">spNetwork</a>, which provides functions to perform Spatial Point Patterns Analysis such as kernel density estimation (KDE) and K-function on network. It also can be used to build spatial matrices (‘listw’ objects like in ‘spdep’ package) to conduct any kind of traditional spatial analysis with spatial weights based on reticular distances.</p></li>
+</ul>
+<p>Use the code chunk below to install and launch the five R packages.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, raster, spatstat, tmap, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, raster, spatstat, tmap, spNetwork, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="data-import-and-preparation" class="level1">
+<h1>4. Data Import and Preparation</h1>
+<p>The code chunk below uses&nbsp;<code>st_read()</code>&nbsp;of&nbsp;<strong>sf</strong>&nbsp;package to important Punggol_St and Punggol_CC geospatial data sets into RStudio as sf data frames.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rdacc_sf <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/thai_road_accident_2019_2022.csv"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(longitude) <span class="sc">&amp;</span> longitude <span class="sc">!=</span> <span class="st">""</span>,</span>
@@ -233,20 +275,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"longitude"</span>, <span class="st">"latitude"</span>),</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">crs =</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">32647</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 81735 Columns: 18
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr  (10): province_th, province_en, agency, route, vehicle_type, presumed_c...
-dbl   (6): acc_code, number_of_vehicles_involved, number_of_fatalities, numb...
-dttm  (2): incident_datetime, report_datetime
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

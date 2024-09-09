@@ -1,18 +1,40 @@
 ---
 title: "Take Home Exercise 1"
 author: "Jeffrey Lee Shao Lin"
-date: "Aug 20 2024"
+date: "September 7, 2024"
 date-modified: "last-modified"
 execute: 
   eval: true
   echo: true
-  messsage: false
   freeze: true
+  warning: false
 ---
 
+# 3. Installing and Loading the R packages
+
+In this hands-on exercise, five R packages will be used, they are:
+
+-   [**sf**](https://r-spatial.github.io/sf/), a relatively new R package specially designed to import, manage and process vector-based geospatial data in R.
+
+-   [**spatstat**](https://spatstat.org/), which has a wide range of useful functions for point pattern analysis. In this hands-on exercise, it will be used to perform 1st- and 2nd-order spatial point patterns analysis and derive kernel density estimation (KDE) layer.
+
+-   [**raster**](https://cran.r-project.org/web/packages/raster/) which reads, writes, manipulates, analyses and model of gridded spatial data (i.e. raster). In this hands-on exercise, it will be used to convert image output generate by spatstat into raster format.
+
+-   [**maptools**](https://cran.r-project.org/web/packages/maptools/index.html) which provides a set of tools for manipulating geographic data. In this hands-on exercise, we mainly use it to convert *Spatial* objects into *ppp* format of **spatstat**.
+
+-   [**tmap**](https://cran.r-project.org/web/packages/tmap/index.html) which provides functions for plotting cartographic quality static point patterns maps or interactive maps by using [leaflet](https://leafletjs.com/) API.
+
+-   [spNetwork](https://cran.r-project.org/web/packages/spNetwork/index.html), which provides functions to perform Spatial Point Patterns Analysis such as kernel density estimation (KDE) and K-function on network. It also can be used to build spatial matrices (‘listw’ objects like in ‘spdep’ package) to conduct any kind of traditional spatial analysis with spatial weights based on reticular distances.
+
+Use the code chunk below to install and launch the five R packages.
+
 ```{r}
-pacman::p_load(sf, raster, spatstat, tmap, tidyverse)
+pacman::p_load(sf, raster, spatstat, tmap, spNetwork, tidyverse)
 ```
+
+# 4. Data Import and Preparation
+
+The code chunk below uses `st_read()` of **sf** package to important Punggol_St and Punggol_CC geospatial data sets into RStudio as sf data frames.
 
 ```{r}
 rdacc_sf <- read_csv("data/thai_road_accident_2019_2022.csv") %>%
