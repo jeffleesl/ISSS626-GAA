@@ -29,7 +29,7 @@ In this hands-on exercise, five R packages will be used, they are:
 Use the code chunk below to install and launch the five R packages.
 
 ```{r}
-pacman::p_load(sf, raster, spatstat, tmap, spNetwork, tidyverse)
+pacman::p_load(sf, tmap, spNetwork, tidyverse)
 ```
 
 # 4. Data Import and Preparation
@@ -37,11 +37,23 @@ pacman::p_load(sf, raster, spatstat, tmap, spNetwork, tidyverse)
 The code chunk below uses `st_read()` of **sf** package to important Punggol_St and Punggol_CC geospatial data sets into RStudio as sf data frames.
 
 ```{r}
-rdacc_sf <- read_csv("data/thai_road_accident_2019_2022.csv") %>%
+rdacc_sf <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
   filter(!is.na(longitude) & longitude != "",
          !is.na(latitude) & latitude != "") %>%
   st_as_sf(coords = c(
     "longitude", "latitude"),
     crs =4326) %>%
+  st_transform(crs = 32647)
+```
+
+```{r}
+acc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
+  mutate(Month_num = month(incident_datetime)) %>% 
+  mutate(Month_fac = month(incident_datetime,
+                       label = TRUE,
+                       abbr = TRUE)) %>% 
+  mutate(dayofweek = day(incident_datetime)) %>% 
+  st_as_sf(coords = c("longitude", "latitude"),
+                       crs=4326) %>%
   st_transform(crs = 32647)
 ```
