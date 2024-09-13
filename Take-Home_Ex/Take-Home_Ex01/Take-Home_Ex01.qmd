@@ -47,13 +47,19 @@ rdacc_sf <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
 ```
 
 ```{r}
+#| eval: false
 acc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
   mutate(Month_num = month(incident_datetime)) %>% 
   mutate(Month_fac = month(incident_datetime,
                        label = TRUE,
                        abbr = TRUE)) %>% 
-  mutate(dayofweek = day(incident_datetime)) %>% 
-  st_as_sf(coords = c("longitude", "latitude"),
-                       crs=4326) %>%
-  st_transform(crs = 32647)
+  mutate(dayofweek = day(incident_datetime))
+```
+
+```{r}
+write_rds(acc,"data/rds/acc.rds")
+```
+
+```{r}
+acc <-read_rds("data/rds/acc.rds")
 ```
