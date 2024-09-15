@@ -83,7 +83,7 @@ gdppc <- qtm(hunan, "GDPPC")
 tmap_arrange(basemap, gdppc, asp=1, ncol=2)
 ```
 
-# 5.Computing Contiguity Spatial Weights
+# 5. Computing Contiguity Spatial Weights
 
 In this section, you will learn how to use [*poly2nb()*](https://r-spatial.github.io/spdep/reference/poly2nb.html) of **spdep** package to compute contiguity weight matrices for the study area. This function builds a neighbours list based on regions with contiguous boundaries. If you look at the documentation you will see that you can pass a “queen” argument that takes TRUE or FALSE as options. If you do not specify this argument the default is set to TRUE, that is, if you don’t specify queen = FALSE this function will return a list of first order neighbours using the Queen criteria.
 
@@ -339,7 +339,7 @@ The zero.policy=TRUE option allows for lists of non-neighbors. This should be us
 To see the weight of the first polygon’s eight neighbors type:
 
 ```{r}
-rswm_q$weights[10]
+rswm_q$weights[1]
 ```
 
 Each neighbor is assigned a 0.125 of the total weight. This means that when R computes the average neighboring income values, each neighbor’s income will be multiplied by 0.125 before being tallied.

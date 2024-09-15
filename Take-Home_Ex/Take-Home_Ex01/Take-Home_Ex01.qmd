@@ -101,7 +101,7 @@ rdacc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
   mutate(dayofweek = day(incident_datetime)) %>% 
   st_as_sf(coords = c(
     "longitude", "latitude"),
-    crs =4326) %>%
+    crs=4326) %>%
   st_transform(crs = 32647)
 ```
 
@@ -126,9 +126,18 @@ glimpse(hotosm)
 ```{r}
 #| eval: false
 thaadm <- st_read(dsn = "data/rawdata", 
-                layer = "tha_admbnda_adm0_rtsd_20220121") %>%
+                layer = "tha_admbnda_adm") %>%
   st_transform(crs = 32647)
 ```
+
+
+# 6. Geospatial Analysis
+
+# 7. Geovisualisation and Geocommunication
+
+# 8. Reproducibility
+
+
 
 ```{r}
 write_rds(acc,"data/rds/acc.rds")
@@ -137,3 +146,4 @@ write_rds(acc,"data/rds/acc.rds")
 ```{r}
 acc <-read_rds("data/rds/acc.rds")
 ```
+
