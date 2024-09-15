@@ -1,5 +1,5 @@
 ---
-title: "Take Home Exercise 1"
+title: "Take Home Exercise 1 : Geospatial Analytics for Public Good"
 author: "Jeffrey Lee Shao Lin"
 date: "September 7, 2024"
 date-modified: "last-modified"
@@ -10,7 +10,45 @@ execute:
   warning: false
 ---
 
-# 3. Installing and Loading the R packages
+# 1. Background
+
+According to World Health Organisation (WHO), road traffic accidents cause the death of approximately 1.19 million people each year leave between 20 and 50 million people with non-fatal injuries. More than half of all road traffic deaths occur among vulnerable road users, such as pedestrians, cyclists and motorcyclists.
+
+Road traffic injuries are the leading cause of death for children and young adults aged 5–29. Yet two thirds of road traffic fatalities occur among people of working age (18–59 years). Nine in 10 fatalities on the roads occur in low- and middle-income countries, even though these countries have around 60% of the world’s vehicles.
+
+In addition to the human suffering caused by road traffic injuries, they also incur a heavy economic burden on victims and their families, both through treatment costs for the injured and through loss of productivity of those killed or disabled. More broadly, road traffic injuries have a serious impact on national economies, costing countries 3% of their annual gross domestic product.
+
+Thailand’s roads are the deadliest in Southeast Asia and among the worst in the world, according to the World Health Organisation. About 20,000 people die in road accidents each year, or about 56 deaths a day (WHO).
+
+Between 2014 and 2021, Thailand experienced a notable increase in accident frequencies. Specifically, 19% of all accidents in Thailand occurred on the national highways, which constituted the primary public thoroughfares connecting various regions, provinces, districts, and significant locations within a comprehensive network. Within the broader context of accidents across the country, there existed a considerable 66% likelihood of encountering accident-prone zones, often termed ‘black spots,’ distributed as follows: 66% on straight road segments, 13% at curves, 6% at median points of cross-shaped intersections, 5% at T-shaped intersections and Y-shaped intersections, 3% at cross-shaped intersections, 2% on bridges, and 2% on steep slopes, respectively.
+
+# 2. Objectives of the Exercise
+
+By and large, road traffic accidents can be attributed by two major factors, namely: behavioural and environmental factors. Behavioural factors in driving are considered to be major causes of traffic accidents either in direct or indirect manner (Lewin, 1982). These factors can be further grouped into two as, **driver behavior** (also called driver/driving style) and driver performance, in other words, driver/driving skills (Elander, West, & French, 1993). Environmental factors, on the other hand, includes but not limited to weather condition such as poor visibility during heavy rain or foggy and road conditions such as sharp bend road, slippery slope road, and [blind spot](https://en.wikipedia.org/wiki/Vehicle_blind_spot).
+
+Previous studies have demonstrated the significant potential of Spatial Point Patterns Analysis (SPPA) in exploring and identifying factors influencing road traffic accidents. However, these studies often focus solely on either behavioral or environmental factors, with limited consideration of temporal factors such as season, day of the week, or time of day.
+
+In view of this, you are tasked to discover factors affecting road traffic accidents in the [Bangkok Metropolitan Region BMR](https://en.wikipedia.org/wiki/Bangkok_Metropolitan_Region) by employing both spatial spatio-temporal point patterns analysis methods.
+
+The specific objectives of this take-home exercise are as follows:
+
+-   To visualize the spatio-temporal dynamics of road traffic accidents in BMR using appropriate statistical graphics and geovisualization methods.
+
+-   To conduct detailed spatial analysis of road traffic accidents using appropriate Network Spatial Point Patterns Analysis methods.
+
+-   To conduct detailed spatio-temporal analysis of road traffic accidents using appropriate Temporal Network Spatial Point Patterns Analysis methods.
+
+# 3. The Data
+
+For the purpose of this exercise, three basic data sets must be used, they are:
+
+-   [Thailand Road Accident \[2019-2022\]](https://www.kaggle.com/datasets/thaweewatboy/thailand-road-accident-2019-2022) on Kaggle.
+
+-   [Thailand Roads (OpenStreetMap Export)](https://data.humdata.org/dataset/hotosm_tha_roads) on HDX.
+
+-   [Thailand - Subnational Administrative Boundaries](https://data.humdata.org/dataset/cod-ab-tha?) on HDX.
+
+# 4. Installing and Loading the R packages
 
 In this hands-on exercise, five R packages will be used, they are:
 
@@ -30,9 +68,10 @@ Use the code chunk below to install and launch the five R packages.
 
 ```{r}
 pacman::p_load(sf, tmap, spNetwork, tidyverse)
+set.seed(1234)
 ```
 
-# 4. Data Import and Preparation
+# 5. Data Import and Preparation
 
 The code chunk below uses `st_read()` of **sf** package to important Punggol_St and Punggol_CC geospatial data sets into RStudio as sf data frames.
 
@@ -45,15 +84,50 @@ rdacc_sf <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
     crs =4326) %>%
   st_transform(crs = 32647)
 ```
+```{r}
+glimpse(rdacc_sf)
+```
 
+## 5.1 Thailand Road Accident (2019 -2022)
 ```{r}
 #| eval: false
-acc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
+rdacc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
+  filter(!is.na(longitude) & longitude != "",
+         !is.na(latitude) & latitude != "") %>%
   mutate(Month_num = month(incident_datetime)) %>% 
   mutate(Month_fac = month(incident_datetime,
                        label = TRUE,
                        abbr = TRUE)) %>% 
-  mutate(dayofweek = day(incident_datetime))
+  mutate(dayofweek = day(incident_datetime)) %>% 
+  st_as_sf(coords = c(
+    "longitude", "latitude"),
+    crs =4326) %>%
+  st_transform(crs = 32647)
+```
+
+```{r}
+glimpse(rdacc)
+```
+
+## 5.2 Thailand Roads (OpenStreetMap Export)
+
+```{r}
+#| eval: false
+hotosm <- st_read(dsn = "data/rawdata", 
+                layer = "hotosm_tha_roads_lines_shp")
+```
+
+```{r}
+glimpse(hotosm)
+```
+
+## 5.3 Thailand - Subnational Administrative Boundaries
+
+```{r}
+#| eval: false
+thaadm <- st_read(dsn = "data/rawdata", 
+                layer = "tha_admbnda_adm0_rtsd_20220121") %>%
+  st_transform(crs = 32647)
 ```
 
 ```{r}
