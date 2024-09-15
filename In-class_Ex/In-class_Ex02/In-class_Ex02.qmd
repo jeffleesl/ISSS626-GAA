@@ -71,12 +71,6 @@ sg_sf will look similar to the figure below.
 plot(sg_sf) 
 ```
 
-In order to ensure reproducibility, it is important to include the code chunk below before use
-
-```{r}
-set.seed(1234)
-```
-
 # Introducing spatstat package
 
 [**spatstat**](https://spatstat.org/) R package is a comprehensive open-source toolbox for analysing Spatial Point Patterns. Focused mainly on two-dimensional point patterns, including multitype or marked points, in any spatial region.
@@ -105,4 +99,200 @@ set.seed(1234)
 
 -   The [**spatstat.linnet**](https://cran.r-project.org/web/packages/spatstat.linnet/index.html) package defines spatial data on a linear network, and performs geometrical operations and statistical analysis on such data.
 
+## **Creating ppp objects from sf data.frame**
+
+Instead of using the two steps approaches discussed in Hands-on Exercise 3 to create the ppp objects, in this section you will learn how to work with sf data.frame.
+
+::: panel-tabset
+
+## Plot
+In the code chunk below, as.ppp() of spatstat.geom package is used to derive an ppp object layer directly from a sf tibble data.frame.
+
+```{r}
+
+childcare_ppp <- as.ppp(childcare_sf)
+plot(childcare_ppp)
+
+```
+
+## Summary
+
+Next, summary() can be used to reveal the properties of the newly created ppp objects.
+
+```{r}
+
+summary(childcare_ppp)
+
+```
+
+:::
+
 ## **Creating *owin* object from sf data.frame**
+
+::: panel-tabset
+## Plot
+
+In the code chunk as.owin() of spatstat.geom is used to create an owin object class from polygon sf tibble data.frame.
+
+```{r}
+
+sg_owin <- as.owin(sg_sf)
+plot(sg_owin)
+
+```
+
+## Summary
+
+Next, summary() function is used to display the summary information of the owin object class.
+
+```{r}
+
+summary(sg_owin)
+
+```
+:::
+
+# Combining point events object and owin object
+
+::: panel-tabset
+
+## The task
+
+In the code chunk as.owin() of spatstat.geom is used to create an owin object class from polygon sf tibble data.frame.
+
+Using the step you learned from Hands-on Exercise 3, create an ppp object by combining childcare_ppp and sg_owin.
+
+## The code
+
+Next, summary() function is used to display the summary information of the owin object class.
+
+```{r}
+
+childcareSG_ppp = childcare_ppp[sg_owin]
+
+```
+
+## The output
+
+The output object combined both the point and polygon feature in one ppp object class as shown below.
+
+```{r}
+
+plot(childcareSG_ppp)
+
+```
+:::
+
+# Kernel Density Estimation of Spatial Point Event
+
+The code chunk below re-scale the unit of measurement from metre to kilometre before performing KDE.
+
+```{r}
+
+childcareSG_ppp.km <- rescale.ppp(childcareSG_ppp, 
+                                  1000, 
+                                  "km")
+
+kde_childcareSG_adaptive <- adaptive.density(
+  childcareSG_ppp.km, 
+  method="kernel")
+plot(kde_childcareSG_adaptive)
+
+```
+
+# Kernel Density Estimation
+
+::: panel-tabset
+Code chunk shown two different ways to convert KDE output into grid object
+
+## maptools method
+
+```{r}
+
+par(bg = '#E4D5C9')
+
+gridded_kde_childcareSG_ad <- maptools::as.SpatialGridDataFrame.im(
+  kde_childcareSG_adaptive)
+spplot(gridded_kde_childcareSG_ad)
+
+```
+
+## spatstat.geom method
+
+```{r}
+
+gridded_kde_childcareSG_ad <- as(
+  kde_childcareSG_adaptive,
+  "SpatialGridDataFrame")
+spplot(gridded_kde_childcareSG_ad)
+
+```
+:::
+
+# Kernel Density Estimation
+
+## Visualising KDE using tmap
+
+```{r}
+
+kde_childcareSG_ad_raster <- raster(gridded_kde_childcareSG_ad)
+
+```
+
+The code chunk below is used to plot the output raster by using tmap functions.
+
+```{r}
+
+tm_shape(kde_childcareSG_ad_raster) + 
+  tm_raster(palette = "viridis") +
+  tm_layout(legend.position = c("right", "bottom"), 
+            frame = FALSE,
+            bg.color = "#E4D5C9")
+```
+
+Extracting study area using sf objects
+
+::: panel-tabset
+## The Task
+
+Extract and create an ppp object showing child care services and within Punggol Planning Area
+
+## The code
+
+On the other hand, filter() of dplyr package should be used to extract the target planning areas as shown in the code chunk below.
+
+```{r}
+
+pg_owin <- mpsz_sf %>%
+  filter(PLN_AREA_N == "PUNGGOL") %>%
+  as.owin()
+
+childcare_pg = childcare_ppp[pg_owin]
+
+plot(childcare_pg)  
+```
+:::
+
+# Monte Carlo Simulation
+
+In order to ensure reproducibility, it is important to include the code chunk below before using spatstat functions involve Monte Carlo simulation.
+
+```{r}
+set.seed(1234)
+```
+
+# Edge correction methods of spatstat
+
+In spatstat, edge correction methods are used to handle biases that arise when estimating spatial statistics near the boundaries of a study region. These corrections are essential for ensuring accurate estimates in spatial point pattern analysis, especially for summary statistics like the K-function, L-function, pair correlation function, etc.
+
+Common Edge Correction Methods in spatstat
+
+-   “none”: No edge correction is applied. This method assumes that there is no bias at the edges, which may lead to underestimation of statistics near the boundaries.
+
+-   “isotropic”: This method corrects for edge effects by assuming that the point pattern is isotropic (uniform in all directions). It compensates for missing neighbors outside the boundary by adjusting the distances accordingly.
+
+-   “translate” (Translation Correction): This method uses a translation correction, which involves translating the observation window so that every point lies entirely within it. The statistic is then averaged over all possible translations.
+
+-   “Ripley” (Ripley’s Correction): Similar to the isotropic correction but specifically tailored for Ripley’s K-function and related functions. It adjusts the expected number of neighbors for points near the edges based on the shape and size of the observation window.
+
+-   “border”: Border correction reduces bias by only considering points far enough from the boundary so that their neighborhood is fully contained within the window. This can be quite conservative but reduces the influence of edge effects.
