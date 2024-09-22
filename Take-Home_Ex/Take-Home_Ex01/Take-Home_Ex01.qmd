@@ -276,9 +276,7 @@ tm_shape(tsab_bmr) +
 
 ```
 
-# 7. Geovisualisation and Geocommunication
-
-Visualize accidents with the road network and administrative boundaries
+# 7. Visualize accidents with the road network and administrative boundaries
 
 ```{r}
 #| eval: false
@@ -292,7 +290,7 @@ tm_shape(tsab_bmr) +
 
 ```
 
-Visualize how accidents vary across month using time-based color coding or heatmaps.
+# 8.Visualize how accidents vary across month using time-based color coding or heatmaps.
 
 ```{r}
 # Map accidents by the month
@@ -307,7 +305,7 @@ tm_shape(tsab_bmr) +
 
 ```
 
-Visualizing geographic distribution of car accident by month
+# 9. Visualizing geographic distribution of car accident by month
 
 ```{r}
 # Map accidents by the month
@@ -323,9 +321,9 @@ tm_shape(tsab_bmr) +
 
 ```
 
-7.1 Computing STKDE by Month
+# 9.1 Computing STKDE by Month
 
-7.1.1 Extracting road accident by Month
+## 9.1. Extracting road accident by Month
 
 ```{r}
 #| eval: false
@@ -333,13 +331,15 @@ rdacc_month <- rdacc_bmr %>%
   select(Month_num)
 ```
 
-7.1.2 Creating ppp
+## 9.2 Creating ppp
 
 ```{r}
 #| eval: false
 rdacc_month_ppp <- as.ppp(rdacc_month)
 rdacc_month_ppp
 ```
+
+## 9.3 Check
 
 The code chunk below is used to check the output is in the correct object class.
 
@@ -360,6 +360,8 @@ We have identified duplicates. To count the number of co-indicence point, we wil
 sum(multiplicity(rdacc_month_ppp)>1)
 
 ```
+
+## 9.4 Solution
 
 We will use jittering, which will add a small perturbation to the duplicate points so that they do not occupy the exact same space.
 
@@ -396,7 +398,7 @@ st_kde <- spattemp.density(rdacc_month_owin)
 summary(st_kde)
 ```
 
-8.  Behavioral factors and Environmental factors
+## 10. Behavioral factors and Environmental factors
 
 ```{r}
 #| eval: false
@@ -427,7 +429,7 @@ rainy_accidents <- rdacc_bmr %>%
 ```
 
 ```{r}
-
+#| eval: false
 # Map accidents by BNehavioral factors (e.g., speeding)
 tm_shape(tsab_bmr) +
   tm_polygons() +
@@ -455,6 +457,50 @@ tm_shape(tsab_bmr) +
   tm_shape(rainy_accidents) +
   tm_dots(size = 0.01, col = "chartreuse4") + 
   tm_layout(title = "Environmental Factor: Rainy Condition Accidents")
+
+```
+
+```{r}
+#| eval: false
+# Combined map for environmental and behavioral factors
+tm_shape(tsab_bmr) +
+  tm_polygons() +
+  tm_shape(environmental_factors) +
+  tm_dots(size = 0.01, col = "royalblue4", title = "Environmental Factors") + 
+  tm_shape(behavioral_factors) +
+  tm_dots(size = 0.01, col = "firebrick2", title = "Behavioral Factors") +
+  tm_layout(title = "Environmental vs Behavioral Factors in Car Accidents") +
+  tm_shape(speeding_accidents) +
+  tm_dots(size = 0.01, col = "coral") + 
+  tm_layout(title = "Behavioral Factor: Speeding Accidents") +
+  tm_shape(rainy_accidents) +
+  tm_dots(size = 0.01, col = "chartreuse4") + 
+  tm_layout(title = "Environmental Factor: Rainy Condition Accidents")
+
+```
+
+Contingency Table A contingency table will show how often both types of factors occur together.
+
+```{r}
+
+# Create a combined dataset with both environmental and behavioral factors
+combined_factors <- rdacc_bmr %>%
+  mutate(is_behavioral = presumed_cause %in% c("speeding", "abrupt lane change", "agressive driving/overtaking", 
+                                               "driving in the wrong lane", "driving under the influence of alcohol", 
+                                               "driving without headlights/illumination", "failure to signal enter/exit parking", 
+                                               "failure to yield right of way", "failure to yield/signal", 
+                                               "falling asleep", "ignoring stop sign while leaving intersection", 
+                                               "illegal overtaking", "inadequate visibility", "internal disturbance", 
+                                               "loss of control", "medical condition", "overloaded vehicle", 
+                                               "speeding", "sudden stop", "tailgating", "running red lights/traffic signals", 
+                                               "unfamilarity with the route/unskilled driving", 
+                                               "using mobile phone while driving", "using psychoactive substances"),
+         is_environmental = weather_condition %in% c("dark", "foggy", "landslide", "natural disaster", "rainy") |
+                            slope_description == "slope area" |
+                            road_description == "sharp curve")
+
+# Create a contingency table
+table(combined_factors$is_behavioral, combined_factors$is_environmental)
 
 ```
 
