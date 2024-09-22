@@ -12,12 +12,6 @@ execute:
 
 # 1. Background
 
-According to World Health Organisation (WHO), road traffic accidents cause the death of approximately 1.19 million people each year leave between 20 and 50 million people with non-fatal injuries. More than half of all road traffic deaths occur among vulnerable road users, such as pedestrians, cyclists and motorcyclists.
-
-Road traffic injuries are the leading cause of death for children and young adults aged 5–29. Yet two thirds of road traffic fatalities occur among people of working age (18–59 years). Nine in 10 fatalities on the roads occur in low- and middle-income countries, even though these countries have around 60% of the world’s vehicles.
-
-In addition to the human suffering caused by road traffic injuries, they also incur a heavy economic burden on victims and their families, both through treatment costs for the injured and through loss of productivity of those killed or disabled. More broadly, road traffic injuries have a serious impact on national economies, costing countries 3% of their annual gross domestic product.
-
 Thailand’s roads are the deadliest in Southeast Asia and among the worst in the world, according to the World Health Organisation. About 20,000 people die in road accidents each year, or about 56 deaths a day (WHO).
 
 Between 2014 and 2021, Thailand experienced a notable increase in accident frequencies. Specifically, 19% of all accidents in Thailand occurred on the national highways, which constituted the primary public thoroughfares connecting various regions, provinces, districts, and significant locations within a comprehensive network. Within the broader context of accidents across the country, there existed a considerable 66% likelihood of encountering accident-prone zones, often termed ‘black spots,’ distributed as follows: 66% on straight road segments, 13% at curves, 6% at median points of cross-shaped intersections, 5% at T-shaped intersections and Y-shaped intersections, 3% at cross-shaped intersections, 2% on bridges, and 2% on steep slopes, respectively.
@@ -62,10 +56,12 @@ In this hands-on exercise, five R packages will be used, they are:
 
 -   [spNetwork](https://cran.r-project.org/web/packages/spNetwork/index.html), which provides functions to perform Spatial Point Patterns Analysis such as kernel density estimation (KDE) and K-function on network. It also can be used to build spatial matrices (‘listw’ objects like in ‘spdep’ package) to conduct any kind of traditional spatial analysis with spatial weights based on reticular distances.
 
+-   [**sparr**](https://tilmandavies.github.io/sparr/index.html) provides functions to estimate fixed and adaptive kernel-smoothed spatial relative risk surfaces via the density-ratio method and perform subsequent inference. Fixed-bandwidth spatiotemporal density and relative risk estimation is also supported
+
 Use the code chunk below to install and launch the five R packages.
 
 ```{r}
-pacman::p_load(sf, spatstat, tmap, spNetwork, tidyverse)
+pacman::p_load(sf, sparr, spatstat, tmap, spNetwork, tidyverse)
 set.seed(1234)
 ```
 
@@ -88,6 +84,7 @@ rdacc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
 ```
 
 ```{r}
+#| eval: false
 glimpse(rdacc)
 
 ```
@@ -96,11 +93,8 @@ We will filer the province and zoom into the road traffic accidents in the Bangk
 
 ```{r}
 # Filter for BMR region
-rdacc_bmr <- rdacc %>%
-  filter(province_en %in% c("Bangkok", "Nonthaburi", "Nakhon Pathom", 
+rdacc_bmr <- rdacc %>% filter(province_en %in% c("Bangkok", "Nonthaburi", "Nakhon Pathom", 
                             "Pathum Thani", "Samut Prakan", "Samut Sakhon"))
-print(rdacc_bmr)
-
 ```
 
 ```{r}
@@ -115,7 +109,6 @@ plot(rdacc_bmr)
 hotosm <- st_read(dsn = "data/rawdata", 
                 layer = "hotosm_tha_roads_lines_shp")
 ```
-
 
 ```{r}
 # Check if hotosm has assigned any CRS
@@ -140,7 +133,7 @@ unique(hotosm$highway)
 ```
 
 ```{r}
-
+#| eval: false
 hotosm_road_types <- hotosm %>% 
   filter(highway %in% c("motorway", "motorway_link", "primary", "primary_link", 
                             "secondary", "secondary_link", "tertiary" , "tertiary_link"))
@@ -192,13 +185,21 @@ tsab_bmr <- thaadm1 %>%
 plot(tsab_bmr)
 ```
 
-Output is saved in rds format for future used.
+```{r}
+BMR <- st_transform(tsab_bmr, crs = st_crs(hotosm_road_types))
 
-`{r} write_rds(acc,"data/rds/acc.rds")}`
+road_bmr <-st_intersection(hotosm_road_types, BMR)
 
-The code chunk below will be used to import the save origin6_9.rds into R environment.
+plot(st_geometry(road_bmr))
+```
 
-`{r} acc <-read_rds("data/rds/acc.rds")}`
+```{r}
+road_owin <- as.owin(tsab_bmr)
+
+road_owin
+
+class(road_owin)
+```
 
 # 6. Geospatial Analysis
 
@@ -207,6 +208,7 @@ The code chunk below will be used to import the save origin6_9.rds into R enviro
 Analyze the distribution of road accidents in BMR. This includes calculating point densities, identifying accident hotspots (black spots), and testing for spatial clustering.
 
 ```{r}
+#| eval: false
 # Bounding box from the BMR region (create a spatial window)
 bmr_window <- as.owin(st_bbox(rdacc_bmr))
 
@@ -223,9 +225,12 @@ plot(ppp_accidents, main = "Road Traffic Accidents in BMR")
 
 ```
 
-Using a Kernel Density Estimation (KDE) to identify high-risk areas.
+### 6.1.1 Using a Kernel Density Estimation (KDE) to identify high-risk areas.
+
+The code chunk below is used to identify high-risk areas.
 
 ```{r}
+#| eval: false
 # Kernel density estimation
 accident_density <- density(ppp_accidents, sigma = 1000)  # Adjust sigma for smoothing
 
@@ -234,16 +239,33 @@ plot(accident_density, main = "Accident Density in BMR")
 
 ```
 
-```{r}
-# Quadrat counting for hotspots
-quadrat_counts <- quadratcount(ppp_accidents, nx = 10, ny = 10)
+### 6.1.2 Adding provinces to the Kernel Density Estimation (KDE) to identify high-risk areas.
 
-# Plot quadrat counts
-plot(quadrat_counts, main = "Hotspots based on Quadrat Counting")
+The previous plot did not allow us to identify the provinces clearly. In the code chunk below, we are able to determine that Bangkok is one of the areas with the highest accident risk, while Nakhon Pathom has one of the lowest accident rates.
+
+```{r}
+#| eval: false
+# Kernel density estimation
+accident_density <- density(ppp_accidents, sigma = 1000)  # Adjust sigma for smoothing
+
+# Plot density map
+plot(accident_density, main = "Accident Density in BMR")
+
+# Overlay province boundaries on the density plot
+plot(st_geometry(tsab_bmr), add = TRUE, border = "lightsalmon", lwd = 2)
+
+# Add province names at the centroid of each province polygon
+centroids <- st_centroid(tsab_bmr)  # Get centroids of provinces
+
+# Loop over each province to add labels
+text(st_coordinates(centroids), labels = tsab_bmr$ADM1_EN, cex = 0.8, col = "snow")
 
 ```
 
+### 6.1.3 Base Map with Accident Points
+
 ```{r}
+#| eval: false
 # Snap accident points to the nearest road
 tm_shape(tsab_bmr) + 
   tm_polygons() +  # Administrative boundaries of BMR
@@ -256,9 +278,10 @@ tm_shape(tsab_bmr) +
 
 # 7. Geovisualisation and Geocommunication
 
-```{r}
+Visualize accidents with the road network and administrative boundaries
 
-# Visualize accidents with the road network and administrative boundaries
+```{r}
+#| eval: false
 tm_shape(tsab_bmr) + 
   tm_polygons() + 
   tm_shape(hotosm_road_types) + 
@@ -269,21 +292,114 @@ tm_shape(tsab_bmr) +
 
 ```
 
+Visualize how accidents vary across month using time-based color coding or heatmaps.
+
 ```{r}
-
 # Map accidents by the month
-
+#| eval: false
 tm_shape(tsab_bmr) + 
   tm_polygons() + 
+  tm_shape(hotosm_road_types) + 
+  tm_lines(col = "firebrick1") + 
   tm_shape(rdacc_bmr) + 
   tm_dots(size = 0.05, col = "Month_num", palette = "viridis") +
   tm_layout(main.title = "Accidents by Month in BMR")
 
 ```
 
+Visualizing geographic distribution of car accident by month
 
 ```{r}
+# Map accidents by the month
+#| eval: false
+tm_shape(tsab_bmr) + 
+  tm_polygons() + 
+  tm_shape(rdacc_bmr) + 
+  tm_dots(size = 0.05) +
+  tm_facets(by="Month_fac", 
+            free.coords=FALSE, 
+            drop.units = TRUE)
+  tm_layout(main.title = "Accidents by Month in BMR")
 
+```
+
+7.1 Computing STKDE by Month
+
+7.1.1 Extracting road accident by Month
+
+```{r}
+#| eval: false
+rdacc_month <- rdacc_bmr %>% 
+  select(Month_num)
+```
+
+7.1.2 Creating ppp
+
+```{r}
+#| eval: false
+rdacc_month_ppp <- as.ppp(rdacc_month)
+rdacc_month_ppp
+```
+
+The code chunk below is used to check the output is in the correct object class.
+
+```{r}
+#| eval: false
+summary(rdacc_month_ppp)
+```
+
+Next, we will check if there are duplicated point events by using the code chunk below.
+
+```{r}
+any(duplicated(rdacc_month_ppp))
+```
+
+We have identified duplicates. To count the number of co-indicence point, we will use the multiplicity() function as shown in the code chunk below.
+
+```{r}
+sum(multiplicity(rdacc_month_ppp)>1)
+
+```
+
+We will use jittering, which will add a small perturbation to the duplicate points so that they do not occupy the exact same space.
+
+```{r}
+rdacc_month_ppp_jit <- rjitter(rdacc_month_ppp, 
+                             retry=TRUE, 
+                             nsim=1, 
+                             drop=TRUE)
+```
+
+Check if any duplicated point in this geospatial data.
+
+```{r}
+any(duplicated(rdacc_month_ppp_jit))
+```
+
+Including Owin object
+
+The code chunk below is used to combine origin_am_ppp and am_owin objects into one.
+
+```{r}
+rdacc_month_owin <- rdacc_month_ppp_jit[road_owin]
+summary(rdacc_month_owin)
+```
+
+As a good practice, plot() is used to plot ff_owin so that we can examine the correctness of the output object.
+
+```{r}
+plot(rdacc_month_owin)
+```
+
+```{r}
+st_kde <- spattemp.density(rdacc_month_owin)
+summary(st_kde)
+```
+
+8.  Behavioral factors and Environmental factors
+
+```{r}
+#| eval: false
 # Checking unique values in the presumed_cause column
 unique(rdacc_bmr$presumed_cause)
 
@@ -299,6 +415,9 @@ speeding_accidents <- rdacc_bmr %>%
 # Checking unique values in the weather_condition and slope_description column
 unique(rdacc_bmr$weather_condition)
 
+```
+
+```{r}
 # Filter environmental factors (weather conditions and slope)
 environmental_factors <- rdacc_bmr %>%
   filter(weather_condition %in% c("dark", "foggy", "landslide", "natural disaster", "rainy"))
@@ -309,50 +428,40 @@ rainy_accidents <- rdacc_bmr %>%
 
 ```{r}
 
-# Map accidents by behavioral factors (e.g., speeding)
+# Map accidents by BNehavioral factors (e.g., speeding)
 tm_shape(tsab_bmr) +
   tm_polygons() +
   tm_shape(behavioral_factors) +
-  tm_dots(size = 0.01, col = "red") + 
+  tm_dots(size = 0.01, col = "firebrick2") + 
   tm_layout(title = "Behavioral Factor")
 
-# Map accidents by environmental factors (e.g., rainy conditions)
+# Map accidents by Environmental factors
 tm_shape(tsab_bmr) +
   tm_polygons() +
   tm_shape(environmental_factors) +
-  tm_dots(size = 0.01, col = "blue") + 
+  tm_dots(size = 0.01, col = "royalblue4") + 
   tm_layout(title = "Environmental Factor")
 
-# Map accidents by behavioral factors (e.g., speeding)
+# Map accidents by Speeding
 tm_shape(tsab_bmr) +
   tm_polygons() +
   tm_shape(speeding_accidents) +
-  tm_dots(size = 0.01, col = "red") + 
+  tm_dots(size = 0.01, col = "coral") + 
   tm_layout(title = "Behavioral Factor: Speeding Accidents")
 
-# Map accidents by environmental factors (e.g., rainy conditions)
+# Map accidents by Rainy conditions
 tm_shape(tsab_bmr) +
   tm_polygons() +
   tm_shape(rainy_accidents) +
-  tm_dots(size = 0.01, col = "blue") + 
+  tm_dots(size = 0.01, col = "chartreuse4") + 
   tm_layout(title = "Environmental Factor: Rainy Condition Accidents")
 
-
 ```
 
-```{r}
+Output is saved in rds format for future used.
 
-# Adaptive KDE for hotspots
-adaptive_kde <- density(ppp_accidents, sigma = bw.scott(ppp_accidents))  # Use Scott's bandwidth
+`{r} write_rds(acc,"data/rds/acc.rds")}`
 
-plot(adaptive_kde, main = "Adaptive KDE for Accident Hotspots")
+The code chunk below will be used to import the save origin6_9.rds into R environment.
 
-```
-
-```{r}
-
-# 3D plot for accident density
-plot_ly(x = ~coords_accidents[,1], y = ~coords_accidents[,2], z = ~accident_density$z, 
-        type = "mesh3d")
-
-```
+`{r} acc <-read_rds("data/rds/acc.rds")}`
