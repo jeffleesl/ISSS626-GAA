@@ -116,11 +116,9 @@ hotosm <- st_read(dsn = "data/rawdata",
                 layer = "hotosm_tha_roads_lines_shp")
 ```
 
-```{r}
-glimpse(hotosm) 
-```
 
 ```{r}
+# Check if hotosm has assigned any CRS
 st_crs(hotosm)
 
 # If CRS is missing, assign the correct CRS (assuming it's in WGS84, EPSG:4326)
