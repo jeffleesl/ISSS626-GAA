@@ -206,7 +206,7 @@ class(road_owin)
 Analyze the distribution of road accidents in BMR. This includes calculating point densities, identifying accident hotspots (black spots), and testing for spatial clustering.
 
 ```{r}
-#| eval: false
+
 # Bounding box from the BMR region (create a spatial window)
 bmr_window <- as.owin(st_bbox(rdacc_bmr))
 
@@ -228,7 +228,7 @@ plot(ppp_accidents, main = "Road Traffic Accidents in BMR")
 The code chunk below is used to identify high-risk areas.
 
 ```{r}
-#| eval: false
+
 # Kernel density estimation
 accident_density <- density(ppp_accidents, sigma = 1000)  # Adjust sigma for smoothing
 
@@ -242,7 +242,7 @@ plot(accident_density, main = "Accident Density in BMR")
 The previous plot did not allow us to identify the provinces clearly. In the code chunk below, we are able to determine that Bangkok is one of the areas with the highest accident risk, while Nakhon Pathom has one of the lowest accident rates.
 
 ```{r}
-#| eval: false
+
 # Kernel density estimation
 accident_density <- density(ppp_accidents, sigma = 1000)  # Adjust sigma for smoothing
 
@@ -263,7 +263,7 @@ text(st_coordinates(centroids), labels = tsab_bmr$ADM1_EN, cex = 0.8, col = "sno
 ### 6.1.3 Base Map with Accident Points
 
 ```{r}
-#| eval: false
+
 # Snap accident points to the nearest road
 tm_shape(tsab_bmr) + 
   tm_polygons() +  # Administrative boundaries of BMR
@@ -277,7 +277,7 @@ tm_shape(tsab_bmr) +
 # 7. Visualize accidents with the road network and administrative boundaries
 
 ```{r}
-#| eval: false
+
 tm_shape(tsab_bmr) + 
   tm_polygons() + 
   tm_shape(hotosm_road_types) + 
@@ -292,7 +292,7 @@ tm_shape(tsab_bmr) +
 
 ```{r}
 # Map accidents by the month
-#| eval: false
+
 tm_shape(tsab_bmr) + 
   tm_polygons() + 
   tm_shape(hotosm_road_types) + 
@@ -307,7 +307,7 @@ tm_shape(tsab_bmr) +
 
 ```{r}
 # Map accidents by the month
-#| eval: false
+
 tm_shape(tsab_bmr) + 
   tm_polygons() + 
   tm_shape(rdacc_bmr) + 
@@ -396,7 +396,7 @@ summary(st_kde)
 ## 10. Behavioral factors and Environmental factors
 
 ```{r}
-#| eval: false
+
 # Checking unique values in the presumed_cause column
 unique(rdacc_bmr$presumed_cause)
 
@@ -424,7 +424,7 @@ rainy_accidents <- rdacc_bmr %>%
 ```
 
 ```{r}
-#| eval: false
+
 # Map accidents by BNehavioral factors (e.g., speeding)
 tm_shape(tsab_bmr) +
   tm_polygons() +
@@ -456,7 +456,7 @@ tm_shape(tsab_bmr) +
 ```
 
 ```{r}
-#| eval: false
+
 # Combined map for environmental and behavioral factors
 tm_shape(tsab_bmr) +
   tm_polygons() +
