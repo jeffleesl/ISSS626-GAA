@@ -464,13 +464,11 @@ tm_shape(tsab_bmr) +
   tm_dots(size = 0.01, col = "royalblue4", title = "Environmental Factors") + 
   tm_shape(behavioral_factors) +
   tm_dots(size = 0.01, col = "firebrick2", title = "Behavioral Factors") +
-  tm_layout(title = "Environmental vs Behavioral Factors in Car Accidents") +
   tm_shape(speeding_accidents) +
-  tm_dots(size = 0.01, col = "coral") + 
-  tm_layout(title = "Behavioral Factor: Speeding Accidents") +
+  tm_dots(size = 0.01, col = "coral", title =  "Speeding Accidents") + 
   tm_shape(rainy_accidents) +
-  tm_dots(size = 0.01, col = "chartreuse4") + 
-  tm_layout(title = "Environmental Factor: Rainy Condition Accidents")
+  tm_dots(size = 0.01, col = "chartreuse4", title =  "Rainy Condition Accidents") + 
+  tm_layout(title = "Environmental vs Behavioral Factors in Car Accidents")
 
 ```
 
