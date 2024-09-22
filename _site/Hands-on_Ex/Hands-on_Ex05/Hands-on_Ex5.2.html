@@ -267,12 +267,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#gi-statistics-using-fixed-distance" id="toc-gi-statistics-using-fixed-distance" class="nav-link" data-scroll-target="#gi-statistics-using-fixed-distance">7.1 Gi statistics using fixed distance</a></li>
   <li><a href="#mapping-gi-values-with-fixed-distance-weights" id="toc-mapping-gi-values-with-fixed-distance-weights" class="nav-link" data-scroll-target="#mapping-gi-values-with-fixed-distance-weights">7.2 Mapping Gi values with fixed distance weights**</a>
   <ul class="collapse">
-  <li><a href="#question-what-statistical-observation-can-you-draw-from-the-gi-map-above" id="toc-question-what-statistical-observation-can-you-draw-from-the-gi-map-above" class="nav-link" data-scroll-target="#question-what-statistical-observation-can-you-draw-from-the-gi-map-above">7.2.1 Question: What statistical observation can you draw from the Gi map above?**</a></li>
+  <li><a href="#question-what-statistical-observation-can-you-draw-from-the-gi-map-above" id="toc-question-what-statistical-observation-can-you-draw-from-the-gi-map-above" class="nav-link" data-scroll-target="#question-what-statistical-observation-can-you-draw-from-the-gi-map-above">7.2.1 Question: What statistical observation can you draw from the Gi map above?</a></li>
   </ul></li>
   <li><a href="#gi-statistics-using-adaptive-distance" id="toc-gi-statistics-using-adaptive-distance" class="nav-link" data-scroll-target="#gi-statistics-using-adaptive-distance">7.3 Gi statistics using adaptive distance</a></li>
   <li><a href="#mapping-gi-values-with-adaptive-distance-weights" id="toc-mapping-gi-values-with-adaptive-distance-weights" class="nav-link" data-scroll-target="#mapping-gi-values-with-adaptive-distance-weights">7.4 Mapping Gi values with adaptive distance weights</a>
   <ul class="collapse">
-  <li><a href="#question-what-statistical-observation-can-you-draw-from-the-gi-map-above-1" id="toc-question-what-statistical-observation-can-you-draw-from-the-gi-map-above-1" class="nav-link" data-scroll-target="#question-what-statistical-observation-can-you-draw-from-the-gi-map-above-1">7.4.1 Question: What statistical observation can you draw from the Gi map above?**</a></li>
+  <li><a href="#question-what-statistical-observation-can-you-draw-from-the-gi-map-above-1" id="toc-question-what-statistical-observation-can-you-draw-from-the-gi-map-above-1" class="nav-link" data-scroll-target="#question-what-statistical-observation-can-you-draw-from-the-gi-map-above-1">7.4.1 Question: What statistical observation can you draw from the Gi map above?</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -489,14 +489,11 @@ Weights constants summary:
 W 88 7744 88 37.86334 365.9147</code></pre>
 </div>
 </div>
-<div class="note">
-<p>“What can we learn from the code chunk above?”</p>
+<p>::: note “What can we learn from the code chunk above?” - The input of <a href="https://r-spatial.github.io/spdep/reference/nb2listw.html"><code>nb2listw()</code></a> must be an object of class <strong>nb</strong>. The syntax of the function has two major arguments, namely style and zero.poly.</p>
 <ul>
-<li><p>The input of <a href="https://r-spatial.github.io/spdep/reference/nb2listw.html"><code>nb2listw()</code></a> must be an object of class <strong>nb</strong>. The syntax of the function has two major arguments, namely style and zero.poly.</p></li>
 <li><p><em>style</em> can take values “W”, “B”, “C”, “U”, “minmax” and “S”. B is the basic binary coding, W is row standardised (sums over all links to n), C is globally standardised (sums over all links to n), U is equal to C divided by the number of neighbours (sums over all links to unity), while S is the variance-stabilizing coding scheme proposed by Tiefelsdorf et al.&nbsp;1999, p.&nbsp;167-168 (sums over all links to n).</p></li>
-<li><p>If <em>zero policy</em> is set to TRUE, weights vectors of zero length are inserted for regions without neighbour in the neighbours list. These will in turn generate lag values of zero, equivalent to the sum of products of the zero row t(rep(0, length=length(neighbours))) %*% x, for arbitrary numerical vector x of length length(neighbours). The spatially lagged value of x for the zero-neighbour region will then be zero, which may (or may not) be a sensible choice</p></li>
+<li><p>If <em>zero policy</em> is set to TRUE, weights vectors of zero length are inserted for regions without neighbour in the neighbours list. These will in turn generate lag values of zero, equivalent to the sum of products of the zero row t(rep(0, length=length(neighbours))) %*% x, for arbitrary numerical vector x of length length(neighbours). The spatially lagged value of x for the zero-neighbour region will then be zero, which may (or may not) be a sensible choice :::</p></li>
 </ul>
-</div>
 </section>
 <section id="computing-local-morans-i" class="level2">
 <h2 class="anchored" data-anchor-id="computing-local-morans-i">4.3 Computing local Moran’s I</h2>
@@ -1164,7 +1161,7 @@ attr(,"class")
 </div>
 </div>
 <section id="question-what-statistical-observation-can-you-draw-from-the-gi-map-above" class="level3">
-<h3 class="anchored" data-anchor-id="question-what-statistical-observation-can-you-draw-from-the-gi-map-above">7.2.1 Question: What statistical observation can you draw from the Gi map above?**</h3>
+<h3 class="anchored" data-anchor-id="question-what-statistical-observation-can-you-draw-from-the-gi-map-above">7.2.1 Question: What statistical observation can you draw from the Gi map above?</h3>
 <ul>
 <li><p>The <strong>Redder areas</strong> represent stronger, statistically significant hot spots, where the observed high GDPPC values are not likely due to random chance.</p></li>
 <li><p><strong>Bluer areas</strong> represent statistically significant cold spots, where low GDPPC values form a pattern.</p></li>
@@ -1215,7 +1212,7 @@ attr(,"class")
 </div>
 </div>
 <section id="question-what-statistical-observation-can-you-draw-from-the-gi-map-above-1" class="level3">
-<h3 class="anchored" data-anchor-id="question-what-statistical-observation-can-you-draw-from-the-gi-map-above-1">7.4.1 Question: What statistical observation can you draw from the Gi map above?**</h3>
+<h3 class="anchored" data-anchor-id="question-what-statistical-observation-can-you-draw-from-the-gi-map-above-1">7.4.1 Question: What statistical observation can you draw from the Gi map above?</h3>
 <p>The <strong>Gi map</strong> based on <strong>adaptive distance weights</strong> highlights the spatial clustering of high and low GDP per capita (GDPPC) in the study area, similar to the previous Gi map derived from fixed distance weights but with a key difference in how the neighbors are determined.</p>
 <p>For the Fixed Distance Gi Map, we can see how different weighting strategies affect the clustering patterns.</p>
 <p>In areas with a more irregular or sparse distribution of regions, the adaptive distance weights provide a more tailored clustering pattern, possibly identifying hot and cold spots that are more region-specific or sensitive to local variations in neighbor proximity.</p>
