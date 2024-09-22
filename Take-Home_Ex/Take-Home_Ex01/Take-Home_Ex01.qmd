@@ -70,7 +70,6 @@ set.seed(1234)
 ## 5.1 Thailand Road Accident (2019 -2022)
 
 ```{r}
-#| eval: false
 rdacc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
   filter(!is.na(longitude) & longitude != "",
          !is.na(latitude) & latitude != "") %>%
@@ -85,7 +84,7 @@ rdacc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
 
 ```{r}
 #| eval: false
-glimpse(rdacc)
+head(rdacc)
 
 ```
 
@@ -93,8 +92,10 @@ We will filer the province and zoom into the road traffic accidents in the Bangk
 
 ```{r}
 # Filter for BMR region
-rdacc_bmr <- rdacc %>% filter(province_en %in% c("Bangkok", "Nonthaburi", "Nakhon Pathom", 
+rdacc_bmr <- rdacc %>% 
+            filter(province_en %in% c("Bangkok", "Nonthaburi", "Nakhon Pathom", 
                             "Pathum Thani", "Samut Prakan", "Samut Sakhon"))
+head(rdacc_bmr)
 ```
 
 ```{r}
@@ -105,7 +106,6 @@ plot(rdacc_bmr)
 ## 5.2 Thailand Roads (OpenStreetMap Export)
 
 ```{r}
-#| eval: false
 hotosm <- st_read(dsn = "data/rawdata", 
                 layer = "hotosm_tha_roads_lines_shp")
 ```
@@ -133,7 +133,6 @@ unique(hotosm$highway)
 ```
 
 ```{r}
-#| eval: false
 hotosm_road_types <- hotosm %>% 
   filter(highway %in% c("motorway", "motorway_link", "primary", "primary_link", 
                             "secondary", "secondary_link", "tertiary" , "tertiary_link"))
@@ -143,7 +142,6 @@ glimpse(hotosm_road_types)
 ## 5.3 Thailand - Subnational Administrative Boundaries
 
 ```{r}
-#| eval: false
 # thaadm0 <- st_read(dsn = "data/rawdata", 
                 #layer = "tha_admbnda_adm0_rtsd_20220121") %>%
   # st_transform(crs = 32647)
@@ -326,7 +324,6 @@ tm_shape(tsab_bmr) +
 ## 9.1. Extracting road accident by Month
 
 ```{r}
-#| eval: false
 rdacc_month <- rdacc_bmr %>% 
   select(Month_num)
 ```
@@ -334,7 +331,6 @@ rdacc_month <- rdacc_bmr %>%
 ## 9.2 Creating ppp
 
 ```{r}
-#| eval: false
 rdacc_month_ppp <- as.ppp(rdacc_month)
 rdacc_month_ppp
 ```
@@ -344,7 +340,6 @@ rdacc_month_ppp
 The code chunk below is used to check the output is in the correct object class.
 
 ```{r}
-#| eval: false
 summary(rdacc_month_ppp)
 ```
 
@@ -506,8 +501,13 @@ table(combined_factors$is_behavioral, combined_factors$is_environmental)
 
 Output is saved in rds format for future used.
 
-`{r} write_rds(acc,"data/rds/acc.rds")}`
+```{r}
+write_rds(rdacc_bmr,"data/rds/acc.rds")
+```
 
 The code chunk below will be used to import the save origin6_9.rds into R environment.
 
-`{r} acc <-read_rds("data/rds/acc.rds")}`
+```{r}
+acc <- read_rds("data/rds/acc.rds")
+```
+
