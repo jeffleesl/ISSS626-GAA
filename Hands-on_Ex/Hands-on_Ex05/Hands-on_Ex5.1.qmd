@@ -36,7 +36,7 @@ In spatial policy, one of the main development objective of the local government
 
 In this case study, we are interested to examine the spatial pattern of a selected development indicator (i.e. GDP per capita) of [Hunan Provice](https://en.wikipedia.org/wiki/Hunan), People Republic of China.
 
-## 2.2 **The Study Area and Data**
+## 2.2 The Study Area and Data
 
 Two data sets will be used in this hands-on exercise, they are:
 
@@ -156,7 +156,7 @@ rswm_q <- nb2listw(wm_q,
 rswm_q
 ```
 
-::: note "What can we learn from the code chunk above?"
+::: {.callout-note title="What can we learn from the code chunk above?"}  
 
 The input of [`nb2listw()`](https://r-spatial.github.io/spdep/reference/nb2listw.html) must be an object of class **nb**. The syntax of the function has two major arguments, namely style and zero.poly.
 
