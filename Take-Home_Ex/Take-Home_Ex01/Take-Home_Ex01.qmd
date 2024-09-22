@@ -24,7 +24,7 @@ Between 2014 and 2021, Thailand experienced a notable increase in accident frequ
 
 # 2. Objectives of the Exercise
 
-By and large, road traffic accidents can be attributed by two major factors, namely: behavioural and environmental factors. Behavioural factors in driving are considered to be major causes of traffic accidents either in direct or indirect manner (Lewin, 1982). These factors can be further grouped into two as, **driver behavior** (also called driver/driving style) and driver performance, in other words, driver/driving skills (Elander, West, & French, 1993). Environmental factors, on the other hand, includes but not limited to weather condition such as poor visibility during heavy rain or foggy and road conditions such as sharp bend road, slippery slope road, and [blind spot](https://en.wikipedia.org/wiki/Vehicle_blind_spot).
+By and large, road traffic accidents can be attributed by two major factors, namely: behavioural and environmental factors. Behavioural factors in driving are considered to be major causes of traffic accidents either in direct or indirect manner (Lewin, 1982). These factors can be further grouped into two as, ***driver behavior*** (also called driver/driving style) and ***driver performance***, in other words, driver/driving skills (Elander, West, & French, 1993). Environmental factors, on the other hand, includes but not limited to weather condition such as poor visibility during heavy rain or foggy and road conditions such as sharp bend road, slippery slope road, and [blind spot](https://en.wikipedia.org/wiki/Vehicle_blind_spot).
 
 Previous studies have demonstrated the significant potential of Spatial Point Patterns Analysis (SPPA) in exploring and identifying factors influencing road traffic accidents. However, these studies often focus solely on either behavioral or environmental factors, with limited consideration of temporal factors such as season, day of the week, or time of day.
 
@@ -56,8 +56,6 @@ In this hands-on exercise, five R packages will be used, they are:
 
 -   [**spatstat**](https://spatstat.org/), which has a wide range of useful functions for point pattern analysis. In this hands-on exercise, it will be used to perform 1st- and 2nd-order spatial point patterns analysis and derive kernel density estimation (KDE) layer.
 
--   [**raster**](https://cran.r-project.org/web/packages/raster/) which reads, writes, manipulates, analyses and model of gridded spatial data (i.e. raster). In this hands-on exercise, it will be used to convert image output generate by spatstat into raster format.
-
 -   [**maptools**](https://cran.r-project.org/web/packages/maptools/index.html) which provides a set of tools for manipulating geographic data. In this hands-on exercise, we mainly use it to convert *Spatial* objects into *ppp* format of **spatstat**.
 
 -   [**tmap**](https://cran.r-project.org/web/packages/tmap/index.html) which provides functions for plotting cartographic quality static point patterns maps or interactive maps by using [leaflet](https://leafletjs.com/) API.
@@ -67,28 +65,14 @@ In this hands-on exercise, five R packages will be used, they are:
 Use the code chunk below to install and launch the five R packages.
 
 ```{r}
-pacman::p_load(sf, tmap, spNetwork, tidyverse)
+pacman::p_load(sf, spatstat, tmap, spNetwork, tidyverse)
 set.seed(1234)
 ```
 
 # 5. Data Import and Preparation
 
-The code chunk below uses `st_read()` of **sf** package to important Punggol_St and Punggol_CC geospatial data sets into RStudio as sf data frames.
-
-```{r}
-rdacc_sf <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
-  filter(!is.na(longitude) & longitude != "",
-         !is.na(latitude) & latitude != "") %>%
-  st_as_sf(coords = c(
-    "longitude", "latitude"),
-    crs =4326) %>%
-  st_transform(crs = 32647)
-```
-```{r}
-glimpse(rdacc_sf)
-```
-
 ## 5.1 Thailand Road Accident (2019 -2022)
+
 ```{r}
 #| eval: false
 rdacc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
@@ -99,14 +83,29 @@ rdacc <- read_csv("data/rawdata/thai_road_accident_2019_2022.csv") %>%
                        label = TRUE,
                        abbr = TRUE)) %>% 
   mutate(dayofweek = day(incident_datetime)) %>% 
-  st_as_sf(coords = c(
-    "longitude", "latitude"),
-    crs=4326) %>%
+  st_as_sf(coords = c("longitude", "latitude"),crs=4326) %>%
   st_transform(crs = 32647)
 ```
 
 ```{r}
 glimpse(rdacc)
+
+```
+
+We will filer the province and zoom into the road traffic accidents in the Bangkok Metropolitan Region BMR (Bangkok, Nonthaburi, Nakhon Pathom,Pathum Thani, Samut Prakan, Samut Sakhon) .
+
+```{r}
+# Filter for BMR region
+rdacc_bmr <- rdacc %>%
+  filter(province_en %in% c("Bangkok", "Nonthaburi", "Nakhon Pathom", 
+                            "Pathum Thani", "Samut Prakan", "Samut Sakhon"))
+print(rdacc_bmr)
+
+```
+
+```{r}
+plot(rdacc_bmr)
+
 ```
 
 ## 5.2 Thailand Roads (OpenStreetMap Export)
@@ -118,32 +117,244 @@ hotosm <- st_read(dsn = "data/rawdata",
 ```
 
 ```{r}
-glimpse(hotosm)
+glimpse(hotosm) 
+```
+
+```{r}
+st_crs(hotosm)
+
+# If CRS is missing, assign the correct CRS (assuming it's in WGS84, EPSG:4326)
+if (is.na(st_crs(hotosm))) {
+  hotosm <- st_set_crs(hotosm, 4326)  # Set CRS to WGS84 if missing
+}
+
+# Now transform to UTM Zone 47N (EPSG:32647)
+hotosm <- st_transform(hotosm, crs = 32647)
+
+# Check if transformation was successful
+st_crs(hotosm)
+```
+
+```{r}
+
+unique(hotosm$highway)
+
+```
+
+```{r}
+
+hotosm_road_types <- hotosm %>% 
+  filter(highway %in% c("motorway", "motorway_link", "primary", "primary_link", 
+                            "secondary", "secondary_link", "tertiary" , "tertiary_link"))
+glimpse(hotosm_road_types)
 ```
 
 ## 5.3 Thailand - Subnational Administrative Boundaries
 
 ```{r}
 #| eval: false
-thaadm <- st_read(dsn = "data/rawdata", 
-                layer = "tha_admbnda_adm") %>%
+# thaadm0 <- st_read(dsn = "data/rawdata", 
+                #layer = "tha_admbnda_adm0_rtsd_20220121") %>%
+  # st_transform(crs = 32647)
+  ## No BMR information
+
+thaadm1 <- st_read(dsn = "data/rawdata", 
+                layer = "tha_admbnda_adm1_rtsd_20220121") %>%
   st_transform(crs = 32647)
+
+tsab_bmr <- thaadm1 %>%
+  filter(ADM1_EN %in% c("Bangkok", "Nonthaburi", "Nakhon Pathom", 
+                            "Pathum Thani", "Samut Prakan", "Samut Sakhon"))
+
+# thaadm2 <- st_read(dsn = "data/rawdata", 
+                #layer = "tha_admbnda_adm2_rtsd_20220121") %>%
+  # st_transform(crs = 32647) %>%
+                #filter(ADM2_EN %in% c("Bangkok", "Nonthaburi", "Nakhon Pathom", 
+                                    #"Pathum Thani", "Samut Prakan", "Samut Sakhon"))
+                                    ## No BMR information
+
+# thaadm3 <- st_read(dsn = "data/rawdata", 
+               # layer = "tha_admbnda_adm3_rtsd_20220121") %>%
+ # st_transform(crs = 32647) %>%
+ # filter(ADM3_EN %in% c("Bangkok", "Nonthaburi", "Nakhon Pathom", 
+                          #  "Pathum Thani", "Samut Prakan", "Samut Sakhon"))
+                          ## No BMR information
+
+# thaadmall <- st_read(dsn = "data/rawdata", 
+              #  layer = "tha_admbndl_admALL_rtsd_itos_20220121") %>%
+  # st_transform(crs = 32647)
+  ## No BMR information
+
+# thaadmlu <- st_read(dsn = "data/rawdata", 
+                # layer = "tha_admbndt_adminUnitLookup")
+                ## No BMR information
 ```
 
+```{r}
+plot(tsab_bmr)
+```
+
+Output is saved in rds format for future used.
+
+`{r} write_rds(acc,"data/rds/acc.rds")}`
+
+The code chunk below will be used to import the save origin6_9.rds into R environment.
+
+`{r} acc <-read_rds("data/rds/acc.rds")}`
 
 # 6. Geospatial Analysis
 
+## 6.1 Spatial Point Pattern Analysis
+
+Analyze the distribution of road accidents in BMR. This includes calculating point densities, identifying accident hotspots (black spots), and testing for spatial clustering.
+
+```{r}
+# Bounding box from the BMR region (create a spatial window)
+bmr_window <- as.owin(st_bbox(rdacc_bmr))
+
+# Extract coordinates of the road accidents for point pattern analysis
+coords_accidents <- st_coordinates(rdacc_bmr)
+
+# Create ppp object
+ppp_accidents <- ppp(x = coords_accidents[,1], 
+                     y = coords_accidents[,2], 
+                     window = bmr_window)
+
+# Plot the point pattern
+plot(ppp_accidents, main = "Road Traffic Accidents in BMR")
+
+```
+
+Using a Kernel Density Estimation (KDE) to identify high-risk areas.
+
+```{r}
+# Kernel density estimation
+accident_density <- density(ppp_accidents, sigma = 1000)  # Adjust sigma for smoothing
+
+# Plot density map
+plot(accident_density, main = "Accident Density in BMR")
+
+```
+
+```{r}
+# Quadrat counting for hotspots
+quadrat_counts <- quadratcount(ppp_accidents, nx = 10, ny = 10)
+
+# Plot quadrat counts
+plot(quadrat_counts, main = "Hotspots based on Quadrat Counting")
+
+```
+
+```{r}
+# Snap accident points to the nearest road
+tm_shape(tsab_bmr) + 
+  tm_polygons() +  # Administrative boundaries of BMR
+  tm_shape(hotosm_road_types) + 
+  tm_lines(col = "aquamarine4") +  # Road network (in aquarmine4)
+  tm_layout(main.title = "Road Network in Bangkok Metropolitan Region",
+            legend.outside = TRUE)
+
+```
+
 # 7. Geovisualisation and Geocommunication
 
-# 8. Reproducibility
-
-
-
 ```{r}
-write_rds(acc,"data/rds/acc.rds")
+
+# Visualize accidents with the road network and administrative boundaries
+tm_shape(tsab_bmr) + 
+  tm_polygons() + 
+  tm_shape(hotosm_road_types) + 
+  tm_lines(col = "grey") + 
+  tm_shape(rdacc_bmr) + 
+  tm_dots(size = 0.05, col = "tomato1") +
+  tm_layout(main.title = "Road Traffic Accidents in BMR")
+
 ```
 
 ```{r}
-acc <-read_rds("data/rds/acc.rds")
+
+# Map accidents by the month
+
+tm_shape(tsab_bmr) + 
+  tm_polygons() + 
+  tm_shape(rdacc_bmr) + 
+  tm_dots(size = 0.05, col = "Month_num", palette = "viridis") +
+  tm_layout(main.title = "Accidents by Month in BMR")
+
 ```
 
+
+```{r}
+
+# Checking unique values in the presumed_cause column
+unique(rdacc_bmr$presumed_cause)
+
+# Filter behavioral factors
+behavioral_factors <- rdacc_bmr %>%
+  filter(presumed_cause %in% c("abrupt lane change", "agressive driving/overtaking", "driving in the wrong lane", "driving under the influence of alcohol", "driving without headlights/illumination", "failure to signal enter/exit parking", "failure to yield right of way", "failure to yield/signal", "falling asleep", "ignoring stop sign while leaving intersection", "illegal overtaking", "inadequate visibility", "internal disturbance", "loss of control", "medical condition", "overloaded vehicle", "speeding", "sudden stop", "tailgating", "running red lights/traffic signals", "unfamilarity with the route/unskilled driving", "using mobile phone while driving", "using psychoactive substances"))
+
+speeding_accidents <- rdacc_bmr %>%
+  filter(presumed_cause == "speeding")
+```
+
+```{r}
+# Checking unique values in the weather_condition and slope_description column
+unique(rdacc_bmr$weather_condition)
+
+# Filter environmental factors (weather conditions and slope)
+environmental_factors <- rdacc_bmr %>%
+  filter(weather_condition %in% c("dark", "foggy", "landslide", "natural disaster", "rainy"))
+
+rainy_accidents <- rdacc_bmr %>%
+  filter(weather_condition == "rainy")
+```
+
+```{r}
+
+# Map accidents by behavioral factors (e.g., speeding)
+tm_shape(tsab_bmr) +
+  tm_polygons() +
+  tm_shape(behavioral_factors) +
+  tm_dots(size = 0.01, col = "red") + 
+  tm_layout(title = "Behavioral Factor")
+
+# Map accidents by environmental factors (e.g., rainy conditions)
+tm_shape(tsab_bmr) +
+  tm_polygons() +
+  tm_shape(environmental_factors) +
+  tm_dots(size = 0.01, col = "blue") + 
+  tm_layout(title = "Environmental Factor")
+
+# Map accidents by behavioral factors (e.g., speeding)
+tm_shape(tsab_bmr) +
+  tm_polygons() +
+  tm_shape(speeding_accidents) +
+  tm_dots(size = 0.01, col = "red") + 
+  tm_layout(title = "Behavioral Factor: Speeding Accidents")
+
+# Map accidents by environmental factors (e.g., rainy conditions)
+tm_shape(tsab_bmr) +
+  tm_polygons() +
+  tm_shape(rainy_accidents) +
+  tm_dots(size = 0.01, col = "blue") + 
+  tm_layout(title = "Environmental Factor: Rainy Condition Accidents")
+
+
+```
+
+```{r}
+
+# Adaptive KDE for hotspots
+adaptive_kde <- density(ppp_accidents, sigma = bw.scott(ppp_accidents))  # Use Scott's bandwidth
+
+plot(adaptive_kde, main = "Adaptive KDE for Accident Hotspots")
+
+```
+
+```{r}
+
+# 3D plot for accident density
+plot_ly(x = ~coords_accidents[,1], y = ~coords_accidents[,2], z = ~accident_density$z, 
+        type = "mesh3d")
+
+```
