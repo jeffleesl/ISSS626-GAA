@@ -624,6 +624,13 @@ enclosing rectangle: [587893.5, 712440.5] x [1484413.7, 1579076.3] units</code><
 <span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the point pattern</span></span>
 <span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ppp_accidents, <span class="at">main =</span> <span class="st">"Road Traffic Accidents in BMR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 <section id="using-a-kernel-density-estimation-kde-to-identify-high-risk-areas." class="level3">
 <h3 class="anchored" data-anchor-id="using-a-kernel-density-estimation-kde-to-identify-high-risk-areas.">6.1.1 Using a Kernel Density Estimation (KDE) to identify high-risk areas.</h3>
@@ -634,6 +641,13 @@ enclosing rectangle: [587893.5, 712440.5] x [1484413.7, 1579076.3] units</code><
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot density map</span></span>
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(accident_density, <span class="at">main =</span> <span class="st">"Accident Density in BMR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 <section id="adding-provinces-to-the-kernel-density-estimation-kde-to-identify-high-risk-areas." class="level3">
@@ -654,6 +668,13 @@ enclosing rectangle: [587893.5, 712440.5] x [1484413.7, 1579076.3] units</code><
 <span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop over each province to add labels</span></span>
 <span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">st_coordinates</span>(centroids), <span class="at">labels =</span> tsab_bmr<span class="sc">$</span>ADM1_EN, <span class="at">cex =</span> <span class="fl">0.8</span>, <span class="at">col =</span> <span class="st">"snow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 <section id="base-map-with-accident-points" class="level3">
@@ -666,6 +687,13 @@ enclosing rectangle: [587893.5, 712440.5] x [1484413.7, 1579076.3] units</code><
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_lines</span>(<span class="at">col =</span> <span class="st">"aquamarine4"</span>) <span class="sc">+</span>  <span class="co"># Road network (in aquarmine4)</span></span>
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Road Network in Bangkok Metropolitan Region"</span>,</span>
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.outside =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 </section>
@@ -680,13 +708,20 @@ enclosing rectangle: [587893.5, 712440.5] x [1484413.7, 1579076.3] units</code><
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(rdacc_bmr) <span class="sc">+</span> </span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.05</span>, <span class="at">col =</span> <span class="st">"tomato1"</span>) <span class="sc">+</span></span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Road Traffic Accidents in BMR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section>
 <section id="visualize-how-accidents-vary-across-month-using-time-based-color-coding-or-heatmaps." class="level1">
 <h1>8.Visualize how accidents vary across month using time-based color coding or heatmaps.</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by the month</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span> </span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span> </span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(hotosm_road_types) <span class="sc">+</span> </span>
@@ -707,7 +742,7 @@ enclosing rectangle: [587893.5, 712440.5] x [1484413.7, 1579076.3] units</code><
 <h1>9. Visualizing geographic distribution of car accident by month</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by the month</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span> </span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span> </span>
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(rdacc_bmr) <span class="sc">+</span> </span>
@@ -877,96 +912,169 @@ Evaluation
 <h2 class="anchored" data-anchor-id="behavioral-factors-and-environmental-factors">10. Behavioral factors and Environmental factors</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking unique values in the presumed_cause column</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(rdacc_bmr<span class="sc">$</span>presumed_cause)</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter behavioral factors</span></span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>behavioral_factors <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(presumed_cause <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"abrupt lane change"</span>, <span class="st">"agressive driving/overtaking"</span>, <span class="st">"driving in the wrong lane"</span>, <span class="st">"driving under the influence of alcohol"</span>, <span class="st">"driving without headlights/illumination"</span>, <span class="st">"failure to signal enter/exit parking"</span>, <span class="st">"failure to yield right of way"</span>, <span class="st">"failure to yield/signal"</span>, <span class="st">"falling asleep"</span>, <span class="st">"ignoring stop sign while leaving intersection"</span>, <span class="st">"illegal overtaking"</span>, <span class="st">"inadequate visibility"</span>, <span class="st">"internal disturbance"</span>, <span class="st">"loss of control"</span>, <span class="st">"medical condition"</span>, <span class="st">"overloaded vehicle"</span>, <span class="st">"speeding"</span>, <span class="st">"sudden stop"</span>, <span class="st">"tailgating"</span>, <span class="st">"running red lights/traffic signals"</span>, <span class="st">"unfamilarity with the route/unskilled driving"</span>, <span class="st">"using mobile phone while driving"</span>, <span class="st">"using psychoactive substances"</span>))</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>speeding_accidents <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(presumed_cause <span class="sc">==</span> <span class="st">"speeding"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(rdacc_bmr<span class="sc">$</span>presumed_cause)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "speeding"                                      
+ [2] "running red lights/traffic signals"            
+ [3] "other"                                         
+ [4] "driving under the influence of alcohol"        
+ [5] "cutting in closely by people/vehicles/animals" 
+ [6] "vehicle equipment failure"                     
+ [7] "falling asleep"                                
+ [8] "illegal overtaking"                            
+ [9] "tailgating"                                    
+[10] "failure to yield/signal"                       
+[11] "abrupt lane change"                            
+[12] "debris/obstruction on the road"                
+[13] "driving in the wrong lane"                     
+[14] "failure to signal enter/exit parking"          
+[15] "failure to yield right of way"                 
+[16] "unfamiliarity with the route/unskilled driving"
+[17] "dangerous curve"                               
+[18] "medical condition"                             
+[19] "sudden stop"                                   
+[20] "worn-out/tire blowout"                         
+[21] "disabled vehicle without proper signals/signs" 
+[22] "overloaded vehicle"                            
+[23] "reversing vehicle"                             
+[24] "straddling lanes"                              
+[25] "insufficient light"                            
+[26] "vehicle electrical system failure"             
+[27] "road in poor condition"                        
+[28] "disabled vehicle without proper signals"       
+[29] "slippery road"                                 
+[30] "obstruction in sight"                          
+[31] "using mobile phone while driving"              
+[32] "ignoring stop sign while leaving intersection" 
+[33] "brake/anti-lock brake system failure"          
+[34] "no traffic signs"                              
+[35] "repair/construction on the road"               
+[36] "no presumed cause related to driver"           
+[37] "no road divider lines"                         
+[38] "inadequate visibility"                         
+[39] "using psychoactive substances"                 
+[40] "loss of control"                               </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter behavioral factors</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>behavioral_factors <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(presumed_cause <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"abrupt lane change"</span>, <span class="st">"agressive driving/overtaking"</span>, <span class="st">"driving in the wrong lane"</span>, <span class="st">"driving under the influence of alcohol"</span>, <span class="st">"driving without headlights/illumination"</span>, <span class="st">"failure to signal enter/exit parking"</span>, <span class="st">"failure to yield right of way"</span>, <span class="st">"failure to yield/signal"</span>, <span class="st">"falling asleep"</span>, <span class="st">"ignoring stop sign while leaving intersection"</span>, <span class="st">"illegal overtaking"</span>, <span class="st">"inadequate visibility"</span>, <span class="st">"internal disturbance"</span>, <span class="st">"loss of control"</span>, <span class="st">"medical condition"</span>, <span class="st">"overloaded vehicle"</span>, <span class="st">"speeding"</span>, <span class="st">"sudden stop"</span>, <span class="st">"tailgating"</span>, <span class="st">"running red lights/traffic signals"</span>, <span class="st">"unfamilarity with the route/unskilled driving"</span>, <span class="st">"using mobile phone while driving"</span>, <span class="st">"using psychoactive substances"</span>))</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>speeding_accidents <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(presumed_cause <span class="sc">==</span> <span class="st">"speeding"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking unique values in the weather_condition and slope_description column</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(rdacc_bmr<span class="sc">$</span>weather_condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking unique values in the weather_condition and slope_description column</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(rdacc_bmr<span class="sc">$</span>weather_condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "clear"            "other"            "rainy"            "dark"            
 [5] "land slide"       "foggy"            "natural disaster"</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter environmental factors (weather conditions and slope)</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>environmental_factors <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(weather_condition <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"dark"</span>, <span class="st">"foggy"</span>, <span class="st">"landslide"</span>, <span class="st">"natural disaster"</span>, <span class="st">"rainy"</span>))</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>rainy_accidents <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(weather_condition <span class="sc">==</span> <span class="st">"rainy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter environmental factors (weather conditions and slope)</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>environmental_factors <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(weather_condition <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"dark"</span>, <span class="st">"foggy"</span>, <span class="st">"landslide"</span>, <span class="st">"natural disaster"</span>, <span class="st">"rainy"</span>))</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>rainy_accidents <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(weather_condition <span class="sc">==</span> <span class="st">"rainy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by BNehavioral factors (e.g., speeding)</span></span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(behavioral_factors) <span class="sc">+</span></span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"firebrick2"</span>) <span class="sc">+</span> </span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Behavioral Factor"</span>)</span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by Environmental factors</span></span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
-<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
-<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(environmental_factors) <span class="sc">+</span></span>
-<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"royalblue4"</span>) <span class="sc">+</span> </span>
-<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Environmental Factor"</span>)</span>
-<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by Speeding</span></span>
-<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
-<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
-<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(speeding_accidents) <span class="sc">+</span></span>
-<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"coral"</span>) <span class="sc">+</span> </span>
-<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Behavioral Factor: Speeding Accidents"</span>)</span>
-<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by Rainy conditions</span></span>
-<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
-<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
-<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(rainy_accidents) <span class="sc">+</span></span>
-<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"chartreuse4"</span>) <span class="sc">+</span> </span>
-<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Environmental Factor: Rainy Condition Accidents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by BNehavioral factors (e.g., speeding)</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(behavioral_factors) <span class="sc">+</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"firebrick2"</span>) <span class="sc">+</span> </span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Behavioral Factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by Environmental factors</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(environmental_factors) <span class="sc">+</span></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"royalblue4"</span>) <span class="sc">+</span> </span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Environmental Factor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-34-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by Speeding</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(speeding_accidents) <span class="sc">+</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"coral"</span>) <span class="sc">+</span> </span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Behavioral Factor: Speeding Accidents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-34-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Map accidents by Rainy conditions</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(rainy_accidents) <span class="sc">+</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"chartreuse4"</span>) <span class="sc">+</span> </span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Environmental Factor: Rainy Condition Accidents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-34-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combined map for environmental and behavioral factors</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(environmental_factors) <span class="sc">+</span></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"royalblue4"</span>, <span class="at">title =</span> <span class="st">"Environmental Factors"</span>) <span class="sc">+</span> </span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(behavioral_factors) <span class="sc">+</span></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"firebrick2"</span>, <span class="at">title =</span> <span class="st">"Behavioral Factors"</span>) <span class="sc">+</span></span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Environmental vs Behavioral Factors in Car Accidents"</span>) <span class="sc">+</span></span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(speeding_accidents) <span class="sc">+</span></span>
-<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"coral"</span>) <span class="sc">+</span> </span>
-<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Behavioral Factor: Speeding Accidents"</span>) <span class="sc">+</span></span>
-<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(rainy_accidents) <span class="sc">+</span></span>
-<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"chartreuse4"</span>) <span class="sc">+</span> </span>
-<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Environmental Factor: Rainy Condition Accidents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combined map for environmental and behavioral factors</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tsab_bmr) <span class="sc">+</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>() <span class="sc">+</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(environmental_factors) <span class="sc">+</span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"royalblue4"</span>, <span class="at">title =</span> <span class="st">"Environmental Factors"</span>) <span class="sc">+</span> </span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(behavioral_factors) <span class="sc">+</span></span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"firebrick2"</span>, <span class="at">title =</span> <span class="st">"Behavioral Factors"</span>) <span class="sc">+</span></span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Environmental vs Behavioral Factors in Car Accidents"</span>) <span class="sc">+</span></span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(speeding_accidents) <span class="sc">+</span></span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"coral"</span>) <span class="sc">+</span> </span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Behavioral Factor: Speeding Accidents"</span>) <span class="sc">+</span></span>
+<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(rainy_accidents) <span class="sc">+</span></span>
+<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_dots</span>(<span class="at">size =</span> <span class="fl">0.01</span>, <span class="at">col =</span> <span class="st">"chartreuse4"</span>) <span class="sc">+</span> </span>
+<span id="cb62-14"><a href="#cb62-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">"Environmental Factor: Rainy Condition Accidents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex01_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 <p>Contingency Table A contingency table will show how often both types of factors occur together.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a combined dataset with both environmental and behavioral factors</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>combined_factors <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">is_behavioral =</span> presumed_cause <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"speeding"</span>, <span class="st">"abrupt lane change"</span>, <span class="st">"agressive driving/overtaking"</span>, </span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"driving in the wrong lane"</span>, <span class="st">"driving under the influence of alcohol"</span>, </span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"driving without headlights/illumination"</span>, <span class="st">"failure to signal enter/exit parking"</span>, </span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"failure to yield right of way"</span>, <span class="st">"failure to yield/signal"</span>, </span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"falling asleep"</span>, <span class="st">"ignoring stop sign while leaving intersection"</span>, </span>
-<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"illegal overtaking"</span>, <span class="st">"inadequate visibility"</span>, <span class="st">"internal disturbance"</span>, </span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"loss of control"</span>, <span class="st">"medical condition"</span>, <span class="st">"overloaded vehicle"</span>, </span>
-<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"speeding"</span>, <span class="st">"sudden stop"</span>, <span class="st">"tailgating"</span>, <span class="st">"running red lights/traffic signals"</span>, </span>
-<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"unfamilarity with the route/unskilled driving"</span>, </span>
-<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"using mobile phone while driving"</span>, <span class="st">"using psychoactive substances"</span>),</span>
-<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">is_environmental =</span> weather_condition <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"dark"</span>, <span class="st">"foggy"</span>, <span class="st">"landslide"</span>, <span class="st">"natural disaster"</span>, <span class="st">"rainy"</span>) <span class="sc">|</span></span>
-<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>                            slope_description <span class="sc">==</span> <span class="st">"slope area"</span> <span class="sc">|</span></span>
-<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>                            road_description <span class="sc">==</span> <span class="st">"sharp curve"</span>)</span>
-<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a contingency table</span></span>
-<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(combined_factors<span class="sc">$</span>is_behavioral, combined_factors<span class="sc">$</span>is_environmental)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a combined dataset with both environmental and behavioral factors</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>combined_factors <span class="ot">&lt;-</span> rdacc_bmr <span class="sc">%&gt;%</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">is_behavioral =</span> presumed_cause <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"speeding"</span>, <span class="st">"abrupt lane change"</span>, <span class="st">"agressive driving/overtaking"</span>, </span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"driving in the wrong lane"</span>, <span class="st">"driving under the influence of alcohol"</span>, </span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"driving without headlights/illumination"</span>, <span class="st">"failure to signal enter/exit parking"</span>, </span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"failure to yield right of way"</span>, <span class="st">"failure to yield/signal"</span>, </span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"falling asleep"</span>, <span class="st">"ignoring stop sign while leaving intersection"</span>, </span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"illegal overtaking"</span>, <span class="st">"inadequate visibility"</span>, <span class="st">"internal disturbance"</span>, </span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"loss of control"</span>, <span class="st">"medical condition"</span>, <span class="st">"overloaded vehicle"</span>, </span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"speeding"</span>, <span class="st">"sudden stop"</span>, <span class="st">"tailgating"</span>, <span class="st">"running red lights/traffic signals"</span>, </span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"unfamilarity with the route/unskilled driving"</span>, </span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>                                               <span class="st">"using mobile phone while driving"</span>, <span class="st">"using psychoactive substances"</span>),</span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">is_environmental =</span> weather_condition <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"dark"</span>, <span class="st">"foggy"</span>, <span class="st">"landslide"</span>, <span class="st">"natural disaster"</span>, <span class="st">"rainy"</span>) <span class="sc">|</span></span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>                            slope_description <span class="sc">==</span> <span class="st">"slope area"</span> <span class="sc">|</span></span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>                            road_description <span class="sc">==</span> <span class="st">"sharp curve"</span>)</span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a contingency table</span></span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(combined_factors<span class="sc">$</span>is_behavioral, combined_factors<span class="sc">$</span>is_environmental)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       
         FALSE TRUE
@@ -976,11 +1084,11 @@ Evaluation
 </div>
 <p>Output is saved in rds format for future used.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(rdacc_bmr,<span class="st">"data/rds/acc.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(rdacc_bmr,<span class="st">"data/rds/acc.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The code chunk below will be used to import the save origin6_9.rds into R environment.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>acc <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/acc.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>acc <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/acc.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
