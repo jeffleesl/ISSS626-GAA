@@ -32,7 +32,9 @@ website:
          - text: "In-class Exercise 3: Network Constrained Spatial Point Patterns Analysis"
            href: "In-class_Ex/In-class_Ex03/In-class_Ex03.html"  
          - text: "In-class Exercise 4: Geographically Weighted Summary Statistics - gwModel methods"
-           href: "In-class_Ex/In-class_Ex04/In-class_Ex04.html"             
+           href: "In-class_Ex/In-class_Ex04/In-class_Ex04.html"  
+         - text: "In-class Exercise 5: Global and Local Measures of Spatial Autocorrelation: sfdep methods"
+           href: "In-class_Ex/In-class_Ex05/In-class_Ex05.html" 
      - text: "Take-Home Exercise"
        menu: 
          - text: "Take-Home Exercise 1"
