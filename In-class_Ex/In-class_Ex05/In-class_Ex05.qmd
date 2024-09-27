@@ -146,7 +146,7 @@ It is always a good practice to use `set.seed()` before performing simulation.
 
 ```{r}
 
-seed(1234)
+set.seed(1234)
 
 ```
 
