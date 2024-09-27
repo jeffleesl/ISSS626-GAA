@@ -10,22 +10,57 @@ execute:
   warning: false
 ---
 
+# 1. Introduction
+
+-   Introducing [**sfdep**](https://sfdep.josiahparry.com/).
+
+-   sfdep creates an sf and tidyverse friendly interface to the package as well as introduces new functionality that is not present in spdep.
+
+-   sfdep utilizes list columns extensively to make this interface possible.”
+
+# 2. Getting started
+
+Four R packages will be used for this in-class exercise, they are: sf, sfdep, tmap and tidyverse.
+
 ```{r}
 pacman::p_load(sf, sfdep, tmap, tidyverse)
 ```
+
+# 3. The Data
+
+There are two data sets in this use case, they are:
+
+-   Hunan, a geospatial data set in ESRI shapefile format, and
+
+-   Hunan_2012, an attribute data set in csv format.
 
 ```{r}
 hunan <- st_read(dsn = "data/geospatial", 
                  layer = "Hunan")
 ```
+
+# 4. Importing Attribute Table
+
 ```{r}
 hunan2012 <- read_csv("data/aspatial/Hunan_2012.csv")
 ```
+
+# 5. Combining both data frame by using left join
 
 ```{r}
 hunan_GDPPC <- left_join(hunan,hunan2012) %>%
   select(1:4, 7, 15)
 ```
+
+::: {.callout-note}
+Note that there are five types of callouts, including:
+For the purpose of this exercise, we only retain column 1 to 4, column 7 and column 15. You should examine the output sf data.frame to learn know what are these fields.
+:::
+
+::: {.callout-warning title="Important"}
+In order to retain the geospatial properties, the left data frame must the sf data.frame (i.e. hunan)
+:::
+
 
 ```{r}
 tmap_mode("plot")
@@ -87,7 +122,6 @@ lisa <- wm_q %>%
   unnest(local_moran)
 ```
 
-
 ```{r}
 tmap_mode("plot")
 tm_shape(lisa) +
@@ -143,7 +177,6 @@ tm_shape(lisa_sig)+
   tm_borders(alpha=0.4)
 
 ```
-
 
 ```{r}
 wm_idw <- hunan_GDPPC %>% 

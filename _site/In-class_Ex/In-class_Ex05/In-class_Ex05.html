@@ -219,7 +219,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">1. Introduction</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">2. Getting started</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">3. The Data</a></li>
+  <li><a href="#importing-attribute-table" id="toc-importing-attribute-table" class="nav-link" data-scroll-target="#importing-attribute-table">4. Importing Attribute Table</a></li>
+  <li><a href="#combining-both-data-frame-by-using-left-join" id="toc-combining-both-data-frame-by-using-left-join" class="nav-link" data-scroll-target="#combining-both-data-frame-by-using-left-join">5. Combining both data frame by using left join</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -250,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">September 23, 2024</p>
+      <p class="date-modified">September 27, 2024</p>
     </div>
   </div>
     
@@ -261,9 +271,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<section id="introduction" class="level1">
+<h1>1. Introduction</h1>
+<ul>
+<li><p>Introducing <a href="https://sfdep.josiahparry.com/"><strong>sfdep</strong></a>.</p></li>
+<li><p>sfdep creates an sf and tidyverse friendly interface to the package as well as introduces new functionality that is not present in spdep.</p></li>
+<li><p>sfdep utilizes list columns extensively to make this interface possible.”</p></li>
+</ul>
+</section>
+<section id="getting-started" class="level1">
+<h1>2. Getting started</h1>
+<p>Four R packages will be used for this in-class exercise, they are: sf, sfdep, tmap and tidyverse.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, sfdep, tmap, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="the-data" class="level1">
+<h1>3. The Data</h1>
+<p>There are two data sets in this use case, they are:</p>
+<ul>
+<li><p>Hunan, a geospatial data set in ESRI shapefile format, and</p></li>
+<li><p>Hunan_2012, an attribute data set in csv format.</p></li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hunan <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/geospatial"</span>, </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">layer =</span> <span class="st">"Hunan"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -278,12 +307,44 @@ Bounding box:  xmin: 108.7831 ymin: 24.6342 xmax: 114.2544 ymax: 30.12812
 Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
+</section>
+<section id="importing-attribute-table" class="level1">
+<h1>4. Importing Attribute Table</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>hunan2012 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/aspatial/Hunan_2012.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="combining-both-data-frame-by-using-left-join" class="level1">
+<h1>5. Combining both data frame by using left join</h1>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hunan_GDPPC <span class="ot">&lt;-</span> <span class="fu">left_join</span>(hunan,hunan2012) <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">7</span>, <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that there are five types of callouts, including: For the purpose of this exercise, we only retain column 1 to 4, column 7 and column 15. You should examine the output sf data.frame to learn know what are these fields.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Important">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In order to retain the geospatial properties, the left data frame must the sf data.frame (i.e.&nbsp;hunan)</p>
+</div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
@@ -524,6 +585,7 @@ Geodetic CRS:  WGS 84
 </div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
