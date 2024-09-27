@@ -52,15 +52,17 @@ hunan_GDPPC <- left_join(hunan,hunan2012) %>%
   select(1:4, 7, 15)
 ```
 
-::: {.callout-note}
-Note that there are five types of callouts, including:
-For the purpose of this exercise, we only retain column 1 to 4, column 7 and column 15. You should examine the output sf data.frame to learn know what are these fields.
+::: callout-note
+Note that there are five types of callouts, including: For the purpose of this exercise, we only retain column 1 to 4, column 7 and column 15. You should examine the output sf data.frame to learn know what are these fields.
 :::
 
 ::: {.callout-warning title="Important"}
 In order to retain the geospatial properties, the left data frame must the sf data.frame (i.e. hunan)
 :::
 
+# 6. Plotting a choropleth map
+
+Plot a choropleth map showing the distribution of GDPPC of Hunan Province.
 
 ```{r}
 tmap_mode("plot")
@@ -78,6 +80,10 @@ tm_shape(hunan_GDPPC) +
             frame = TRUE)
 ```
 
+# 7. Global Measures of Spatial Association
+
+## 7.1 Step 1: Deriving Queen’s contiguity weights: sfdep methods
+
 ```{r}
 wm_q <- hunan_GDPPC %>%
   mutate(nb = st_contiguity(geometry),
@@ -85,6 +91,22 @@ wm_q <- hunan_GDPPC %>%
                          style = "W"),
          .before = 1)
 ```
+
+Notice that `st_weights()` provides tree arguments, they are:
+
+-   *nb*: A neighbor list object as created by st_neighbors().
+
+-   *style*: Default “W” for row standardized weights. This value can also be “B”, “C”, “U”, “minmax”, and “S”. B is the basic binary coding, W is row standardised (sums over all links to n), C is globally standardised (sums over all links to n), U is equal to C divided by the number of neighbours (sums over all links to unity), while S is the variance-stabilizing coding scheme proposed by Tiefelsdorf et al. 1999, p. 167-168 (sums over all links to n).
+
+-   *allow_zero*: If TRUE, assigns zero as lagged value to zone without neighbors.
+
+```{r}
+wm_q
+```
+
+## 7.2 Computing Global Moran’ I
+
+In the code chunk below, [`global_moran()`](https://sfdep.josiahparry.com/reference/global_moran) function is used to compute the Moran’s I value. Different from spdep package, the output is a tibble data.frame.
 
 ```{r}
 
@@ -94,6 +116,10 @@ moranI <- global_moran(wm_q$GDPPC,
 glimpse(moranI)
 ```
 
+## 7.3 Performing Global Moran’sI test
+
+In general, Moran’s I test will be performed instead of just computing the Moran’s I statistics. With sfdep package, Moran’s I test can be performed by using [`global_moran_test()`](https://sfdep.josiahparry.com/reference/global_moran_test.html) as shown in the code chunk below.
+
 ```{r}
 
 global_moran_test(wm_q$GDPPC,
@@ -101,9 +127,24 @@ global_moran_test(wm_q$GDPPC,
                   wm_q$wt)
 ```
 
+::: callout-tip
+## Tip
+
+-   The default for `alternative` argument is “two.sided”. Other supported arguments are “greater” or “less”. randomization, and
+
+-   By default the `randomization` argument is **TRUE**. If FALSE, under the assumption of normality.
+:::
+
+## 7.4 Global Moran’I permutation test
+
+In practice, Monte carlo simulation should be used to perform the statistical test. For sfdep, it is supported by  [`globel_moran_perm()`](https://sfdep.josiahparry.com/reference/global_moran_perm.html)
+
+It is always a good practice to use `set.seed()` before performing simulation. This is to ensure that the computation is reproducible.
+
 ```{r}
 
-set.seed(1234)
+seed(1234)
+
 ```
 
 ```{r}
