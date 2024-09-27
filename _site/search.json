@@ -1209,5 +1209,33 @@
     "title": "In-class Exercise 5: Global and Local Measures of Spatial Autocorrelation: sfdep methods",
     "section": "10.4 Visualising hot spot and cold spot areas",
     "text": "10.4 Visualising hot spot and cold spot areas\n\nHCSA_sig &lt;- HCSA  %&gt;%\n  filter(p_sim &lt; 0.05)\ntmap_mode(\"plot\")\ntm_shape(HCSA) +\n  tm_polygons() +\n  tm_borders(alpha = 0.5) +\ntm_shape(HCSA_sig) +\n  tm_fill(\"cluster\") + \n  tm_borders(alpha = 0.4)\n\n\n\n\n\n\n\nNote\n\n\n\nFigure above reveals that there is one hot spot area and two cold spot areas. Interestingly, the hot spot areas coincide with the High-high cluster identifies by using local Moran’s I method in the earlier sub-section."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex6.html",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex6.html",
+    "title": "Hands-on Exercise 6: Geographical Segmentation with Spatially Constrained Clustering Techniques",
+    "section": "",
+    "text": "In this hands-on exercise, we will gain hands-on experience on how to delineate homogeneous region by using geographically referenced multivariate data. There are two major analysis, namely:\n\nhierarchical cluster analysis; and\nspatially constrained cluster analysis.\n\n\n\nWe will able:\n\nto convert GIS polygon data into R’s simple feature data.frame by using appropriate functions of sf package of R;\nto convert simple feature data.frame into R’s SpatialPolygonDataFrame object by using appropriate sf of package of R;\nto perform custer analysis by using hclust() of Base R;\nto perform spatially constrained cluster analysis using skater() of Base R; and\nto visualise the analysis output by using ggplot2 and tmap package."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex6.html#learning-outcome",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex6.html#learning-outcome",
+    "title": "Hands-on Exercise 6: Geographical Segmentation with Spatially Constrained Clustering Techniques",
+    "section": "",
+    "text": "We will able:\n\nto convert GIS polygon data into R’s simple feature data.frame by using appropriate functions of sf package of R;\nto convert simple feature data.frame into R’s SpatialPolygonDataFrame object by using appropriate sf of package of R;\nto perform custer analysis by using hclust() of Base R;\nto perform spatially constrained cluster analysis using skater() of Base R; and\nto visualise the analysis output by using ggplot2 and tmap package."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex6.html#the-analytical-question",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex6.html#the-analytical-question",
+    "title": "Hands-on Exercise 6: Geographical Segmentation with Spatially Constrained Clustering Techniques",
+    "section": "2.1 The analytical question",
+    "text": "2.1 The analytical question\nIn geobusiness and spatial policy, it is a common practice to delineate the market or planning area into homogeneous regions by using multivariate data. In this hands-on exercise, we are interested to delineate Shan State, Myanmar into homogeneous regions by using multiple Information and Communication technology (ICT) measures, namely: Radio, Television, Land line phone, Mobile phone, Computer, and Internet at home."
+  },
+  {
+    "objectID": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex6.html#importing-geospatial-data-into-r-environment",
+    "href": "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex6.html#importing-geospatial-data-into-r-environment",
+    "title": "Hands-on Exercise 6: Geographical Segmentation with Spatially Constrained Clustering Techniques",
+    "section": "4.1 Importing geospatial data into R environment",
+    "text": "4.1 Importing geospatial data into R environment"
   }
 ]

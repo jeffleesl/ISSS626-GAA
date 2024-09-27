@@ -22,7 +22,9 @@ website:
          - text: "Hands-on Exercise 5.1: Global Measures of Spatial Autocorrelation"
            href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex5.1.html" 
          - text: "Hands-on Exercise 5.2: Local Measures of Spatial Autocorrelation"
-           href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex5.2.html"            
+           href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex5.2.html"   
+         - text: "Hands-on Exercise 6: Geographical Segmentation with Spatially Constrained Clustering Techniques"
+           href: "Hands-on_Ex/Hands-on_Ex06/Hands-on_Ex6.html"             
      - text: "In-class Exercise"
        menu: 
          - text: "In-class Exercise 1: Geospatial Data Science with R"
