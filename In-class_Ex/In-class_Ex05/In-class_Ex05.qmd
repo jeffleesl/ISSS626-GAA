@@ -139,6 +139,9 @@ global_moran_test(wm_q$GDPPC,
 
 In practice, Monte carlo simulation should be used to perform the statistical test. For sfdep, it is supported by  [`globel_moran_perm()`](https://sfdep.josiahparry.com/reference/global_moran_perm.html)
 
+::: panel-tabset
+## Step 1
+
 It is always a good practice to use `set.seed()` before performing simulation. This is to ensure that the computation is reproducible.
 
 ```{r}
@@ -147,6 +150,10 @@ seed(1234)
 
 ```
 
+## Step 2
+
+Next, `global_moran_perm()` is used to perform Monte Carlo simulation.
+
 ```{r}
 
 global_moran_perm(wm_q$GDPPC,
@@ -154,6 +161,18 @@ global_moran_perm(wm_q$GDPPC,
                   wm_q$wt,
                   nsim = 99)
 ```
+
+## The report
+
+The statistical report on previous tab shows that the p-value is smaller than alpha value of 0.05. Hence, we have enough statistical evidence to reject the null hypothesis that the spatial distribution of GPD per capita are resemble random distribution (i.e. independent from spatial). Because the Moran’s I statistics is greater than 0. We can infer that the spatial distribution shows sign of clustering.
+
+::: {.callout-tip}
+## Reminder
+
+The numbers of simulation is alway equal to nsim + 1. This mean in nsim = 99. This mean 100 simulation will be performed.
+:::
+
+:::
 
 ```{r}
 lisa <- wm_q %>%
