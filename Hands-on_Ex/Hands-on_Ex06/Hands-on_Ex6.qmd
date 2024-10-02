@@ -1016,4 +1016,3 @@ shan_sf_ngeo_cluster %>%
             mean_MPHONE_PR = mean(MPHONE_PR),
             mean_COMPUTER_PR = mean(COMPUTER_PR))
 ```
-
