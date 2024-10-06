@@ -1440,5 +1440,40 @@
     "title": "Take Home Exercise 2 : Discovering impacts of COVID-19 on Thailand tourism economy at the province level using spatial and spatio-temporal statistics",
     "section": "6.1 Import shapefile into r environment",
     "text": "6.1 Import shapefile into r environment\n\n6.1.1 Thailand Domestic Tourism Statistics\n\nthaadm1 &lt;- st_read(dsn = \"data/rawdata\", \n                layer = \"tha_admbnda_adm1_rtsd_20220121\") %&gt;%\n  st_transform(crs = 32647)\n\nReading layer `tha_admbnda_adm1_rtsd_20220121' from data source \n  `C:\\Users\\user\\OneDrive - Singapore Management University\\MITB\\6. Geospatial Analytics and Applications\\jeffleesl\\ISSS626-GAA\\Take-Home_Ex\\Take-Home_Ex02\\data\\rawdata' \n  using driver `ESRI Shapefile'\nSimple feature collection with 77 features and 16 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 97.34336 ymin: 5.613038 xmax: 105.637 ymax: 20.46507\nGeodetic CRS:  WGS 84\n\n\n\n\n6.1.2 Thailand - Subnational Administrative Boundaries"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex06/In-class_Ex06.html",
+    "href": "In-class_Ex/In-class_Ex06/In-class_Ex06.html",
+    "title": "In-class Ex 6: Emerging Hot Spot Analysis",
+    "section": "",
+    "text": "As usual, p_load () of pacman packages will be used to check if the necessary packages have been installed in R, if yes, load the packages on R environment.\nFive R packages are need for this in-class exercise, they are: sf, sfdep, tmap, ploty, and tidyverse.\n\npacman::p_load(sf, sfdep, tmap, plotly, tidyverse, Kendall)\n\n\n\n\nFor the purpose of this in-class exercise, the Hunan data sets will be used. There are two data sets in this use case, they are:\n\nHunan, a geospatial data set in ESRI shapefile formart, and\nHunan_GDPPC, an attribute data set in csv format.\n\nBefore getting started, reveal the content of Hunan_GDPPC.csv by using Notepad and MS Excel.\n\n\n\nIn the code chunk below, st_read() of sf package is used to import Hunan shapefile into R.\n\nhunan &lt;- st_read(dsn = \"data/geospatial\", layer = \"Hunan\")\n\nReading layer `Hunan' from data source \n  `C:\\Users\\user\\OneDrive - Singapore Management University\\MITB\\6. Geospatial Analytics and Applications\\jeffleesl\\ISSS626-GAA\\In-class_Ex\\In-class_Ex06\\data\\geospatial' \n  using driver `ESRI Shapefile'\nSimple feature collection with 88 features and 7 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 108.7831 ymin: 24.6342 xmax: 114.2544 ymax: 30.12812\nGeodetic CRS:  WGS 84\n\n\n\n\n\nIn the code chunk below, read_csv() of readr is used to import Hunan_GDPPC.csv into R.\n\nGDPPC &lt;-read_csv(\"data/aspatial/Hunan_GDPPC.csv\")"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex06/In-class_Ex06.html#installing-and-loading-the-r-packages",
+    "href": "In-class_Ex/In-class_Ex06/In-class_Ex06.html#installing-and-loading-the-r-packages",
+    "title": "In-class Ex 6: Emerging Hot Spot Analysis",
+    "section": "",
+    "text": "As usual, p_load () of pacman packages will be used to check if the necessary packages have been installed in R, if yes, load the packages on R environment.\nFive R packages are need for this in-class exercise, they are: sf, sfdep, tmap, ploty, and tidyverse.\n\npacman::p_load(sf, sfdep, tmap, plotly, tidyverse, Kendall)"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex06/In-class_Ex06.html#the-data",
+    "href": "In-class_Ex/In-class_Ex06/In-class_Ex06.html#the-data",
+    "title": "In-class Ex 6: Emerging Hot Spot Analysis",
+    "section": "",
+    "text": "For the purpose of this in-class exercise, the Hunan data sets will be used. There are two data sets in this use case, they are:\n\nHunan, a geospatial data set in ESRI shapefile formart, and\nHunan_GDPPC, an attribute data set in csv format.\n\nBefore getting started, reveal the content of Hunan_GDPPC.csv by using Notepad and MS Excel."
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex06/In-class_Ex06.html#importing-geospatial-data",
+    "href": "In-class_Ex/In-class_Ex06/In-class_Ex06.html#importing-geospatial-data",
+    "title": "In-class Ex 6: Emerging Hot Spot Analysis",
+    "section": "",
+    "text": "In the code chunk below, st_read() of sf package is used to import Hunan shapefile into R.\n\nhunan &lt;- st_read(dsn = \"data/geospatial\", layer = \"Hunan\")\n\nReading layer `Hunan' from data source \n  `C:\\Users\\user\\OneDrive - Singapore Management University\\MITB\\6. Geospatial Analytics and Applications\\jeffleesl\\ISSS626-GAA\\In-class_Ex\\In-class_Ex06\\data\\geospatial' \n  using driver `ESRI Shapefile'\nSimple feature collection with 88 features and 7 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 108.7831 ymin: 24.6342 xmax: 114.2544 ymax: 30.12812\nGeodetic CRS:  WGS 84"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex06/In-class_Ex06.html#importing-attribute-table",
+    "href": "In-class_Ex/In-class_Ex06/In-class_Ex06.html#importing-attribute-table",
+    "title": "In-class Ex 6: Emerging Hot Spot Analysis",
+    "section": "",
+    "text": "In the code chunk below, read_csv() of readr is used to import Hunan_GDPPC.csv into R.\n\nGDPPC &lt;-read_csv(\"data/aspatial/Hunan_GDPPC.csv\")"
   }
 ]
