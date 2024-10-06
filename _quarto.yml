@@ -38,7 +38,7 @@ website:
          - text: "In-class Exercise 5: Global and Local Measures of Spatial Autocorrelation: sfdep methods"
            href: "In-class_Ex/In-class_Ex05/In-class_Ex05.html" 
           - text: "In-class Exercise 6: Emerging Hot Spot Analysis"
-           href: "In-class_Ex/In-class_Ex05/In-class_Ex06.html"           
+           href: "In-class_Ex/In-class_Ex06/In-class_Ex06.html"           
      - text: "Take-Home Exercise"
        menu: 
          - text: "Take-Home Exercise 1"
