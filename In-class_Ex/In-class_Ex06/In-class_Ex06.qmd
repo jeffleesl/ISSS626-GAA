@@ -1,5 +1,5 @@
 ---
-title: "In-class Ex 6"
+title: "In-class Ex 6: Emerging Hot Spot Analysis"
 author: "Jeffrey Lee Shao Lin"
 date: "September 30, 2024"
 date-modified: "last-modified"
