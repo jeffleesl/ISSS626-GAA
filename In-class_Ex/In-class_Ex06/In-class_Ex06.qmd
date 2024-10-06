@@ -253,3 +253,19 @@ tm_shape(ehsa_sig)+
   tm_fill("classification")+
   tm_borders(alpha = 0.4)
 ```
+
+### Interpretation of EHSA classes
+
+![](images/clipboard-718455951.png)
+
+### Interpretation of EHSA classes
+
+![](images/clipboard-3531345806.png)
+
+### Interpretation of EHSA classes
+
+![](images/clipboard-1071149491.png)
+
+### Interpretation of EHSA classes
+
+![](images/clipboard-2978307236.png)
