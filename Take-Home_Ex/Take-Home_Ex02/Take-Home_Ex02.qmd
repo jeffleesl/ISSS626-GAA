@@ -81,16 +81,80 @@ In this section, we will learn how to bring a geospatial data and its associated
 ### 6.1.1 Thailand Domestic Tourism Statistics
 
 ```{r}
-thaadm1 <- st_read(dsn = "data/rawdata", 
-                layer = "tha_admbnda_adm1_rtsd_20220121") %>%
-  st_transform(crs = 32647)
+tourism_data <- read_csv("data/thailand_domestic_tourism_2019_2023_ver2.csv") 
+# Update with actual path
+
+# Convert to sf object (assuming it has latitude and longitude)
+tourism_sf <- tourism_data %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)  # Adjust column names as necessary
 
 ```
 
 ### 6.1.2 Thailand - Subnational Administrative Boundaries
 
+```{r}
+# Load province boundaries
+
+provinces <- st_read(dsn = "data/rawdata", 
+                layer = "tha_admbnda_adm1_rtsd_20220121") %>%
+  st_transform(crs = 32647)
+
+```
+
+# 7.Derived Tourism Economy Indicator Layer
+
+```{r}
+# Aggregate by month and year (assuming 'date' is in YYYY-MM-DD format)
+tourism_monthly <- tourism_sf %>%
+  mutate(month = format(date, "%Y-%m")) %>%
+  group_by(province, month) %>%
+  summarize(tourism_indicator = sum(tourism_metric)) %>%  # Adjust metric as necessary
+  ungroup() %>%
+  st_as_sf()  # Ensure it remains an sf object
+
+```
+
 # 8. Global Spatial Autocorrelation Analysis
+
+```{r}
+# Global Moran's I
+moran_result <- moran.test(tourism_monthly$tourism_indicator, listw = nb2listw(poly2nb(provinces)))
+print(moran_result)
+
+```
 
 # 9. Local Spatial Autocorrelation Analysis
 
+```{r}
+# Local Moran's I
+lisa_result <- localmoran(tourism_monthly$tourism_indicator, listw = nb2listw(poly2nb(provinces)))
+tourism_monthly$lisa <- lisa_result[,1]  # Extract local Moran's I values
+
+```
+
 # 10. Emerging Hotspot Analysis
+
+```{r}
+# Hotspot analysis using Getis-Ord Gi*
+hotspot_result <- getis_ord(tourism_monthly$tourism_indicator, listw = nb2listw(poly2nb(provinces)))
+tourism_monthly$hotspot <- hotspot_result$Gstar   # Add hotspot scores to your data
+
+```
+
+# 11. Conclusion
+
+-   **Global Autocorrelation**: A significant positive Moran's I indicates clustering of high or low values.
+
+-   **Local Autocorrelation**: Identify specific provinces with high or low values using LISA results.
+
+-   **Hotspots**: Areas with high positive Gi\* scores are emerging hotspots, while negative scores indicate cold spots.
+
+```{r}
+ggplot(data = tourism_monthly) +
+  geom_sf(aes(fill = hotspot)) + 
+  theme_minimal() +
+  labs(title = "Emerging Hotspots in Thailand's Tourism Economy")
+
+``` 
+
+This framework allows us to explore spatial dependencies in Thailand's tourism economy effectively. Adjust paths and variable names according to your specific datasets.
