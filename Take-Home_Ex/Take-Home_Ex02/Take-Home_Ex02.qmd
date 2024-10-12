@@ -20,7 +20,7 @@ Figure below shows the total revenue receipt from tourism sector from January 20
 
 However, it is important to note that the tourism economy of Thailand are not evenly distributed. Figure below reveals that the tourism economy of Thailand are mainly focus on five provinces, namely Bangkok, Phuket, Chiang Mai, Sukhothai and Phetchaburi.
 
-![](images/clipboard-986836251.png)
+# ![](images/clipboard-986836251.png)
 
 # 2. Objectives
 
@@ -72,7 +72,6 @@ Before we start the exercise, we will need to import necessary R packages first.
 pacman::p_load(sf, sfdep, tmap, lubridate, tidyverse)
 ```
 
-
 # 6. Getting the Data Into R Environment
 
 In this section, we will learn how to bring a geospatial data and its associated attribute table into R environment. The geospatial data is in ESRI shapefile format and the attribute table is in csv fomat.
@@ -93,7 +92,7 @@ glimpse(tourism_data)
 Variables:
 
 |                      |                                                                             |
-|-------------------------|-----------------------------------------------|
+|--------------------------|----------------------------------------------|
 | `no_tourist_all`     | The total number of domestic tourists who visited the province              |
 | `no_tourist_foreign` | The number of foreign tourists who visited the province                     |
 | `no_tourist_stay`    | The number of tourists who stay over-night                                  |
@@ -105,7 +104,7 @@ Variables:
 
 #### 6.1.1.2 Reshape the Data
 
-Use pivot_wider to create new columns based on the variables in Column F, using Column G as the values. 
+Use pivot_wider to create new columns based on the variables in Column F, using Column G as the values.
 
 ```{r}
 tourism_data_wide <- tourism_data %>%
@@ -169,7 +168,6 @@ final_data <- tourism_data_new %>%
 
 print(final_data)
 ```
-
 
 # 7.Derived Tourism Economy Indicator Layer
 
