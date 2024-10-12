@@ -251,10 +251,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#thailand-domestic-tourism-statistics" id="toc-thailand-domestic-tourism-statistics" class="nav-link" data-scroll-target="#thailand-domestic-tourism-statistics">6.1.1 Thailand Domestic Tourism Statistics</a></li>
   <li><a href="#thailand---subnational-administrative-boundaries" id="toc-thailand---subnational-administrative-boundaries" class="nav-link" data-scroll-target="#thailand---subnational-administrative-boundaries">6.1.2 Thailand - Subnational Administrative Boundaries</a></li>
   </ul></li>
+  <li><a href="#performing-relational-join" id="toc-performing-relational-join" class="nav-link" data-scroll-target="#performing-relational-join">6.2 Performing relational join</a></li>
   </ul></li>
+  <li><a href="#derived-tourism-economy-indicator-layer" id="toc-derived-tourism-economy-indicator-layer" class="nav-link" data-scroll-target="#derived-tourism-economy-indicator-layer">7.Derived Tourism Economy Indicator Layer</a></li>
   <li><a href="#global-spatial-autocorrelation-analysis" id="toc-global-spatial-autocorrelation-analysis" class="nav-link" data-scroll-target="#global-spatial-autocorrelation-analysis">8. Global Spatial Autocorrelation Analysis</a></li>
   <li><a href="#local-spatial-autocorrelation-analysis" id="toc-local-spatial-autocorrelation-analysis" class="nav-link" data-scroll-target="#local-spatial-autocorrelation-analysis">9. Local Spatial Autocorrelation Analysis</a></li>
   <li><a href="#emerging-hotspot-analysis" id="toc-emerging-hotspot-analysis" class="nav-link" data-scroll-target="#emerging-hotspot-analysis">10. Emerging Hotspot Analysis</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">11. Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -287,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 12, 2024</p>
+      <p class="date-modified">October 13, 2024</p>
     </div>
   </div>
     
@@ -341,7 +344,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Use the code chunk below to install and launch the below R packages.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, tmap, knitr, ggplot2, smoothr, lubridate, sfdep, leaflet, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sf, sfdep, tmap, lubridate, tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="getting-the-data-into-r-environment" class="level1">
@@ -352,9 +355,145 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="thailand-domestic-tourism-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="thailand-domestic-tourism-statistics">6.1.1 Thailand Domestic Tourism Statistics</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>thaadm1 <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/rawdata"</span>, </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">layer =</span> <span class="st">"tha_admbnda_adm1_rtsd_20220121"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">32647</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>tourism_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/rawdata/thailand_domestic_tourism_2019_2023_ver2.csv"</span>) </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Update with actual path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(tourism_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30,800
+Columns: 7
+$ date          &lt;date&gt; 2019-01-01, 2019-01-01, 2019-01-01, 2019-01-01, 2019-01…
+$ province_thai &lt;chr&gt; "กรุงเทพมหานคร", "ลพบุรี", "พระนครศรีอยุธยา", "สระบุรี", "ชัยนาท…
+$ province_eng  &lt;chr&gt; "Bangkok", "Lopburi", "Phra Nakhon Si Ayutthaya", "Sarab…
+$ region_thai   &lt;chr&gt; "ภาคกลาง", "ภาคกลาง", "ภาคกลาง", "ภาคกลาง", "ภาคกลาง", "…
+$ region_eng    &lt;chr&gt; "central", "central", "central", "central", "central", "…
+$ variable      &lt;chr&gt; "ratio_tourist_stay", "ratio_tourist_stay", "ratio_touri…
+$ value         &lt;dbl&gt; 93.37, 61.32, 73.37, 67.33, 79.31, 71.70, 64.65, 71.21, …</code></pre>
+</div>
+</div>
+<p>Variables:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 65%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><code>no_tourist_all</code></td>
+<td>The total number of domestic tourists who visited the province</td>
+</tr>
+<tr class="even">
+<td><code>no_tourist_foreign</code></td>
+<td>The number of foreign tourists who visited the province</td>
+</tr>
+<tr class="odd">
+<td><code>no_tourist_stay</code></td>
+<td>The number of tourists who stay over-night</td>
+</tr>
+<tr class="even">
+<td><code>no_tourist_thai</code></td>
+<td>The number of Thai tourists who visited the province</td>
+</tr>
+<tr class="odd">
+<td><code>ratio_tourist_stay</code></td>
+<td>The ratio of tourist stay over-night.</td>
+</tr>
+<tr class="even">
+<td><code>revenue_all</code></td>
+<td>The revenue generated by the tourism industry in the province, in Thai Baht</td>
+</tr>
+<tr class="odd">
+<td><code>revenue_foreign</code></td>
+<td>The revenue generated by foreign tourists in the province, in Thai Baht</td>
+</tr>
+<tr class="even">
+<td><code>revenue_thai</code></td>
+<td>The revenue generated by Thai tourists in the province, in Thai Baht</td>
+</tr>
+</tbody>
+</table>
+<section id="reshape-the-data" class="level4">
+<h4 class="anchored" data-anchor-id="reshape-the-data">6.1.1.2 Reshape the Data</h4>
+<p>Use pivot_wider to create new columns based on the variables in Column F, using Column G as the values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>tourism_data_wide <span class="ot">&lt;-</span> tourism_data <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> variable,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> value,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_fill =</span> <span class="cn">NA</span>  <span class="co"># Fill missing values with NA </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>tourism_data_wide</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,850 × 13
+   date       province_thai province_eng             region_thai region_eng
+   &lt;date&gt;     &lt;chr&gt;         &lt;chr&gt;                    &lt;chr&gt;       &lt;chr&gt;     
+ 1 2019-01-01 กรุงเทพมหานคร  Bangkok                  ภาคกลาง     central   
+ 2 2019-01-01 ลพบุรี          Lopburi                  ภาคกลาง     central   
+ 3 2019-01-01 พระนครศรีอยุธยา Phra Nakhon Si Ayutthaya ภาคกลาง     central   
+ 4 2019-01-01 สระบุรี         Saraburi                 ภาคกลาง     central   
+ 5 2019-01-01 ชัยนาท         Chainat                  ภาคกลาง     central   
+ 6 2019-01-01 นครปฐม        Nakhon Pathom            ภาคกลาง     central   
+ 7 2019-01-01 สิงห์บุรี         Sing Buri                ภาคกลาง     central   
+ 8 2019-01-01 อ่างทอง        Ang Thong                ภาคกลาง     central   
+ 9 2019-01-01 นนทบุรี         Nonthaburi               ภาคกลาง     central   
+10 2019-01-01 ปทุมธานี        Pathum Thani             ภาคกลาง     central   
+# ℹ 3,840 more rows
+# ℹ 8 more variables: ratio_tourist_stay &lt;dbl&gt;, no_tourist_stay &lt;dbl&gt;,
+#   no_tourist_all &lt;dbl&gt;, no_tourist_thai &lt;dbl&gt;, no_tourist_foreign &lt;dbl&gt;,
+#   revenue_all &lt;dbl&gt;, revenue_thai &lt;dbl&gt;, revenue_foreign &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="select-relevant-columns" class="level4">
+<h4 class="anchored" data-anchor-id="select-relevant-columns">6.1.1.2 Select Relevant Columns</h4>
+<p>After reshaping, select only the relevant columns for your analysis. Also, create new columns for month, month factor and month-year.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tourism_data_new <span class="ot">&lt;-</span> tourism_data_wide <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date, province_thai, province_eng, region_eng, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>         no_tourist_all, no_tourist_foreign, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         no_tourist_stay, no_tourist_thai, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         ratio_tourist_stay, revenue_all, </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         revenue_foreign, revenue_thai) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Month_num =</span> <span class="fu">month</span>(date),  <span class="co"># Extract numeric month</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Month_fac =</span> <span class="fu">month</span>(date, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">TRUE</span>),  <span class="co"># Extract abbreviated month as factor</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Month_year =</span> <span class="fu">paste0</span>(Month_fac, <span class="st">"-"</span>, <span class="fu">year</span>(date))  <span class="co"># Create 'month-year' column</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(tourism_data_new)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,850 × 15
+   date       province_thai province_eng             region_eng no_tourist_all
+   &lt;date&gt;     &lt;chr&gt;         &lt;chr&gt;                    &lt;chr&gt;               &lt;dbl&gt;
+ 1 2019-01-01 กรุงเทพมหานคร  Bangkok                  central           5959075
+ 2 2019-01-01 ลพบุรี          Lopburi                  central            268664
+ 3 2019-01-01 พระนครศรีอยุธยา Phra Nakhon Si Ayutthaya central            730329
+ 4 2019-01-01 สระบุรี         Saraburi                 central            207236
+ 5 2019-01-01 ชัยนาท         Chainat                  central             79073
+ 6 2019-01-01 นครปฐม        Nakhon Pathom            central            296107
+ 7 2019-01-01 สิงห์บุรี         Sing Buri                central             49438
+ 8 2019-01-01 อ่างทอง        Ang Thong                central            104097
+ 9 2019-01-01 นนทบุรี         Nonthaburi               central            323717
+10 2019-01-01 ปทุมธานี        Pathum Thani             central            233295
+# ℹ 3,840 more rows
+# ℹ 10 more variables: no_tourist_foreign &lt;dbl&gt;, no_tourist_stay &lt;dbl&gt;,
+#   no_tourist_thai &lt;dbl&gt;, ratio_tourist_stay &lt;dbl&gt;, revenue_all &lt;dbl&gt;,
+#   revenue_foreign &lt;dbl&gt;, revenue_thai &lt;dbl&gt;, Month_num &lt;dbl&gt;,
+#   Month_fac &lt;ord&gt;, Month_year &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="thailand---subnational-administrative-boundaries" class="level3">
+<h3 class="anchored" data-anchor-id="thailand---subnational-administrative-boundaries">6.1.2 Thailand - Subnational Administrative Boundaries</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load province boundaries</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>provinces <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"data/rawdata"</span>, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">layer =</span> <span class="st">"tha_admbnda_adm1_rtsd_20220121"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">32647</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reading layer `tha_admbnda_adm1_rtsd_20220121' from data source 
   `C:\Users\user\OneDrive - Singapore Management University\MITB\6. Geospatial Analytics and Applications\jeffleesl\ISSS626-GAA\Take-Home_Ex\Take-Home_Ex02\data\rawdata' 
@@ -366,20 +505,114 @@ Bounding box:  xmin: 97.34336 ymin: 5.613038 xmax: 105.637 ymax: 20.46507
 Geodetic CRS:  WGS 84</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load province boundaries</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(provinces)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 77
+Columns: 17
+$ Shape_Leng &lt;dbl&gt; 2.417227, 1.695100, 1.251111, 1.884945, 3.041716, 1.739908,…
+$ Shape_Area &lt;dbl&gt; 0.13133873, 0.07926199, 0.05323766, 0.12698345, 0.21393797,…
+$ ADM1_EN    &lt;chr&gt; "Bangkok", "Samut Prakan", "Nonthaburi", "Pathum Thani", "P…
+$ ADM1_TH    &lt;chr&gt; "กรุงเทพมหานคร", "สมุทรปราการ", "นนทบุรี", "ปทุมธานี", "พระนครศรีอ…
+$ ADM1_PCODE &lt;chr&gt; "TH10", "TH11", "TH12", "TH13", "TH14", "TH15", "TH16", "TH…
+$ ADM1_REF   &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ ADM1ALT1EN &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ ADM1ALT2EN &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ ADM1ALT1TH &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ ADM1ALT2TH &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…
+$ ADM0_EN    &lt;chr&gt; "Thailand", "Thailand", "Thailand", "Thailand", "Thailand",…
+$ ADM0_TH    &lt;chr&gt; "ประเทศไทย", "ประเทศไทย", "ประเทศไทย", "ประเทศไทย", "ประเทศ…
+$ ADM0_PCODE &lt;chr&gt; "TH", "TH", "TH", "TH", "TH", "TH", "TH", "TH", "TH", "TH",…
+$ date       &lt;date&gt; 2019-02-18, 2019-02-18, 2019-02-18, 2019-02-18, 2019-02-18…
+$ validOn    &lt;date&gt; 2022-01-22, 2022-01-22, 2022-01-22, 2022-01-22, 2022-01-22…
+$ validTo    &lt;date&gt; -001-11-30, -001-11-30, -001-11-30, -001-11-30, -001-11-30…
+$ geometry   &lt;MULTIPOLYGON [m]&gt; MULTIPOLYGON (((674339.8 15..., MULTIPOLYGON (…</code></pre>
+</div>
+</div>
 </section>
-<section id="thailand---subnational-administrative-boundaries" class="level3">
-<h3 class="anchored" data-anchor-id="thailand---subnational-administrative-boundaries">6.1.2 Thailand - Subnational Administrative Boundaries</h3>
+</section>
+<section id="performing-relational-join" class="level2">
+<h2 class="anchored" data-anchor-id="performing-relational-join">6.2 Performing relational join</h2>
+<p>The code chunk below will be used to update the attribute table of&nbsp;<em>provinces</em>’ SpatialPolygonsDataFrame with the attribute fields of&nbsp;<em>tourismdatanew</em>&nbsp;dataframe. This is performed by using&nbsp;<em>left_join()</em>&nbsp;of&nbsp;<strong>dplyr</strong>&nbsp;package.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load province boundaries</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Join final_data with provinces based on province names</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>final_data <span class="ot">&lt;-</span> tourism_data_new <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(provinces <span class="sc">%&gt;%</span> <span class="fu">select</span>(ADM1_TH, geometry), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"province_thai"</span> <span class="ot">=</span> <span class="st">"ADM1_TH"</span>))  <span class="co"># Select only necessary columns from provinces</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,850 × 16
+   date       province_thai province_eng             region_eng no_tourist_all
+   &lt;date&gt;     &lt;chr&gt;         &lt;chr&gt;                    &lt;chr&gt;               &lt;dbl&gt;
+ 1 2019-01-01 กรุงเทพมหานคร  Bangkok                  central           5959075
+ 2 2019-01-01 ลพบุรี          Lopburi                  central            268664
+ 3 2019-01-01 พระนครศรีอยุธยา Phra Nakhon Si Ayutthaya central            730329
+ 4 2019-01-01 สระบุรี         Saraburi                 central            207236
+ 5 2019-01-01 ชัยนาท         Chainat                  central             79073
+ 6 2019-01-01 นครปฐม        Nakhon Pathom            central            296107
+ 7 2019-01-01 สิงห์บุรี         Sing Buri                central             49438
+ 8 2019-01-01 อ่างทอง        Ang Thong                central            104097
+ 9 2019-01-01 นนทบุรี         Nonthaburi               central            323717
+10 2019-01-01 ปทุมธานี        Pathum Thani             central            233295
+# ℹ 3,840 more rows
+# ℹ 11 more variables: no_tourist_foreign &lt;dbl&gt;, no_tourist_stay &lt;dbl&gt;,
+#   no_tourist_thai &lt;dbl&gt;, ratio_tourist_stay &lt;dbl&gt;, revenue_all &lt;dbl&gt;,
+#   revenue_foreign &lt;dbl&gt;, revenue_thai &lt;dbl&gt;, Month_num &lt;dbl&gt;,
+#   Month_fac &lt;ord&gt;, Month_year &lt;chr&gt;, geometry &lt;MULTIPOLYGON [m]&gt;</code></pre>
+</div>
+</div>
 </section>
 </section>
+<section id="derived-tourism-economy-indicator-layer" class="level1">
+<h1>7.Derived Tourism Economy Indicator Layer</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a spacetime object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="global-spatial-autocorrelation-analysis" class="level1">
 <h1>8. Global Spatial Autocorrelation Analysis</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Global Moran's I</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="local-spatial-autocorrelation-analysis" class="level1">
 <h1>9. Local Spatial Autocorrelation Analysis</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Local Moran's I</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="emerging-hotspot-analysis" class="level1">
 <h1>10. Emerging Hotspot Analysis</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hotspot analysis using Getis-Ord Gi*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="conclusion" class="level1">
+<h1>11. Conclusion</h1>
+<ul>
+<li><p><strong>Global Autocorrelation</strong>: A significant positive Moran’s I indicates clustering of high or low values.</p></li>
+<li><p><strong>Local Autocorrelation</strong>: Identify specific provinces with high or low values using LISA results.</p></li>
+<li><p><strong>Hotspots</strong>: Areas with high positive Gi* scores are emerging hotspots, while negative scores indicate cold spots.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot(data = tourism_monthly) +</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_sf(aes(fill = hotspot)) + </span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme_minimal() +</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#labs(title = "Emerging Hotspots in Thailand's Tourism Economy")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This framework allows us to explore spatial dependencies in Thailand’s tourism economy effectively. Adjust paths and variable names according to your specific datasets.</p>
+<p>Output is saved in rds format for future used.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(final_data,<span class="st">"data/rds/tourism.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The code chunk below will be used to import the save origin6_9.rds into R environment.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>acc <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/tourism.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>
