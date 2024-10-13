@@ -251,10 +251,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#thailand-domestic-tourism-statistics" id="toc-thailand-domestic-tourism-statistics" class="nav-link" data-scroll-target="#thailand-domestic-tourism-statistics">6.1.1 Thailand Domestic Tourism Statistics</a></li>
   <li><a href="#thailand---subnational-administrative-boundaries" id="toc-thailand---subnational-administrative-boundaries" class="nav-link" data-scroll-target="#thailand---subnational-administrative-boundaries">6.1.2 Thailand - Subnational Administrative Boundaries</a></li>
   </ul></li>
-  <li><a href="#performing-relational-join" id="toc-performing-relational-join" class="nav-link" data-scroll-target="#performing-relational-join">6.2 Performing relational join</a></li>
+  <li><a href="#performing-relational-join" id="toc-performing-relational-join" class="nav-link" data-scroll-target="#performing-relational-join">6.2 Performing relational join</a>
+  <ul class="collapse">
+  <li><a href="#using-province-in-english" id="toc-using-province-in-english" class="nav-link" data-scroll-target="#using-province-in-english">6.2.1 Using Province in English</a></li>
+  <li><a href="#using-province-in-thai-showing-other-method" id="toc-using-province-in-thai-showing-other-method" class="nav-link" data-scroll-target="#using-province-in-thai-showing-other-method">6.2.2 Using Province in Thai (Showing Other Method)</a></li>
   </ul></li>
-  <li><a href="#derived-tourism-economy-indicator-layer" id="toc-derived-tourism-economy-indicator-layer" class="nav-link" data-scroll-target="#derived-tourism-economy-indicator-layer">7.Derived Tourism Economy Indicator Layer</a></li>
-  <li><a href="#global-spatial-autocorrelation-analysis" id="toc-global-spatial-autocorrelation-analysis" class="nav-link" data-scroll-target="#global-spatial-autocorrelation-analysis">8. Global Spatial Autocorrelation Analysis</a></li>
+  </ul></li>
+  <li><a href="#derived-tourism-economy-indicator-layer" id="toc-derived-tourism-economy-indicator-layer" class="nav-link" data-scroll-target="#derived-tourism-economy-indicator-layer">7.Derived Tourism Economy Indicator Layer</a>
+  <ul class="collapse">
+  <li><a href="#plotting-a-choropleth-map" id="toc-plotting-a-choropleth-map" class="nav-link" data-scroll-target="#plotting-a-choropleth-map">7.1 Plotting a choropleth map</a>
+  <ul class="collapse">
+  <li><a href="#calculate-the-average-revenue-for-each-province" id="toc-calculate-the-average-revenue-for-each-province" class="nav-link" data-scroll-target="#calculate-the-average-revenue-for-each-province">7.1.1 Calculate the Average Revenue for Each Province</a></li>
+  <li><a href="#join-the-average-revenue-back-to-the-spatial-data" id="toc-join-the-average-revenue-back-to-the-spatial-data" class="nav-link" data-scroll-target="#join-the-average-revenue-back-to-the-spatial-data">7.1.2 Join the Average Revenue Back to the Spatial Data</a></li>
+  <li><a href="#modify-the-plot-code-to-use-average_revenue_all" id="toc-modify-the-plot-code-to-use-average_revenue_all" class="nav-link" data-scroll-target="#modify-the-plot-code-to-use-average_revenue_all">7.1.3 Modify the Plot Code to Use average_revenue_all</a></li>
+  </ul></li>
+  <li><a href="#visualising-regional-development-indicator" id="toc-visualising-regional-development-indicator" class="nav-link" data-scroll-target="#visualising-regional-development-indicator">7.2 Visualising Regional Development Indicator</a>
+  <ul class="collapse">
+  <li><a href="#equal-interval-classification-and-equal-quantile-classification" id="toc-equal-interval-classification-and-equal-quantile-classification" class="nav-link" data-scroll-target="#equal-interval-classification-and-equal-quantile-classification">7.2.1 Equal interval classification and Equal quantile classification</a></li>
+  <li><a href="#equal-interval-classification-y2023-and-equal-quantile-classification-y2023" id="toc-equal-interval-classification-y2023-and-equal-quantile-classification-y2023" class="nav-link" data-scroll-target="#equal-interval-classification-y2023-and-equal-quantile-classification-y2023">7.2.2 Equal interval classification Y2023 and Equal quantile classification Y2023</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#global-spatial-autocorrelation-analysis" id="toc-global-spatial-autocorrelation-analysis" class="nav-link" data-scroll-target="#global-spatial-autocorrelation-analysis">8. Global Spatial Autocorrelation Analysis</a>
+  <ul class="collapse">
+  <li><a href="#step-1-deriving-queens-contiguity-weights-sfdep-methods" id="toc-step-1-deriving-queens-contiguity-weights-sfdep-methods" class="nav-link" data-scroll-target="#step-1-deriving-queens-contiguity-weights-sfdep-methods">8.1 Step 1: Deriving Queen’s contiguity weights: sfdep methods</a></li>
+  </ul></li>
   <li><a href="#local-spatial-autocorrelation-analysis" id="toc-local-spatial-autocorrelation-analysis" class="nav-link" data-scroll-target="#local-spatial-autocorrelation-analysis">9. Local Spatial Autocorrelation Analysis</a></li>
   <li><a href="#emerging-hotspot-analysis" id="toc-emerging-hotspot-analysis" class="nav-link" data-scroll-target="#emerging-hotspot-analysis">10. Emerging Hotspot Analysis</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">11. Conclusion</a></li>
@@ -335,12 +355,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><a href="https://cran.r-project.org/web/packages/spNetwork/index.html">spNetwork</a>, which provides functions to perform Spatial Point Patterns Analysis such as kernel density estimation (KDE) and K-function on network. It also can be used to build spatial matrices (‘listw’ objects like in ‘spdep’ package) to conduct any kind of traditional spatial analysis with spatial weights based on reticular distances.</p></li>
 <li><p><a href="https://r-spatial.github.io/sf/index.html">sf</a> package provides functions to manage, processing, and manipulate <strong>Simple Features</strong>, a formal geospatial data standard that specifies a storage and access model of spatial geometries such as points, lines, and polygons.</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/tmap/index.html"><strong>tmap</strong></a> which provides functions for plotting cartographic quality static point patterns maps or interactive maps by using <a href="https://leafletjs.com/">leaflet</a> API.</p></li>
-<li><p><a href="https://cran.r-project.org/web/packages/ggplot2/"><strong>ggplot2</strong></a> which provide functions for creating advanced visualizations, graphics and maps using the Grammar of Graphics.</p></li>
-<li><p><a href="https://cran.r-project.org/web/packages/spdep/"><strong>knitr</strong></a> which provide functions for dynamic report generation in R using Literate Programming techniques.</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/sfdep/index.html"><strong>sfdep</strong></a> which provide functions for utilizes list columns extensively to make this interface possible.</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/smoothr/index.html"><strong>smoothr</strong></a> which provide functions for smoothing and tidying spatial features (i.e.&nbsp;lines and polygons) to make them more aesthetically pleasing.</p></li>
 <li><p><a href="https://cran.r-project.org/web/packages/lubridate/index.html"><strong>lubridate</strong></a> which provide functions to work with date-times and time-spans: fast and user friendly parsing of date-time data, extraction and updating of components of a date-time (years, months, days, hours, minutes, and seconds), algebraic manipulation on date-time and time-span objects.</p></li>
-<li><p><a href="https://cran.r-project.org/web/packages/leaflet/index.html"><strong>leaflet</strong></a> which provide functions for create and customize interactive maps.</p></li>
 <li><p>Use the code chunk below to install and launch the below R packages.</p></li>
 </ul>
 <div class="cell">
@@ -375,8 +392,8 @@ $ value         &lt;dbl&gt; 93.37, 61.32, 73.37, 67.33, 79.31, 71.70, 64.65, 71.
 <p>Variables:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 36%">
-<col style="width: 63%">
+<col style="width: 25%">
+<col style="width: 75%">
 </colgroup>
 <tbody>
 <tr class="odd">
@@ -531,64 +548,306 @@ $ validTo    &lt;date&gt; -001-11-30, -001-11-30, -001-11-30, -001-11-30, -001-1
 $ geometry   &lt;MULTIPOLYGON [m]&gt; MULTIPOLYGON (((674339.8 15..., MULTIPOLYGON (…</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load province boundaries</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>provinces <span class="ot">&lt;-</span> provinces <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ADM1_EN =</span> <span class="fu">recode</span>(ADM1_EN,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Lop Buri"</span> <span class="ot">=</span> <span class="st">"Lopburi"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Chai Nat"</span> <span class="ot">=</span> <span class="st">"Chainat"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Chon Buri"</span> <span class="ot">=</span> <span class="st">"Chonburi"</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Prachin Buri"</span> <span class="ot">=</span> <span class="st">"Prachinburi"</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Phangnga"</span> <span class="ot">=</span> <span class="st">"Phang Nga"</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Buri Ram"</span> <span class="ot">=</span> <span class="st">"Buriram"</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Si Sa Ket"</span> <span class="ot">=</span> <span class="st">"Sisaket"</span>,</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Nong Bua Lam Phu"</span> <span class="ot">=</span> <span class="st">"Nong Bua Lamphu"</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 </section>
 <section id="performing-relational-join" class="level2">
 <h2 class="anchored" data-anchor-id="performing-relational-join">6.2 Performing relational join</h2>
 <p>The code chunk below will be used to update the attribute table of&nbsp;<em>provinces</em>’ SpatialPolygonsDataFrame with the attribute fields of&nbsp;<em>tourismdatanew</em>&nbsp;dataframe. This is performed by using&nbsp;<em>left_join()</em>&nbsp;of&nbsp;<strong>dplyr</strong>&nbsp;package.</p>
+<section id="using-province-in-english" class="level3">
+<h3 class="anchored" data-anchor-id="using-province-in-english">6.2.1 Using Province in English</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load province boundaries</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Join final_data with provinces based on province names</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>final_data <span class="ot">&lt;-</span> tourism_data_new <span class="sc">%&gt;%</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(provinces <span class="sc">%&gt;%</span> <span class="fu">select</span>(ADM1_TH, geometry), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"province_thai"</span> <span class="ot">=</span> <span class="st">"ADM1_TH"</span>))  <span class="co"># Select only necessary columns from provinces</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(final_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Left join to add geometries from thailand bundaries shapefile</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>tourism_sf <span class="ot">&lt;-</span> tourism_data_new <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(provinces, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"province_eng"</span> <span class="ot">=</span> <span class="st">"ADM1_EN"</span>)) </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure the data is a valid sf object</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>tourism_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(tourism_sf)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Select specific columns (1:19, 25:28, and 31)</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>tourism_sf <span class="ot">&lt;-</span> tourism_sf <span class="sc">%&gt;%</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">19</span>, <span class="dv">25</span><span class="sc">:</span><span class="dv">28</span>, <span class="dv">31</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if transformation was successful</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(tourism_sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3,850 × 16
-   date       province_thai province_eng             region_eng no_tourist_all
-   &lt;date&gt;     &lt;chr&gt;         &lt;chr&gt;                    &lt;chr&gt;               &lt;dbl&gt;
- 1 2019-01-01 กรุงเทพมหานคร  Bangkok                  central           5959075
- 2 2019-01-01 ลพบุรี          Lopburi                  central            268664
- 3 2019-01-01 พระนครศรีอยุธยา Phra Nakhon Si Ayutthaya central            730329
- 4 2019-01-01 สระบุรี         Saraburi                 central            207236
- 5 2019-01-01 ชัยนาท         Chainat                  central             79073
- 6 2019-01-01 นครปฐม        Nakhon Pathom            central            296107
- 7 2019-01-01 สิงห์บุรี         Sing Buri                central             49438
- 8 2019-01-01 อ่างทอง        Ang Thong                central            104097
- 9 2019-01-01 นนทบุรี         Nonthaburi               central            323717
-10 2019-01-01 ปทุมธานี        Pathum Thani             central            233295
-# ℹ 3,840 more rows
-# ℹ 11 more variables: no_tourist_foreign &lt;dbl&gt;, no_tourist_stay &lt;dbl&gt;,
-#   no_tourist_thai &lt;dbl&gt;, ratio_tourist_stay &lt;dbl&gt;, revenue_all &lt;dbl&gt;,
-#   revenue_foreign &lt;dbl&gt;, revenue_thai &lt;dbl&gt;, Month_num &lt;dbl&gt;,
-#   Month_fac &lt;ord&gt;, Month_year &lt;chr&gt;, geometry &lt;MULTIPOLYGON [m]&gt;</code></pre>
+<pre><code>Coordinate Reference System:
+  User input: EPSG:32647 
+  wkt:
+PROJCRS["WGS 84 / UTM zone 47N",
+    BASEGEOGCRS["WGS 84",
+        ENSEMBLE["World Geodetic System 1984 ensemble",
+            MEMBER["World Geodetic System 1984 (Transit)"],
+            MEMBER["World Geodetic System 1984 (G730)"],
+            MEMBER["World Geodetic System 1984 (G873)"],
+            MEMBER["World Geodetic System 1984 (G1150)"],
+            MEMBER["World Geodetic System 1984 (G1674)"],
+            MEMBER["World Geodetic System 1984 (G1762)"],
+            MEMBER["World Geodetic System 1984 (G2139)"],
+            ELLIPSOID["WGS 84",6378137,298.257223563,
+                LENGTHUNIT["metre",1]],
+            ENSEMBLEACCURACY[2.0]],
+        PRIMEM["Greenwich",0,
+            ANGLEUNIT["degree",0.0174532925199433]],
+        ID["EPSG",4326]],
+    CONVERSION["UTM zone 47N",
+        METHOD["Transverse Mercator",
+            ID["EPSG",9807]],
+        PARAMETER["Latitude of natural origin",0,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8801]],
+        PARAMETER["Longitude of natural origin",99,
+            ANGLEUNIT["degree",0.0174532925199433],
+            ID["EPSG",8802]],
+        PARAMETER["Scale factor at natural origin",0.9996,
+            SCALEUNIT["unity",1],
+            ID["EPSG",8805]],
+        PARAMETER["False easting",500000,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8806]],
+        PARAMETER["False northing",0,
+            LENGTHUNIT["metre",1],
+            ID["EPSG",8807]]],
+    CS[Cartesian,2],
+        AXIS["(E)",east,
+            ORDER[1],
+            LENGTHUNIT["metre",1]],
+        AXIS["(N)",north,
+            ORDER[2],
+            LENGTHUNIT["metre",1]],
+    USAGE[
+        SCOPE["Navigation and medium accuracy spatial referencing."],
+        AREA["Between 96°E and 102°E, northern hemisphere between equator and 84°N, onshore and offshore. China. Indonesia. Laos. Malaysia - West Malaysia. Mongolia. Myanmar (Burma). Russian Federation. Thailand."],
+        BBOX[0,96,84,102]],
+    ID["EPSG",32647]]</code></pre>
 </div>
 </div>
+</section>
+<section id="using-province-in-thai-showing-other-method" class="level3">
+<h3 class="anchored" data-anchor-id="using-province-in-thai-showing-other-method">6.2.2 Using Province in Thai (Showing Other Method)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Left join to add geometries from thailand bundaries shapefile</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># tourism_sf_th &lt;- tourism_data_new %&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># left_join(provinces, by = c("province_thai" = "ADM1_TH"))</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure the data is a valid sf object</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#tourism_sf_th &lt;- st_as_sf(tourism_sf_th)</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Check if transformation was successful</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># st_crs(tourism_sf_th)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 </section>
 </section>
 <section id="derived-tourism-economy-indicator-layer" class="level1">
 <h1>7.Derived Tourism Economy Indicator Layer</h1>
+<p>It is always a good practice to use set.seed() before performing simulation. This is to ensure that the computation is reproducible.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a spacetime object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="plotting-a-choropleth-map" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-a-choropleth-map">7.1 Plotting a choropleth map</h2>
+<p>Plot a choropleth map showing the distribution of revenue generated by the tourism industry in the different province, in Thai Baht</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tourism_sf) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"revenue_all"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"quantile"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">"Blues"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"revenue_all"</span>) <span class="sc">+</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Distribution of revenue generated by the tourism industry in the different province"</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.position =</span> <span class="st">"center"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.size =</span> <span class="fl">1.2</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.height =</span> <span class="fl">0.45</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.width =</span> <span class="fl">0.35</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">frame =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="calculate-the-average-revenue-for-each-province" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-the-average-revenue-for-each-province">7.1.1 Calculate the Average Revenue for Each Province</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the average revenue_all for each province</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>tourism_sf_avg <span class="ot">&lt;-</span> tourism_sf <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(province_thai) <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">average_revenue_all =</span> <span class="fu">mean</span>(revenue_all, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="join-the-average-revenue-back-to-the-spatial-data" class="level3">
+<h3 class="anchored" data-anchor-id="join-the-average-revenue-back-to-the-spatial-data">7.1.2 Join the Average Revenue Back to the Spatial Data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the average revenue back to the spatial data</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>tourism_sf_avg <span class="ot">&lt;-</span> <span class="fu">left_join</span>(<span class="fu">st_drop_geometry</span>(tourism_sf), tourism_sf_avg, <span class="at">by =</span> <span class="st">"province_thai"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>tourism_sf_avg <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(tourism_sf_avg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="modify-the-plot-code-to-use-average_revenue_all" class="level3">
+<h3 class="anchored" data-anchor-id="modify-the-plot-code-to-use-average_revenue_all">7.1.3 Modify the Plot Code to Use average_revenue_all</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(tourism_sf_avg) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"average_revenue_all"</span>,   <span class="co"># Use average revenue</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"quantile"</span>,      <span class="co"># Use quantile classification</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">"Blues"</span>,       <span class="co"># Choose color palette</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">"Average Revenue (All)"</span>) <span class="sc">+</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">col =</span> <span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Average Revenue Generated by Tourism Industry in Different Provinces"</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.position =</span> <span class="st">"center"</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.title.size =</span> <span class="fl">1.2</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.height =</span> <span class="fl">0.45</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.width =</span> <span class="fl">0.35</span>,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">frame =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="visualising-regional-development-indicator" class="level2">
+<h2 class="anchored" data-anchor-id="visualising-regional-development-indicator">7.2 Visualising Regional Development Indicator</h2>
+<p>Now, we are going to prepare a basemap and a choropleth map showing the distribution of the revenue by using qtm() of tmap package.</p>
+<section id="equal-interval-classification-and-equal-quantile-classification" class="level3">
+<h3 class="anchored" data-anchor-id="equal-interval-classification-and-equal-quantile-classification">7.2.1 Equal interval classification and Equal quantile classification</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>equal <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(tourism_sf) <span class="sc">+</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"revenue_all"</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">n =</span> <span class="dv">5</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"equal"</span>) <span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Equal interval classification"</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>quantile <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(tourism_sf) <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"revenue_all"</span>,</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">n =</span> <span class="dv">5</span>,</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"quantile"</span>) <span class="sc">+</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Equal quantile classification"</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(equal, </span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>             quantile, </span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">asp=</span><span class="dv">1</span>, </span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="equal-interval-classification-y2023-and-equal-quantile-classification-y2023" class="level3">
+<h3 class="anchored" data-anchor-id="equal-interval-classification-y2023-and-equal-quantile-classification-y2023">7.2.2 Equal interval classification Y2023 and Equal quantile classification Y2023</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>tourism_sf_2023 <span class="ot">&lt;-</span> tourism_sf <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">year</span>(date.x) <span class="sc">==</span> <span class="dv">2023</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>equal_2023 <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(tourism_sf_2023) <span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"revenue_all"</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">n =</span> <span class="dv">5</span>,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"equal"</span>) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Equal interval classification Y2023"</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>quantile_2023 <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(tourism_sf_2023) <span class="sc">+</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_fill</span>(<span class="st">"revenue_all"</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">n =</span> <span class="dv">5</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">style =</span> <span class="st">"quantile"</span>) <span class="sc">+</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_borders</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"Equal quantile classification Y2023"</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_arrange</span>(equal_2023, </span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>             quantile_2023, </span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">asp=</span><span class="dv">1</span>, </span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex02_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
 </section>
 <section id="global-spatial-autocorrelation-analysis" class="level1">
 <h1>8. Global Spatial Autocorrelation Analysis</h1>
+<section id="step-1-deriving-queens-contiguity-weights-sfdep-methods" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-deriving-queens-contiguity-weights-sfdep-methods">8.1 Step 1: Deriving Queen’s contiguity weights: sfdep methods</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Global Moran's I</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#wm_q &lt;- tourism_sf %&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#mutate(nb = st_contiguity(geometry),</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>         <span class="co">#wt = st_weights(nb,</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                         <span class="co">#style = "W"),</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>         <span class="co">#.before = 1)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create weights for spatial autocorrelation</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co">#tourism_neighbors &lt;- tourism_sf %&gt;%</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#st_contiguity()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create weights for spatial autocorrelation</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#tourism_neighbors &lt;- tourism_sf %&gt;%</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#st_contiguity()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Global Moran's I for tourism data</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#global_moran_test &lt;- tourism_sf %&gt;%</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#global_moran(variable = "no_tourist_all", nb = tourism_neighbors)</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co">#global_moran_test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 </section>
 <section id="local-spatial-autocorrelation-analysis" class="level1">
 <h1>9. Local Spatial Autocorrelation Analysis</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Local Moran's I</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Local Moran's I for tourism data</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co">#local_moran_test &lt;- tourism_sf %&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#local_moran(variable = "no_tourist_all", nb = tourism_neighbors)</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">#local_moran_test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="emerging-hotspot-analysis" class="level1">
 <h1>10. Emerging Hotspot Analysis</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hotspot analysis using Getis-Ord Gi*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Emerging Hotspot Analysis (temporal data should be converted to spacetime class)</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#tourism_spacetime &lt;- as_spacetime(tourism_sf, time_var = "date", geometry = "geometry")</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#hotspot_analysis &lt;- tourism_spacetime %&gt;%</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#emerging_hotspot(variable = "no_tourist_all", nb = tourism_neighbors)</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># View the results</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#hotspot_analysis</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="conclusion" class="level1">
@@ -599,19 +858,19 @@ $ geometry   &lt;MULTIPOLYGON [m]&gt; MULTIPOLYGON (((674339.8 15..., MULTIPOLYG
 <li><p><strong>Hotspots</strong>: Areas with high positive Gi* scores are emerging hotspots, while negative scores indicate cold spots.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot(data = tourism_monthly) +</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_sf(aes(fill = hotspot)) + </span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme_minimal() +</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#labs(title = "Emerging Hotspots in Thailand's Tourism Economy")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ggplot(data = tourism_monthly) +</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_sf(aes(fill = hotspot)) + </span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme_minimal() +</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#labs(title = "Emerging Hotspots in Thailand's Tourism Economy")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This framework allows us to explore spatial dependencies in Thailand’s tourism economy effectively. Adjust paths and variable names according to your specific datasets.</p>
 <p>Output is saved in rds format for future used.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(final_data,<span class="st">"data/rds/tourism.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(tourism_sf,<span class="st">"data/rds/tourism.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The code chunk below will be used to import the save origin6_9.rds into R environment.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>acc <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/tourism.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>acc <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="st">"data/rds/tourism.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
