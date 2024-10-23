@@ -1,0 +1,268 @@
+---
+title: "In-class Exercise 8: Geographically Weighted Predictive Models"
+author: "Jeffrey Lee Shao Lin"
+date: "Oct 21 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  freeze: true  #will not re-render all items
+  message: false #no warning messages go out
+---
+
+```{r}
+pacman::p_load(sf, spdep, GWmodel, SpatialML, 
+               tmap, rsample, Metrics, tidyverse,
+               knitr)
+```
+
+```{r}
+mdata <- read_rds("data/mdata.rds")
+
+```
+
+# 1. Data Sampling
+
+The entire data are split into training and test data sets with 65% and 35% respectively by using  inital_split() of rsample package. rsample is one of the package of tigymodels.
+```{r}
+set.seed(1234)
+resale_split <- initial_split(mdata, 
+                              prop = 6.5/10,)
+train_data <- training(resale_split)
+test_data <- testing(resale_split)
+
+```
+
+# 2. Multicollinearity check
+
+## 2.1 Correlation Matrix
+
+```{r, fig.width=10, fig.height=10}
+mdata_nogeo <- mdata %>%
+  st_drop_geometry()
+ggstatsplot::ggcorrmat(mdata_nogeo[, 2:17])
+```
+
+When building a predictive model, use only the training data for calibration, and later use the test data for evaluation. For an explanatory model, you can use all the data.
+
+```{r}
+price_mlr <- lm(resale_price ~ floor_area_sqm +
+                  storey_order + remaining_lease_mths +
+                  PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +
+                  PROX_MRT + PROX_PARK + PROX_MALL + 
+                  PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                  WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                  WITHIN_1KM_PRISCH,
+                data=train_data)
+summary(price_mlr)
+olsrr::ols_regress(price_mlr) # analyze a multiple linear regression model stored in price_mlr
+```
+
+## 2.2 Multicollinearity check with VIF
+
+```{r}
+vif <-performance::check_collinearity(price_mlr)
+kable(vif,
+       caption = "Variance Inflation Factor (VIF) Results") #%>%
+  #kable_styling(font_size = 18)
+```
+
+Anything below 5 is acceptable.
+
+```{r}
+plot(vif)
+theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+# 3. Predictive Modelling with MLR
+
+## 3.1 Computing adaptive bandwidth
+
+You only need to run it once, save the result, and load it back in without rendering. The output is all that's needed to fit into GWR.
+
+```{r}
+#| eval: false
+bw_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
+                  storey_order + remaining_lease_mths +
+                  PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +
+                  PROX_MRT + PROX_PARK + PROX_MALL + 
+                  PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                  WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                  WITHIN_1KM_PRISCH,
+                  data=train_data, #Use the training data instead of the full dataset.
+                  approach="CV",
+                  kernel="gaussian",
+                  adaptive=TRUE,
+                  longlat=FALSE)
+
+```
+
+When calibrating the model, use `bw_adaptive`.
+
+Multicollinearity check with VIF
+
+```{r}
+#| eval: false
+gwr_adaptive <- gwr.basic(formula = resale_price ~
+                            floor_area_sqm + storey_order +
+                            remaining_lease_mths + PROX_CBD + 
+                            PROX_ELDERLYCARE + PROX_HAWKER +
+                            PROX_MRT + PROX_PARK + PROX_MALL + 
+                            PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                            WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                            WITHIN_1KM_PRISCH,
+                          data=train_data,  #use training data
+                          bw=bw_adaptive, 
+                          kernel = 'gaussian', 
+                          adaptive=TRUE,
+                          longlat = FALSE)
+```
+
+
+```{r}
+#| eval: false
+gwr_bw_test_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
+                  storey_order + remaining_lease_mths +
+                  PROX_CBD + PROX_ELDERLYCARE + PROX_HAWKER +
+                  PROX_MRT + PROX_PARK + PROX_MALL + 
+                  PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                  WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                  WITHIN_1KM_PRISCH,
+                  data=test_data,
+                  approach="CV",
+                  kernel="gaussian",
+                  adaptive=TRUE,
+                  longlat=FALSE)
+```
+
+```{r}
+test_data_sp <- test_data %>%
+  as_Spatial()
+test_data_sp
+
+```
+
+```{r}
+train_data_sp <- as_Spatial(train_data)
+train_data_sp
+
+```
+
+Use a bandwidth of 40, the same as the training data.
+
+```{r}
+#| eval: false
+gwr_pred <- gwr.predict(formula = resale_price ~
+                          floor_area_sqm + storey_order +
+                          remaining_lease_mths + PROX_CBD + 
+                          PROX_ELDERLYCARE + PROX_HAWKER + 
+                          PROX_MRT + PROX_PARK + PROX_MALL + 
+                          PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                          WITHIN_350M_CHILDCARE + WITHIN_350M_BUS + 
+                          WITHIN_1KM_PRISCH, 
+                          data=train_data_sp, 
+                          predictdata = test_data_sp, 
+                          bw=40, 
+                          kernel = 'gaussian', 
+                          adaptive=TRUE, 
+                          p = 2,
+                          theta = 0,
+                          longlat = FALSE)
+```
+# 4. Predictive Modelling: SpatialML methods
+
+## 4.1 Preparing coordinate data
+
+```{r}
+coords <- st_coordinates(mdata)
+coords_train <- st_coordinates(train_data)
+coords_test <- st_coordinates(test_data)
+```
+
+## 4.2 Dropping geometry field
+
+```{r}
+train_data_nogeom <- train_data %>% 
+  st_drop_geometry # convert simpleframe to dataframe
+```
+
+## 4.3 Calibrating RF model
+
+```{r}
+set.seed(1234)
+rf <- ranger(resale_price ~ floor_area_sqm + storey_order + 
+               remaining_lease_mths + PROX_CBD + PROX_ELDERLYCARE + 
+               PROX_HAWKER + PROX_MRT + PROX_PARK + PROX_MALL + 
+               PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+               WITHIN_350M_CHILDCARE + WITHIN_350M_BUS + 
+               WITHIN_1KM_PRISCH,
+             data=train_data_nogeom)
+rf
+```
+
+## 4.4 Calibrating with grf()
+
+```{r}
+set.seed(1234)
+gwRF_adaptive <- grf(formula = resale_price ~ floor_area_sqm + storey_order +
+                              remaining_lease_mths + PROX_CBD + PROX_ELDERLYCARE +
+                              PROX_HAWKER + PROX_MRT + PROX_PARK + PROX_MALL +
+                              PROX_SUPERMARKET + WITHIN_350M_KINDERGARTEN +
+                              WITHIN_350M_CHILDCARE + WITHIN_350M_BUS +
+                              WITHIN_1KM_PRISCH,
+                            dframe = train_data_nogeom, 
+                            bw = 55,
+                            kernel = "adaptive",
+                            coords = coords_train)
+```
+
+# 5. Predicting by using the test data
+
+## 5.1 Preparing the test data
+
+```{r}
+test_data_nogeom <- cbind(
+  test_data, coords_test) %>% 
+  st_drop_geometry()
+```
+
+Note that the testing data has no geometry. If you ignore the previous step, you won't obtain the x and y coordinates. If you do not combine it with `coords_test`, which contains the x and y coordinates, you will not be able to retrieve the x and y for this step.
+
+## 5.2 Predicting with the test data
+
+```{r}
+gwRF_pred <- predict.grf(gwRF_adaptive,
+                         test_data_nogeom,
+                         x.var.name="X",
+                         y.var.name = "Y",
+                         local.w = 1,
+                         global.w = 0)
+```
+
+## 5.3 Creating DF
+
+```{r}
+GRF_pred <- read_rds("data/GRF_pred.rds")
+GRF_pred_df <- as.data.frame(GRF_pred)
+test_data_pred <- cbind(test_data, GRF_pred_df)
+```
+
+
+# 6. Root Mean Square Error (RMSE) 
+
+You can calculate the Root Mean Square Error (RMSE) or plot the results. However, the previous code must be executed, otherwise, you won't be able to make a valid comparison.
+
+```{r}
+#| eval: false
+rmse(test_data_p$resale_price, 
+     test_data_p$GRF_pred)
+```
+
+
+```{r}
+#| eval: false
+ggplot(data = test_data_p,
+       aes(x = GRF_pred,
+           y = resale_price)) +
+  geom_point()
+```
