@@ -216,7 +216,7 @@ The code chunk below calculates Hansen’s accessibility using *ac()* of **Spati
 acc_Hansen <- data.frame(ac(hexagons$demand,
                             eldercare$capacity,
                             distmat_km, 
-                            #d0 = 50,
+                            d0 = 50,
                             power = 2, 
                             family = "Hansen"))
 
@@ -236,7 +236,8 @@ Notice that the field name is much more tidier now.
 Next, we will convert the data table into tibble format by using the code chunk below.
 
 ```{r}
-acc_Hansen <- tbl_df(acc_Hansen)
+# acc_Hansen <- tbl_df(acc_Hansen)
+acc_Hansen <- tibble::as_tibble(acc_Hansen)
 
 ```
 
@@ -253,7 +254,7 @@ Notice that hexagon_Hansen is a simple feature data frame and not a typical tibb
 
 Actually, the steps above can be perform by using a single code chunk as shown below.
 
-```{r}
+```{r, eval = FALSE}
 acc_Hansen <- data.frame(ac(hexagons$demand,
                             eldercare$capacity,
                             distmat_km, 
@@ -262,7 +263,9 @@ acc_Hansen <- data.frame(ac(hexagons$demand,
                             family = "Hansen"))
 
 colnames(acc_Hansen) <- "accHansen"
-acc_Hansen <- tbl_df(acc_Hansen)
+# acc_Hansen <- tbl_df(acc_Hansen)
+acc_Hansen <- tibble::as_tibble(acc_Hansen)
+
 hexagon_Hansen <- bind_cols(hexagons, acc_Hansen)
 
 ```
@@ -348,6 +351,7 @@ acc_KD2SFCA <- data.frame(ac(hexagons$demand,
 
 # Rename column and convert to tibble
 colnames(acc_KD2SFCA) <- "accKD2SFCA"
+#acc_KD2SFCA <- tbl_df(acc_KD2SFCA)
 acc_KD2SFCA <- tibble::as_tibble(acc_KD2SFCA)
 
 # Bind columns to create hexagon_KD2SFCA
@@ -412,10 +416,10 @@ ggplot(data=hexagon_KD2SFCA,
 
 In this section, you are going to repeat most of the steps you had learned in previous section to perform the analysis. However, some of the codes will be combined into one code chunk.
 
-\
 The code chunk below calculates Hansen’s accessibility using *ac()* of **SpatialAcc** and *data.frame()* is used to save the output in a data frame called `acc_SAM`. Notice that `SAM` is used for family argument.
 
 ```{r}
+# Calculate accessibility score and store in a data frame
 acc_SAM <- data.frame(ac(hexagons$demand,
                          eldercare$capacity,
                          distmat_km, 
@@ -423,8 +427,12 @@ acc_SAM <- data.frame(ac(hexagons$demand,
                          power = 2, 
                          family = "SAM"))
 
+# Rename column and convert to tibble
 colnames(acc_SAM) <- "accSAM"
-acc_SAM <- tbl_df(acc_SAM)
+#acc_SAM <- tbl_df(acc_SAM)
+acc_SAM <- tibble::as_tibble(acc_SAM)
+
+# Bind columns to create hexagon_SAM
 hexagon_SAM <- bind_cols(hexagons, acc_SAM)
 ```
 
@@ -475,9 +483,13 @@ ggplot(data=hexagon_SAM,
        aes(y = accSAM, 
            x= REGION_N)) +
   geom_boxplot() +
-  geom_point(stat="summary", 
-             fun.y="mean", 
-             colour ="red", 
-             size=2)
+  stat_summary(fun = "mean", 
+               geom = "point", 
+               colour = "red", 
+               size = 2)
+  #geom_point(stat="summary", 
+             #fun.y="mean", 
+             #colour ="red", 
+             #size=2)
 ```
 
