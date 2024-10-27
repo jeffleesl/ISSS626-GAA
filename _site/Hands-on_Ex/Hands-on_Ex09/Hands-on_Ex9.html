@@ -533,9 +533,9 @@ PROJCRS["SVY21 / Singapore TM",
 <section id="tidying-distance-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="tidying-distance-matrix">5.2 Tidying distance matrix</h2>
 <p>The imported ODMatrix organised the distance matrix columnwise.</p>
-<p><img src="images/clipboard-3992973305.png" class="img-fluid"></p>
+<p><img src="images/clipboard-3992973305.png" class="img-fluid" width="459"></p>
 <p>On the other hands, most of the modelling packages in R is expecting a matrix look similar to the figure below.</p>
-<p><img src="images/clipboard-3195140507.png" class="img-fluid"></p>
+<p><img src="images/clipboard-3195140507.png" class="img-fluid" width="462"></p>
 <p>The rows represent <strong>origins</strong> (i.e.&nbsp;also know as <strong>from</strong> field) and the columns represent <strong>destination</strong> (i.e.&nbsp;also known as <strong>to</strong> field.)</p>
 <p>The code chunk below uses <em>spread()</em> of <strong>tidyr</strong> package is used to transform the O-D matrix from a thin format into a fat format.</p>
 <div class="cell">
@@ -565,12 +565,13 @@ PROJCRS["SVY21 / Singapore TM",
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">power =</span> <span class="dv">2</span>, </span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">family =</span> <span class="st">"Hansen"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><img src="images/clipboard-3154585136.png" class="img-fluid" width="283"></p>
 <p>The default field name is very messy, we will rename it to&nbsp;<code>accHansen</code>&nbsp;by using the code chunk below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(acc_Hansen) <span class="ot">&lt;-</span> <span class="st">"accHansen"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notice that the field name is much more tidier now.</p>
-<p><img src="images/clipboard-294853529.png" class="img-fluid"></p>
+<p><img src="images/clipboard-294853529.png" class="img-fluid" width="129"></p>
 <p>Next, we will convert the data table into tibble format by using the code chunk below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># acc_Hansen &lt;- tbl_df(acc_Hansen)</span></span>

@@ -177,11 +177,11 @@ ODMatrix <- read_csv("data/aspatial/OD_Matrix.csv", skip = 0)
 
 The imported ODMatrix organised the distance matrix columnwise.
 
-![](images/clipboard-3992973305.png)
+![](images/clipboard-3992973305.png){width="459"}
 
 On the other hands, most of the modelling packages in R is expecting a matrix look similar to the figure below.
 
-![](images/clipboard-3195140507.png)
+![](images/clipboard-3195140507.png){width="462"}
 
 The rows represent **origins** (i.e. also know as **from** field) and the columns represent **destination** (i.e. also known as **to** field.)
 
@@ -222,6 +222,8 @@ acc_Hansen <- data.frame(ac(hexagons$demand,
 
 ```
 
+![](images/clipboard-3154585136.png){width="283"}
+
 The default field name is very messy, we will rename it to `accHansen` by using the code chunk below.
 
 ```{r}
@@ -231,7 +233,7 @@ colnames(acc_Hansen) <- "accHansen"
 
 Notice that the field name is much more tidier now.
 
-![](images/clipboard-294853529.png)
+![](images/clipboard-294853529.png){width="129"}
 
 Next, we will convert the data table into tibble format by using the code chunk below.
 
