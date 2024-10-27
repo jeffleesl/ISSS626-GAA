@@ -398,7 +398,6 @@ hexagon_KD2SFCA <- st_join(hexagon_KD2SFCA, mpsz,
 
 Next, ggplot() will be used to plot the distribution by using boxplot graphical method.
 
-
 ```{r}
 ggplot(data=hexagon_KD2SFCA, 
        aes(y = accKD2SFCA, 
@@ -492,4 +491,3 @@ ggplot(data=hexagon_SAM,
              #colour ="red", 
              #size=2)
 ```
-
