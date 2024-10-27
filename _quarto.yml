@@ -30,7 +30,7 @@ website:
          - text: "Hands-on Exercise 8: Geographically Weighted Predictive Models"
            href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex8.html"  
          - text: "Hands-on Exercise 9: Modelling Geographical Accessibility"
-           href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex9.html"             
+           href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex9.html"              
      - text: "In-class Exercise"
        menu: 
          - text: "In-class Exercise 1: Geospatial Data Science with R"

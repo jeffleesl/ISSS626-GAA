@@ -338,6 +338,7 @@ In this section, you are going to repeat most of the steps you had learned in pr
 The code chunk below calculates Hansen’s accessibility using *ac()* of **SpatialAcc** and *data.frame()* is used to save the output in a data frame called `acc_KD2SFCA`. Notice that `KD2SFCA` is used for family argument.
 
 ```{r}
+# Calculate accessibility score and store in a data frame
 acc_KD2SFCA <- data.frame(ac(hexagons$demand,
                             eldercare$capacity,
                             distmat_km, 
@@ -345,8 +346,11 @@ acc_KD2SFCA <- data.frame(ac(hexagons$demand,
                             power = 2, 
                             family = "KD2SFCA"))
 
+# Rename column and convert to tibble
 colnames(acc_KD2SFCA) <- "accKD2SFCA"
-acc_KD2SFCA <- tbl_df(acc_KD2SFCA)
+acc_KD2SFCA <- tibble::as_tibble(acc_KD2SFCA)
+
+# Bind columns to create hexagon_KD2SFCA
 hexagon_KD2SFCA <- bind_cols(hexagons, acc_KD2SFCA)
 ```
 
@@ -394,7 +398,7 @@ Next, ggplot() will be used to plot the distribution by using boxplot graphical 
 ```{r}
 ggplot(data=hexagon_KD2SFCA, 
        aes(y = accKD2SFCA, 
-           x= REGION_N.y)) +
+           x= REGION_N)) +
   geom_boxplot() +
   geom_point(stat="summary", 
              fun.y="mean", 
@@ -469,7 +473,7 @@ Next, ggplot() will be used to plot the distribution by using boxplot graphical 
 ```{r}
 ggplot(data=hexagon_SAM, 
        aes(y = accSAM, 
-           x= REGION_N.x)) +
+           x= REGION_N)) +
   geom_boxplot() +
   geom_point(stat="summary", 
              fun.y="mean", 
