@@ -1,0 +1,159 @@
+---
+title: "In-class Exercise 09"
+author: "Jeffrey Lee Shao Lin"
+date: "Oct 28 2024"
+date-modified: "last-modified"
+execute: 
+  eval: true
+  echo: true
+  freeze: true  #will not re-render all items
+  message: false #no warning messages go out
+---
+
+```{r}
+pacman::p_load(tmap, SpatialAcc, sf, 
+               ggstatsplot, reshape2,
+               tidyverse)
+
+```
+
+# 2. Importing Data
+
+## 2.1 Geospatial Data
+```{r}
+mpsz <- st_read(dsn = "data/geospatial", 
+                layer = "MP14_SUBZONE_NO_SEA_PL") %>% 
+  st_transform(crs = 3414)
+
+hexagons <- st_read(dsn = "data/geospatial", 
+                    layer = "hexagons") %>% 
+  st_transform(crs = 3414)
+
+eldercare <- st_read(dsn = "data/geospatial", 
+                     layer = "ELDERCARE") %>% 
+  st_transform(crs = 3414)
+
+```
+## 2.2 OD Matrix
+```{r}
+ODMatrix <- read_csv("data/aspatial/OD_Matrix.csv", 
+                     skip = 0)
+
+# entry = the entry point
+# network = distance from the start to the end
+# exit = the exit point
+```
+
+
+# 3. Data Cleaning and Updating Attributes
+
+## 3.1 Supply
+
+```{r}
+eldercare <- eldercare %>%
+  select(fid, ADDRESSPOS) %>%
+  mutate(capacity = 100)
+```
+
+## 3.2 Demand
+
+```{r}
+hexagons <- hexagons %>%
+  select(fid) %>%
+  mutate(demand = 100)
+```
+
+## 3.3 OD Matrix
+
+```{r}
+distmat <- ODMatrix %>%
+  select(origin_id, destination_id, total_cost) %>%
+  spread(destination_id, total_cost)%>%
+  select(c(-c('origin_id')))
+```
+
+
+```{r}
+distmat_km <- as.matrix(distmat/1000)
+```
+
+# 4. Computing Handsen's Accessibility
+
+## 4.1 The base code
+
+```{r}
+acc_Hansen <- data.frame(ac(hexagons$demand,
+                            eldercare$capacity,
+                            distmat_km, 
+                            #d0 = 50, set to constraints
+                            power = 2, 
+                            family = "Hansen"))
+```
+
+## 4.2 Tidy the output
+```{r}
+colnames(acc_Hansen) <- "accHansen"
+
+# acc_Hansen <- tbl_df(acc_Hansen)
+acc_Hansen <- tibble::as_tibble(acc_Hansen)
+
+hexagon_Hansen <- bind_cols(hexagons, acc_Hansen)
+```
+
+## 4.3 Combine code chunk
+```{r, eval = FALSE}
+acc_Hansen <- data.frame(ac(hexagons$demand,
+                            eldercare$capacity,
+                            distmat_km, 
+                            #d0 = 50,
+                            power = 0.5, 
+                            family = "Hansen"))
+
+colnames(acc_Hansen) <- "accHansen"
+# acc_Hansen <- tbl_df(acc_Hansen)
+acc_Hansen <- tibble::as_tibble(acc_Hansen)
+
+hexagon_Hansen <- bind_cols(hexagons, acc_Hansen)
+```
+
+# 5. Visualising Accessibility
+
+```{r}
+mapex <- st_bbox(hexagons)
+
+tmap_mode("plot")
+tm_shape(hexagon_Hansen,
+         bbox = mapex) + 
+  tm_fill(col = "accHansen",
+          n = 10,
+          style = "quantile",
+          border.col = "black",
+          border.lwd = 1) +
+tm_shape(eldercare) +
+  tm_symbols(size = 0.1) +
+  tm_layout(main.title = "Accessibility to eldercare: Hansen method",
+            main.title.position = "center",
+            main.title.size = 2,
+            legend.outside = FALSE,
+            legend.height = 0.45, 
+            legend.width = 3.0,
+            legend.format = list(digits = 6),
+            legend.position = c("right", "top"),
+            frame = TRUE) +
+  tm_compass(type="8star", size = 2) +
+  tm_scale_bar(width = 0.15) +
+  tm_grid(lwd = 0.1, alpha = 0.5)
+```
+
+```{r}
+hexagon_Hansen <- st_join(hexagon_Hansen, mpsz, 
+                          join = st_intersects)
+```
+
+```{r}
+ggbetweenstats(
+  data = hexagon_Hansen,
+  x = REGION_N,
+  y = accHansen,
+  type = "p")
+```

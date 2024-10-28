@@ -101,6 +101,8 @@ Reading the input data sets. It is in simple feature data frame.
 ```{r}
 mdata <- read_rds("data/mdata.rds")
 
+# mdata <- read_rds("data/mdata.rds") %>% 
+  # st_jitter(amount =.05) #amount = 2 (2metres)
 ```
 
 ## 4.2 Data Sampling
