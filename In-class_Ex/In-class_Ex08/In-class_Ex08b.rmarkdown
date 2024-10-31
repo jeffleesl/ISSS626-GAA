@@ -10,9 +10,11 @@ execute:
   message: false #no warning messages go out
 ---
 
+
 # 1. Getting Started
 
 ## 1.1 Installing and Loading R packages
+
 
 ```{r}
 pacman::p_load(sf, spdep, GWmodel, SpatialML, 
@@ -20,25 +22,30 @@ pacman::p_load(sf, spdep, GWmodel, SpatialML,
                knitr, kableExtra)
 ```
 
+
 # 2. Preparing Data
 
 ::: panel-tabset
 
 ## Data import
 
+
 ```{r}
 mdata <- read_rds("data/mdata.rds")
 ```
 
+
 ## Data Sampling 
 
 Calibrating predictive models are computational intensive, especially random forest method is used. For quick prototyping, a 10% sample will be selected at random from the data by using the code chunk below.
+
 
 ```{r}
 set.seed(1234)
 HDB_sample <- mdata %>%
   sample_n(1500)
 ```
+
 
 ## Checking of overlapping point
 
@@ -48,25 +55,30 @@ When using GWmodel to calibrate explanatory or predictive models, it is very imp
 
 The code chunk below is used to check if there are overlapping point features.
 
+
 ```{r}
 overlapping_points <- HDB_sample %>%
   mutate(overlap = lengths(st_equals(., .)) > 1)
 ```
 
+
 ## Spatial jitter
 
 In the code code chunk below, st_jitter() of sf package is used to move the point features by 5m to avoid overlapping point features.
+
 
 ```{r}
 HDB_sample <- HDB_sample %>%
   st_jitter(amount = 5)
 ```
 
+
 :::
 
 # 3. Data Sampling
 
 The entire data are split into training and test data sets with 65% and 35% respectively by using initial_split() of rsample package. rsample is one of the package of tigymodels.
+
 
 ```{r}
 set.seed(1234)
@@ -76,9 +88,11 @@ train_data <- training(resale_split)
 test_data <- testing(resale_split)
 ```
 
+
 # 4. Multicollinearity check
 
 In order to avoid multicollineariy. In the code chunk below, ggcorrmat() of ggstatsplot is used to plot a correlation matrix to check if there are pairs of highly correlated independent variables.
+
 
 ```{r}
 mdata_nogeo <- mdata %>%
@@ -86,7 +100,9 @@ mdata_nogeo <- mdata %>%
 ggstatsplot::ggcorrmat(mdata_nogeo[, 2:17])
 ```
 
+
 # 5. Building a non-spatial multiple linear regression
+
 
 ```{r}
 price_mlr <- lm(resale_price ~ floor_area_sqm +
@@ -101,9 +117,11 @@ olsrr::ols_regress(price_mlr)
 ```
 
 
+
 # 6. Multicollinearity check with VIF
 
 ## 6.1 VIF
+
 
 ```{r}
 vif <- performance::check_collinearity(price_mlr)
@@ -112,16 +130,20 @@ kable(vif,
   kable_styling(font_size = 18) 
 ```
 
+
 ## 6.2 Plotting VIF
+
 
 ```{r}
 plot(vif) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+
 # 7. Predictive Modelling with gwr
 
 ## 7.1 Computing adaptive bandwidth
+
 
 ```{r}
 bw_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
@@ -138,12 +160,13 @@ bw_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
                   longlat=FALSE)
 ```
 
-
 ```{r}
 bw_adaptive
 ```
 
+
 ## 7.2 Model calibration
+
 
 ```{r}
 gwr_adaptive <- gwr.basic(formula = resale_price ~
@@ -161,16 +184,17 @@ gwr_adaptive <- gwr.basic(formula = resale_price ~
                           longlat = FALSE)
 ```
 
-
 ```{r}
 gwr_adaptive
 ```
+
 
 # 8. Predictive Modelling with MLR
 
 ## 8.1 Predicting with test data
 
 Test data bw
+
 
 ```{r}
 gwr_bw_test_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
@@ -187,7 +211,9 @@ gwr_bw_test_adaptive <- bw.gwr(resale_price ~ floor_area_sqm +
                   longlat=FALSE)
 ```
 
+
 Predicting
+
 
 ```{r}
 gwr_pred <- gwr.predict(formula = resale_price ~
@@ -206,11 +232,13 @@ gwr_pred <- gwr.predict(formula = resale_price ~
                         longlat = FALSE)
 ```
 
+
 # 9. Predictive Modelling: RF method
 
 ## 9.1 Data Preparation
 
 Firstly, code chunk below is used to extract the coordinates of training and test data sets
+
 
 ```{r}
 coords <- st_coordinates(HDB_sample)
@@ -218,14 +246,18 @@ coords_train <- st_coordinates(train_data)
 coords_test <- st_coordinates(test_data)
 ```
 
+
 Next, code chunk below is used to drop the geometry column of both training and test data sets.
+
 
 ```{r}
 train_data_nogeom <- train_data %>%
   st_drop_geometry()
 ```
 
+
 ## 9.2 Calibrating RF model
+
 
 ```{r}
 set.seed(1234)
@@ -238,15 +270,19 @@ rf <- ranger(resale_price ~ floor_area_sqm + storey_order +
              data=train_data_nogeom)
 ```
 
+
 ## 9.3 Model output
+
 
 ```{r}
 rf
 ```
 
+
 # 10. Predictive Modelling: SpatialML method
 
 Calibrating with grf
+
 
 ```{r}
 set.seed(1234)
@@ -263,9 +299,11 @@ gwRF_adaptive <- grf(formula = resale_price ~ floor_area_sqm +
                      coords=coords_train)
 ```
 
+
 # 11. Predicting by using the test data
 
 ## 11.1 Preparing the test data
+
 
 ```{r}
 test_data_nogeom <- cbind(
@@ -273,9 +311,11 @@ test_data_nogeom <- cbind(
   st_drop_geometry()
 ```
 
+
 ## 11.2 Predicting with the test data
 
 In the code chunk below, predict.grf() of spatialML for predicting re-sale prices in the test data set (i.e. test_data_nogeom)
+
 
 ```{r}
 gwRF_pred <- predict.grf(gwRF_adaptive, 
@@ -290,9 +330,11 @@ gwRF_pred <- predict.grf(gwRF_adaptive,
 str(gwRF_pred) 
 ```
 
+
 ## 11.3 Creating DF
 
 Next, the code chunk below is used to convert the output from predict.grf() into a data.frame.
+
 
 ```{r}
 GRF_pred_df <- as.data.frame(gwRF_pred)
@@ -302,14 +344,18 @@ GRF_pred_df <- as.data.frame(gwRF_pred)
 nrow(GRF_pred_df)
 ```
 
+
 Then, cbind() is used to append fields in GRF_pred_df data.frame onto test_data.
+
 
 ```{r}
 test_data_pred <- cbind(test_data, 
                         GRF_pred_df)
 ```
 
+
 # 12. Visualising the predicted values
+
 
 ```{r}
 ggplot(data = test_data_pred,
