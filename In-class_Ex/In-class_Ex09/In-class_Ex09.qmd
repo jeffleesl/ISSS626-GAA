@@ -10,16 +10,73 @@ execute:
   message: false #no warning messages go out
 ---
 
+# 1. Getting Started
+
 ```{r}
 pacman::p_load(tmap, SpatialAcc, sf, 
                ggstatsplot, reshape2,
                tidyverse)
-
 ```
 
-# 2. Importing Data
+# 2. Count Number of Points within a Distance
 
-## 2.1 Geospatial Data
+To count number of point features (i.e. CHAS clinics) within 1km of another point features (i.e. eldercare centre).
+
+-   Download *ELDERCARE* shapefile and *CHAS* kml file from data.gov.sg
+
+-   Using the steps your learned in Hands-on Exercise 1, import *ELDERCARE* shapefile and *CHAS* kml file into R
+
+## 2.1 The Code
+
+ELDERCARE is in shapefile format, the code chunk below will be used:
+
+```{r}
+eldercare <- st_read(dsn = "data/geospatial", 
+                     layer = "ELDERCARE") %>% 
+  st_transform(crs = 3414)
+```
+
+The code chunk below is used to import kml file.
+
+```{r}
+CHAS <- st_read("data/rawdata/CHASClinics.kml") %>%
+  st_transform(crs = 3414)
+```
+
+## 2.2 Buffering
+
+Next, st_buffer() of sf package is used to create a buffer of 1km around each eldercare features
+
+```{r}
+buffer_1km <- st_buffer(eldercare, 
+                        dist = 1000)
+```
+
+## 2.3 Visualising
+
+The code chunk below is used to plot the newly created buffers and the CHAS clinics.
+
+```{r}
+tmap_mode("view")
+tm_shape(buffer_1km) +
+  tm_polygons() +
+tm_shape(CHAS) +
+  tm_dots()
+```
+
+## 2.4 Counting points 
+
+Lastly, the code chunk below is used to count the number of CHAS clinics with 1km of each eldercare centre.
+
+```{r}
+buffer_1km$pts_count <- lengths(
+  st_intersects(buffer_1km, CHAS))
+```
+
+# 3. Importing Data
+
+## 3.1 Geospatial Data
+
 ```{r}
 mpsz <- st_read(dsn = "data/geospatial", 
                 layer = "MP14_SUBZONE_NO_SEA_PL") %>% 
@@ -34,7 +91,9 @@ eldercare <- st_read(dsn = "data/geospatial",
   st_transform(crs = 3414)
 
 ```
-## 2.2 OD Matrix
+
+## 3.2 OD Matrix
+
 ```{r}
 ODMatrix <- read_csv("data/aspatial/OD_Matrix.csv", 
                      skip = 0)
@@ -44,10 +103,9 @@ ODMatrix <- read_csv("data/aspatial/OD_Matrix.csv",
 # exit = the exit point
 ```
 
+# 4. Data Cleaning and Updating Attributes
 
-# 3. Data Cleaning and Updating Attributes
-
-## 3.1 Supply
+## 4.1 Supply
 
 ```{r}
 eldercare <- eldercare %>%
@@ -55,7 +113,7 @@ eldercare <- eldercare %>%
   mutate(capacity = 100)
 ```
 
-## 3.2 Demand
+## 4.2 Demand
 
 ```{r}
 hexagons <- hexagons %>%
@@ -63,7 +121,7 @@ hexagons <- hexagons %>%
   mutate(demand = 100)
 ```
 
-## 3.3 OD Matrix
+## 4.3 OD Matrix
 
 ```{r}
 distmat <- ODMatrix %>%
@@ -72,14 +130,13 @@ distmat <- ODMatrix %>%
   select(c(-c('origin_id')))
 ```
 
-
 ```{r}
 distmat_km <- as.matrix(distmat/1000)
 ```
 
-# 4. Computing Handsen's Accessibility
+# 5. Computing Handsen's Accessibility
 
-## 4.1 The base code
+## 5.1 The base code
 
 ```{r}
 acc_Hansen <- data.frame(ac(hexagons$demand,
@@ -90,17 +147,19 @@ acc_Hansen <- data.frame(ac(hexagons$demand,
                             family = "Hansen"))
 ```
 
-## 4.2 Tidy the output
+## 5.2 Tidy the output
+
 ```{r}
 colnames(acc_Hansen) <- "accHansen"
 
 # acc_Hansen <- tbl_df(acc_Hansen)
-acc_Hansen <- tibble::as_tibble(acc_Hansen)
+acc_Hansen <- as_tibble(acc_Hansen)
 
 hexagon_Hansen <- bind_cols(hexagons, acc_Hansen)
 ```
 
-## 4.3 Combine code chunk
+## 5.3 Combine code chunk
+
 ```{r, eval = FALSE}
 acc_Hansen <- data.frame(ac(hexagons$demand,
                             eldercare$capacity,
@@ -111,12 +170,15 @@ acc_Hansen <- data.frame(ac(hexagons$demand,
 
 colnames(acc_Hansen) <- "accHansen"
 # acc_Hansen <- tbl_df(acc_Hansen)
-acc_Hansen <- tibble::as_tibble(acc_Hansen)
+# acc_Hansen <- tibble::as_tibble(acc_Hansen)
+acc_Hansen <- as_tibble(acc_Hansen)
 
 hexagon_Hansen <- bind_cols(hexagons, acc_Hansen)
 ```
 
-# 5. Visualising Accessibility
+# 6. Visualising Accessibility
+
+## 6.1 The Code
 
 ```{r}
 mapex <- st_bbox(hexagons)
@@ -144,6 +206,8 @@ tm_shape(eldercare) +
   tm_scale_bar(width = 0.15) +
   tm_grid(lwd = 0.1, alpha = 0.5)
 ```
+
+## 6.2 Statistical graphic
 
 ```{r}
 hexagon_Hansen <- st_join(hexagon_Hansen, mpsz, 
