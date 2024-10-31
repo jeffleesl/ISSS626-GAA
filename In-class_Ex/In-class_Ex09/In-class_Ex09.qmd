@@ -1,5 +1,5 @@
 ---
-title: "In-class Exercise 09"
+title: "In-class Exercise 09: Modelling Geographical Accessibility"
 author: "Jeffrey Lee Shao Lin"
 date: "Oct 28 2024"
 date-modified: "last-modified"
@@ -64,7 +64,7 @@ tm_shape(CHAS) +
   tm_dots()
 ```
 
-## 2.4 Counting points 
+## 2.4 Counting points
 
 Lastly, the code chunk below is used to count the number of CHAS clinics with 1km of each eldercare centre.
 

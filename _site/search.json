@@ -2294,5 +2294,19 @@
     "title": "In-class Exercise 09",
     "section": "6.2 Statistical graphic",
     "text": "6.2 Statistical graphic\n\nhexagon_Hansen &lt;- st_join(hexagon_Hansen, mpsz, \n                          join = st_intersects)\n\n\nggbetweenstats(\n  data = hexagon_Hansen,\n  x = REGION_N,\n  y = accHansen,\n  type = \"p\")"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex08/In-class_Ex08b.html",
+    "href": "In-class_Ex/In-class_Ex08/In-class_Ex08b.html",
+    "title": "In-class Exercise 8: Supplement to Hands-on Exercise 8",
+    "section": "",
+    "text": "pacman::p_load(sf, spdep, GWmodel, SpatialML, \n               tmap, rsample, Metrics, tidyverse,\n               knitr, kableExtra)"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex08/In-class_Ex08b.html#installing-and-loading-r-packages",
+    "href": "In-class_Ex/In-class_Ex08/In-class_Ex08b.html#installing-and-loading-r-packages",
+    "title": "In-class Exercise 8: Supplement to Hands-on Exercise 8",
+    "section": "",
+    "text": "pacman::p_load(sf, spdep, GWmodel, SpatialML, \n               tmap, rsample, Metrics, tidyverse,\n               knitr, kableExtra)"
   }
 ]
