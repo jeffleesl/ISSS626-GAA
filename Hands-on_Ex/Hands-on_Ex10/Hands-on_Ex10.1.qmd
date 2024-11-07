@@ -147,9 +147,8 @@ Code chunk below populates the planning subzone code (i.e. SUBZONE_C) of mpsz sf
 # busstop <- st_transform(busstop, st_crs(mpsz))
 ```
 
-
 ```{r}
-busstop_mpsz <- st_intersection(busstop, mpsz) %>%
+busstop_mpsz <- st_intersection(busstop, mpsz) %>% # output is a point
   select(BUS_STOP_N, SUBZONE_C) %>%
   st_drop_geometry()
 ```
@@ -182,7 +181,6 @@ Next, we are going to append the planning subzone code from busstop_mpsz data fr
 ```{r}
 #busstop_mpsz <- busstop_mpsz %>% distinct(BUS_STOP_N, .keep_all = TRUE)
 ```
-
 
 ```{r}
 od_data <- left_join(odbus6_9 , busstop_mpsz,
@@ -300,7 +298,7 @@ tm_shape() +
            alpha = 0.3)
 ```
 
-::: {.callout-warning}
+::: callout-warning
 Be patient, the rendering process takes more time because of the transparency argument (i.e. alpha)
 :::
 

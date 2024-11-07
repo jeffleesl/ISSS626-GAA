@@ -84,7 +84,7 @@ There are at least two ways to compute the required distance matrix. One is base
 First [`as.Spatial()`](https://r-spatial.github.io/sf/reference/coerce-methods.html) will be used to convert *mpsz* from sf tibble data frame to SpatialPolygonsDataFrame of sp object as shown in the code chunk below.
 
 ```{r}
-mpsz_sp <- as(mpsz, "Spatial")
+mpsz_sp <- as(mpsz, "Spatial") #convert sf to sp
 mpsz_sp
 ```
 
@@ -139,7 +139,7 @@ rownames(dist) <- paste0(sz_names)
 Next, we will pivot the distance matrix into a long table by using the row and column subzone codes as show in the code chunk below.
 
 ```{r}
-distPair <- melt(dist) %>%
+distPair <- melt(dist) %>% #dplyr better version reshape2 is the grandfather of dplyr
   rename(dist = value)
 head(distPair, 10)
 ```
@@ -278,10 +278,12 @@ flow_data1 <- flow_data1 %>%
 ## 7.4 Preparing destination attribute
 
 ```{r}
+# should not use this
+# no of school counts (pri,sec and jc)
 flow_data1 <- flow_data1 %>%
   left_join(pop,
             by = c(DESTIN_SZ = "SZ")) %>%
-  rename(DESTIN_AGE7_12 = AGE7_12,
+  rename(DESTIN_AGE7_12 = AGE7_12, # destination is the receiving zone
          DESTIN_AGE13_24 = AGE13_24,
          DESTIN_AGE25_64 = AGE25_64) %>%
   select(-c(PA, SZ_NAME))
@@ -393,10 +395,10 @@ The general formula of Unconstrained Spatial Interaction Model
 The code chunk used to calibrate to model is shown below:
 
 ```{r}
-uncSIM <- glm(formula = TRIPS ~ 
-                log(ORIGIN_AGE25_64) + 
-                log(DESTIN_AGE25_64) +
-                log(dist),
+uncSIM <- glm(formula = TRIPS ~ # take note is glm and not lm
+                log(ORIGIN_AGE25_64) +  #origin should be positive
+                log(DESTIN_AGE25_64) + #destin should be positive
+                log(dist), # distance should be negative
               family = poisson(link = "log"),
               data = SIM_data,
               na.action = na.exclude)
@@ -422,7 +424,7 @@ CalcRSquared(uncSIM$data$TRIPS, uncSIM$fitted.values)
 ```
 
 ```{r}
-r2_mcfadden(uncSIM)
+r2_mcfadden(uncSIM) # available in performance package, can be used for logistic and Poisson regression models
 ```
 
 ## 8.6 Origin (Production) constrained SIM
@@ -484,6 +486,7 @@ The general formula of Doubly Constrained Spatial Interaction Model
 ![](images/clipboard-1522313502.png){width="493"}
 
 ```{r}
+# create Doubly Constrained
 dbcSIM <- glm(formula = TRIPS ~ 
                 ORIGIN_SZ + 
                 DESTIN_SZ + 

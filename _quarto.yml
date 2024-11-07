@@ -57,6 +57,8 @@ website:
            href: "In-class_Ex/In-class_Ex08/In-class_Ex08b.html"           
          - text: "In-class Exercise 9: Modelling Geographical Accessibility"
            href: "In-class_Ex/In-class_Ex09/In-class_Ex09.html"
+         - text: "In-class Exercise 10: Working with Open Government Data"
+           href: "In-class_Ex/In-class_Ex10/In-class_Ex10.html"         
      - text: "Take-Home Exercise"
        menu: 
          - text: "Take-Home Exercise 1"
