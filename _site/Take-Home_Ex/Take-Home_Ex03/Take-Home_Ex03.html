@@ -393,7 +393,7 @@ Geodetic CRS:  WGS 84</code></pre>
 <section id="updating-crs-information" class="level2">
 <h2 class="anchored" data-anchor-id="updating-crs-information">5.1.1 Updating CRS Information</h2>
 <p>Uganda is located in southeast Africa between 1º S and 4º N latitude, and between 30º E and 35º E longitude.</p>
-<p>The code chunk below updates the newly imported mpsz with the correct ESPG code (i.e.&nbsp;32736).</p>
+<p>The code chunk below updates the newly imported mpsz with the correct ESPG code (i.e.&nbsp;32736 or 21096).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform to the correct ESPG Code</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -712,7 +712,41 @@ lgl  (23): f3_2_14, f3_2_15, f3_3_14, f3_3_15, f3_5_14, f3_5_15, g12_2_1, g1...
 </section>
 <section id="converting-aspatial-data-frame-into-a-sf-object" class="level2">
 <h2 class="anchored" data-anchor-id="converting-aspatial-data-frame-into-a-sf-object">5.3 Converting aspatial data frame into a sf object</h2>
-<p>Currently, the uganda_data tibble data frame is aspatial. We will convert it to a sf object. The code chunk below converts uganda_data data frame into a simple feature data frame by using st_as_sf() of sf packages.</p>
+<p>Currently, the uganda_data_new tibble data frame is aspatial. We will convert it to a sf object. The code chunk below converts uganda_data_new data frame into a simple feature data frame by using st_as_sf() of sf packages.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>uganda_data.sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(uganda_data_new,</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>),</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">32736</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Notice that st_transform() of sf package is used to convert the coordinates from wgs84 (i.e.&nbsp;crs:4326) to Arc 1960 (i.e.&nbsp;crs=32736).</p>
+<p>Next, head() is used to list the content of condo_resale.sf object.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(uganda_data.sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 31 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 572616.1 ymin: 10295290 xmax: 572903.6 ymax: 10295980
+Projected CRS: WGS 84 / UTM zone 36S
+# A tibble: 6 × 32
+  HH_ID    age Region   Rural_Urban age_band gender education_level
+  &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;           &lt;dbl&gt;
+1 001001    32 NORTHERN Urban              4      2               6
+2 001019    37 NORTHERN Urban              4      2               2
+3 001028    25 NORTHERN Urban              3      2               1
+4 001037    32 NORTHERN Urban              4      1               2
+5 001040    40 NORTHERN Urban              4      2               3
+6 001047    16 NORTHERN Urban              1      1               2
+# ℹ 25 more variables: employment_status &lt;dbl&gt;, mobile_user &lt;dbl&gt;,
+#   national_ic_doc &lt;dbl&gt;, passport_doc &lt;dbl&gt;, utilities_bill_doc &lt;dbl&gt;,
+#   pay_slip_doc &lt;dbl&gt;, self_sustaining &lt;dbl&gt;, financial_advice &lt;dbl&gt;,
+#   save_money &lt;dbl&gt;, save_money_commercial_bank &lt;dbl&gt;, save_money_SACCO &lt;dbl&gt;,
+#   save_money_mobile_money &lt;dbl&gt;, last_amt_saved &lt;dbl&gt;,
+#   last_amt_borrowed &lt;dbl&gt;, borrow_money_commercial_bank &lt;dbl&gt;,
+#   borrow_money_SACCO &lt;dbl&gt;, borrow_money_mobile_money &lt;dbl&gt;, …</code></pre>
+</div>
+</div>
 
 
 </section>
