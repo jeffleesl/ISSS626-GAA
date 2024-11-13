@@ -123,6 +123,8 @@ uganda_data <- read_csv("data/rawdata/FinScope-2023_Dataset_Final.csv")
 
 ### 5.2.1 Variables to Consider for Financial Inclusion
 
+Check the column names in the uganda_data to identify the right names.
+
 ```{r}
 #| eval: false
 colnames(uganda_data) # Displays all column names in the dataset

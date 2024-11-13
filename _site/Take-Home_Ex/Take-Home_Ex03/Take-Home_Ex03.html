@@ -251,6 +251,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../../Take-Home_Ex/Take-Home_Ex02/Take-Home_Ex02.html">
  <span class="dropdown-text">Take-Home Exercise 2</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="../../Take-Home_Ex/Take-Home_Ex03/Take-Home_Ex03.html">
+ <span class="dropdown-text">Take-Home Exercise 3</span></a>
+  </li>  
     </ul>
   </li>
 </ul>
@@ -321,7 +325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">November 13, 2024</p>
+      <p class="date-modified">November 14, 2024</p>
     </div>
   </div>
     
@@ -528,6 +532,7 @@ lgl  (23): f3_2_14, f3_2_15, f3_3_14, f3_3_15, f3_5_14, f3_5_15, g12_2_1, g1...
 </div>
 <section id="variables-to-consider-for-financial-inclusion" class="level3">
 <h3 class="anchored" data-anchor-id="variables-to-consider-for-financial-inclusion">5.2.1 Variables to Consider for Financial Inclusion</h3>
+<p>Check the column names in the uganda_data to identify the right names.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(uganda_data) <span class="co"># Displays all column names in the dataset</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -536,22 +541,45 @@ lgl  (23): f3_2_14, f3_2_15, f3_3_14, f3_3_15, f3_5_14, f3_5_15, g12_2_1, g1...
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Demographic Variables</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Economic Variables</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Geographic Variables</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Access Variables</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-5-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-5" role="tab" aria-controls="tabset-1-5" aria-selected="false">Financial Services Variables</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-6-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-6" role="tab" aria-controls="tabset-1-6" aria-selected="false">Other</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p>• Age and Age Band • Gender • Education Level • Mobile User</p>
+<ul>
+<li><p>Age and Age Band</p></li>
+<li><p>Gender</p></li>
+<li><p>Education Level</p></li>
+<li><p>Mobile User</p></li>
+</ul>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<p>• Income Level • Employment Status</p>
+<ul>
+<li><p>Income Level</p></li>
+<li><p>Employment Status</p></li>
+</ul>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<p>• Urban vs.&nbsp;rural status</p>
+<ul>
+<li>Urban vs.&nbsp;rural status</li>
+</ul>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<p>• Distance to nearest bank or financial institution from Home (Commerical Nank, SACCO and Mobile Money)</p>
+<ul>
+<li>Distance to nearest bank or financial institution from Home (Commerical Nank, SACCO and Mobile Money)</li>
+</ul>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
-<p>• Financail Advice • Save Money and the channel (Commerical Nank, SACCO and Mobile Money) • Last amount saved • Borrow Money and the channel (Commerical Nank, SACCO and Mobile Money) • Last amount borrowed • Last amount sent • Last amount received</p>
+<ul>
+<li><p>Financial Advice</p></li>
+<li><p>Save Money and the channel (Commerical Nank, SACCO and Mobile Money)</p></li>
+<li><p>Last amount saved</p></li>
+<li><p>Borrow Money and the channel (Commerical Nank, SACCO and Mobile Money)</p></li>
+<li><p>Last amount borrowed</p></li>
+<li><p>Last amount sent</p></li>
+<li><p>Last amount received</p></li>
+</ul>
 </div>
 <div id="tabset-1-6" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-6-tab">
-<p>• Documentation for KYC (National Identification Card, Passport, Utilities and Pay Slip) • Self Sustaining</p>
+<ul>
+<li><p>Documentation for KYC (National Identification Card, Passport, Utilities and Pay Slip)</p></li>
+<li><p>Self Sustaining</p></li>
+</ul>
 </div>
 </div>
 </div>
