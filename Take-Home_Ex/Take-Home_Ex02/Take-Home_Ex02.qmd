@@ -213,7 +213,8 @@ st_crs(tourism_sf)
 ### 6.2.2 Using Province in Thai (Showing Other Method)
 
 ```{r}
-# Left join to add geometries from thailand bundaries shapefile
+eval |= false
+Left join to add geometries from thailand bundaries shapefile
 # tourism_sf_th <- tourism_data_new %>%
   # left_join(provinces, by = c("province_thai" = "ADM1_TH"))
 
