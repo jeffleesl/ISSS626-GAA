@@ -887,3 +887,5 @@ tmap_arrange(passport_doc_pct_SE, passport_doc_pct_TV,
 ```{r}
 tmap_mode("plot")
 ```
+
+The Bank for International Settlements has published a paper on Financial Inclusion which I also focus on Usage, Access, and Barriers. As more countries prioritize Anti-Money Laundering, developing nations may face challenges in obtaining the necessary documentation to verify their identity and land ownership. In a similar project I completed last semester, I suggested using satellite technology to monitor lenders' plots of land. However, location remains a concern, and we recommended using non-smartphones to conduct these transactions, which has proven effective in India. Therefore, it would be beneficial to gather more information to ensure that financial inclusion can reach further.
