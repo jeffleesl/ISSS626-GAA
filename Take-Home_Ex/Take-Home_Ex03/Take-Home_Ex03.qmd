@@ -217,6 +217,12 @@ uganda_data_new <- uganda_data %>%
 ```
 
 ```{r}
+uganda_data_new <- uganda_data_new %>%
+  filter(!is.na(longitude) & longitude != "",
+         !is.na(latitude) & latitude != "")
+```
+
+```{r}
 head(uganda_data_new$longitude) #see the data in XCOORD column
 ```
 
@@ -224,7 +230,7 @@ head(uganda_data_new$longitude) #see the data in XCOORD column
 head(uganda_data_new$latitude) #see the data in YCOORD column
 ```
 
-Next, summary() of base R is used to display the summary statistics of uganda_data tibble data frame.
+Next, summary() of base R is used to display the summary statistics of uganda_data_new tibble data frame.
 
 ```{r}
 summary(uganda_data_new)
@@ -238,12 +244,24 @@ Currently, the uganda_data_new tibble data frame is aspatial. We will convert it
 uganda_data.sf <- st_as_sf(uganda_data_new,
                            coords = c("longitude", "latitude"),
                            crs=4326) %>%
-  st_transform(crs=32736)
+  st_transform(crs=32736) %>%
+  replace_na(list(
+    save_money_commercial_bank = 2,
+    save_money_SACCO = 2,
+    save_money_mobile_money = 2,
+    last_amt_saved = 9,
+    last_amt_borrowed = 998,
+    borrow_money_commercial_bank = 2,
+    borrow_money_SACCO = 2,
+    borrow_money_mobile_money = 2,
+    last_amt_sent = 998,
+    last_amt_received = 998
+  ))
 ```
 
 Notice that st_transform() of sf package is used to convert the coordinates from wgs84 (i.e. crs:4326) to Arc 1960 (i.e. crs=32736).
 
-Next, head() is used to list the content of condo_resale.sf object.
+Next, head() is used to list the content of uganda_data.sf object.
 
 ```{r}
 head(uganda_data.sf)
