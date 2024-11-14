@@ -43,7 +43,7 @@ Before we start the exercise, we will need to import necessary R packages first.
     Use the code chunk below to install and launch the below R packages.
 
 ```{r}
-pacman::p_load(olsrr, corrplot, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gtsummary)
+pacman::p_load(olsrr, ggstatsplot, corrplot, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gtsummary)
 ```
 
 # 5. Getting the Data Into R Environment
@@ -329,7 +329,7 @@ Notice that the output is in point feature data frame.
 
 Use statistical graphics functions of ggplot2 package to perform EDA
 
-# 6.1 EDA using statistical graphics
+## 6.1 EDA using statistical graphics
 
 Plot the distribution of accounts by using appropriate Exploratory Data Analysis (EDA) as shown in the code chunk below.
 
@@ -349,11 +349,12 @@ ggplot(data=uganda_data.sf, aes(x=`save_money_mobile_money_pct`)) +
 
 ![](images/clipboard-2396109935.png)
 
-## 6.2Multiple Histogram Plots distribution of variables
+## 6.2 Multiple Histogram Plots distribution of variables
 
 Draw a few multiple histograms (also known as trellis plot) by using ggarrange() of ggpubr package to analysis the variables.
 
 ```{r}
+#| eval: false
 LOG_age_band <- ggplot(data=uganda_data.sf, aes(x= `LOG_age_band`)) + 
   geom_histogram(bins=20, color="black", fill="#FFC166")
   
@@ -406,7 +407,10 @@ ggarrange(LOG_age_band, gender_pct, LOG_education_level, LOG_employment_status,
           ncol = 3, nrow = 5)
 ```
 
+![](images/clipboard-1805352332.png){width="914"}
+
 ```{r}
+#| eval: false
 LOG_last_amt_saved <- ggplot(data=uganda_data.sf, aes(x= `LOG_last_amt_saved`)) + 
   geom_histogram(bins=20, color="#0A1E0F", fill="#A9CB9F") 
 
@@ -456,5 +460,121 @@ ggarrange(LOG_last_amt_saved, LOG_last_amt_borrowed, borrow_money_commercial_ban
           ncol = 4, nrow = 4)
 ```
 
-The plots show that the majority of people lack insurance, savings, and joint accounts. Many respondents also feel they do not have enough money and would like to seek financial advice. Additionally, a large portion of those surveyed report that bank branches and ATMs are located relatively far from their homes.
+![](images/clipboard-3608888018.png){width="738"}The plots show that the majority of people lack insurance, savings, and joint accounts. Many respondents also feel they do not have enough money and would like to seek financial advice. Additionally, a large portion of those surveyed report that bank branches and ATMs are located relatively far from their homes.
+
+# 7. Correlation Analysis - ggstatsplot methods
+
+```{r}
+#| eval: false
+ggcorrmat(uganda_data_fin[, 47:59])
+```
+
+![](images/clipboard-4134350256.png)
+
+# 8. Hedonic Pricing Modelling in R
+
+## 8.1 Simple Linear Regression Method
+
+Build a simple linear regression model by using savings_account_pct as the dependent variable and LOG_distance_commerical_bank as the independent variable.
+
+```{r}
+uganda.slr <- lm(formula=savings_account_pct ~ LOG_distance_commerical_bank, data = uganda_data.sf)
+```
+
+```{r}
+summary(uganda.slr)
+```
+
+The output report reveals that the SELLING_PRICE can be explained by using the formula:
+
+```         
+      *y = 0.0596595 + 0.0019882x1*
+```
+
+The R-squared of 0.01845 reveals that the simple regression model built is able to explain about 1.845% of the percentage of having savings account.
+
+Since p-value is way bigger than 0.0001, we will not reject the null hypothesis that mean is not a good estimator of percentage of having savings account.
+
+## 8.2 Multiple Linear Regression Method
+
+The code chunk below using lm() to calibrate the multiple linear regression model.
+
+```{r}
+
+sa_mlr <- lm(formula = savings_account_pct ~ LOG_age_band + gender_pct + LOG_education_level + LOG_employment_status + mobile_user_pct + national_ic_doc_pct + passport_doc_pct + utilities_bill_do_pct + pay_slip_doc_pct + self_sustaining_pct + financial_advice_pct +save_money_pct + save_money_commercial_bank_pct + save_money_SACCO_pct + save_money_mobile_money_pct + LOG_last_amt_saved + LOG_last_amt_borrowed + borrow_money_commercial_bank_pct + borrow_money_SACCO_pct + borrow_money_mobile_money_pct + LOG_last_amt_sent + LOG_last_amt_received + LOG_distance_commerical_bank + LOG_distance_SACCOS + LOG_distance_ATM + LOG_distance_mobile_money + joint_account_pct, 
+                data=uganda_data.sf)
+summary(sa_mlr)
+```
+
+The Multiple R-squared is 0.3177, suggesting that around 31.7% of the variability in savings_account_pct is explained by the predictor variables in the model. The Adjusted R-squared is 0.3118, which accounts for the number of predictors, confirming that the model provides a modest fit.
+
+Whereas, The F-statistic of 54.28 with a very low p-value (\< 2.2e-16) indicates that the model is statistically significant overall, meaning at least one of the predictors significantly impacts the savings_account_pct.
+
+### Key Predictors
+
+The coefficients tell us the direction and strength of each predictor’s relationship with `savings_account_pct`. Here are some significant predictors:
+
+1.  **Passport Documentation** (`passport_doc_pct`, p = 0.00828):
+
+    -   Positive relationship (Estimate = 0.0409): A higher percentage of individuals with passport documentation is associated with an increase in `savings_account_pct`.
+
+2.  **Payslip Documentation** (`pay_slip_doc_pct`, p = 0.00189):
+
+    -   Positive relationship (Estimate = 0.0497): A higher percentage of individuals with pay slip documentation correlates with a higher percentage of savings accounts. This might suggest that stable income documentation positively influences savings account ownership.
+
+3.  **Self-Sustaining Percentage** (`self_sustaining_pct`, p = 0.00341):
+
+    -   Positive relationship (Estimate = 0.0239): This suggests that communities with higher self-sustaining individuals are more likely to have savings accounts.
+
+4.  **Saving with Commercial Banks and SACCOs**:
+
+    -   **Save Money\
+        **(`save_money_pct,`p = 5.04e-08, Estimate = -0.06590): has a negative coefficient, implying that higher rates of people saving money in general are associated with a lower savings account percentage, possibly indicating other informal
+
+    -   **Save Money with Commercial Bank Percentage** (`save_money_commercial_bank_pct`, p \< 2e-16, Estimate = 0.1816): Strong positive relationship, indicating that those who save with commercial banks are highly likely to have a savings account.
+
+    -   **Save Money with SACCO Percentage** (`save_money_SACCO_pct`, p \< 2e-16, Estimate = 0.2195): Also a strong positive relationship, reinforcing that participation in SACCOs (Savings and Credit Cooperative Organizations) is a strong indicator of savings account ownership.
+
+5.  **Borrowing from Commercial Banks and SACCOs**:
+
+    -   **Borrow Money from Commercial Bank Percentage** (`borrow_money_commercial_bank_pct`, p = 9.03e-05, Estimate = 0.0893): Indicates a positive association with savings account ownership.
+
+    -   **Borrow Money from SACCO Percentage** (`borrow_money_SACCO_pct`, p = 7.23e-06, Estimate = 0.0912): Similar positive relationship, suggesting that access to borrowing services is linked to having savings accounts.
+
+6.  **Distance to Commercial Bank** (`LOG_distance_commercial_bank`, p = 0.00643):
+
+    -   Positive relationship (Estimate = 0.0013): As the log-distance to commercial banks increases, there’s a small but significant increase in the savings account percentage, which might suggest limited access drives individuals to hold savings accounts if they are already banked.
+
+7.  **Last Amount Saved** (`LOG_last_amt_saved`, p = 0.00197):
+
+    -   Positive relationship (Estimate = 0.00054): The log of the last amount saved has a slight positive effect on savings account ownership, suggesting that recent saving activity is associated with having a savings account.
+
+### Non-significant Predictors
+
+Some predictors, such as `gender_pct`, `LOG_education_level`, and `LOG_age_band`, show non-significant effects (high p-values). This may suggest that demographic factors like age, gender, and education do not directly impact the likelihood of savings account ownership in this context.
+
+-   Documentation (like passports and pay slips) and income stability appear to be important indicators of savings account ownership.
+
+-   Engagement with formal and semi-formal financial services, such as commercial banks and SACCOs, positively influences the likelihood of having a savings account.
+
+-   Access to borrowing services is also positively linked to savings account ownership, suggesting that people who have access to credit may be more financially integrated.
+
+-   Distance to financial services can have a minor influence, suggesting a possible need for financial services closer to communities to further increase account ownership rates.
+
+In conclusion, the model suggests that factors related to financial habits (saving and borrowing with formal institutions) and access to financial documentation have significant impacts on the likelihood of savings account ownership in Uganda.
+
+# 9. Preparing Publication Quality Table: olsrr method
+
+With reference to the report above, it is clear that not all the independent variables are statistically significant. We will revised the model by removing those variables which are not statistically significant.
+
+Now, we are ready to calibrate the revised model by using the code chunk below.
+
+```{r}
+
+sa_mlr1 <- lm(formula = savings_account_pct ~ passport_doc_pct + pay_slip_doc_pct  + self_sustaining_pct + save_money_pct + save_money_commercial_bank_pct + save_money_SACCO_pct + LOG_last_amt_saved + borrow_money_commercial_bank_pct + borrow_money_SACCO_pct + borrow_money_mobile_money_pct + LOG_distance_commerical_bank, 
+                data=uganda_data.sf)
+ols_regress(sa_mlr1)
+```
+
+After added the independent variables which are statistically significant, there are no improvement in the R-Squared and Adjusted R-Squared. Furthermore, Predicted R-Squared (of 0.298) indicating that the model may perform slightly less effectively on unseen data. Both RMSE (of 0.005) and MAE (of 0.002) giving an idea of the typical error magnitude. However, AIC and SIC show lower values indicates a better fit given model complexity.
 

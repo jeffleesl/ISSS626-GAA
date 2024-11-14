@@ -294,11 +294,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#converting-aspatial-data-frame-into-a-sf-object" id="toc-converting-aspatial-data-frame-into-a-sf-object" class="nav-link" data-scroll-target="#converting-aspatial-data-frame-into-a-sf-object">5.3 Converting aspatial data frame into a sf object</a></li>
   </ul></li>
-  <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda">6. Exploratory Data Analysis (EDA)</a></li>
-  <li><a href="#eda-using-statistical-graphics" id="toc-eda-using-statistical-graphics" class="nav-link" data-scroll-target="#eda-using-statistical-graphics">6.1 EDA using statistical graphics</a>
+  <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda">6. Exploratory Data Analysis (EDA)</a>
   <ul class="collapse">
-  <li><a href="#multiple-histogram-plots-distribution-of-variables" id="toc-multiple-histogram-plots-distribution-of-variables" class="nav-link" data-scroll-target="#multiple-histogram-plots-distribution-of-variables">6.2Multiple Histogram Plots distribution of variables</a></li>
+  <li><a href="#eda-using-statistical-graphics" id="toc-eda-using-statistical-graphics" class="nav-link" data-scroll-target="#eda-using-statistical-graphics">6.1 EDA using statistical graphics</a></li>
+  <li><a href="#multiple-histogram-plots-distribution-of-variables" id="toc-multiple-histogram-plots-distribution-of-variables" class="nav-link" data-scroll-target="#multiple-histogram-plots-distribution-of-variables">6.2 Multiple Histogram Plots distribution of variables</a></li>
   </ul></li>
+  <li><a href="#correlation-analysis---ggstatsplot-methods" id="toc-correlation-analysis---ggstatsplot-methods" class="nav-link" data-scroll-target="#correlation-analysis---ggstatsplot-methods">7. Correlation Analysis - ggstatsplot methods</a></li>
+  <li><a href="#hedonic-pricing-modelling-in-r" id="toc-hedonic-pricing-modelling-in-r" class="nav-link" data-scroll-target="#hedonic-pricing-modelling-in-r">8. Hedonic Pricing Modelling in R</a>
+  <ul class="collapse">
+  <li><a href="#simple-linear-regression-method" id="toc-simple-linear-regression-method" class="nav-link" data-scroll-target="#simple-linear-regression-method">8.1 Simple Linear Regression Method</a></li>
+  <li><a href="#multiple-linear-regression-method" id="toc-multiple-linear-regression-method" class="nav-link" data-scroll-target="#multiple-linear-regression-method">8.2 Multiple Linear Regression Method</a>
+  <ul class="collapse">
+  <li><a href="#key-predictors" id="toc-key-predictors" class="nav-link" data-scroll-target="#key-predictors">Key Predictors</a></li>
+  <li><a href="#non-significant-predictors" id="toc-non-significant-predictors" class="nav-link" data-scroll-target="#non-significant-predictors">Non-significant Predictors</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#preparing-publication-quality-table-olsrr-method" id="toc-preparing-publication-quality-table-olsrr-method" class="nav-link" data-scroll-target="#preparing-publication-quality-table-olsrr-method">9. Preparing Publication Quality Table: olsrr method</a></li>
   </ul>
 </nav>
     </div>
@@ -370,7 +381,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Use the code chunk below to install and launch the below R packages.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(olsrr, corrplot, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gtsummary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(olsrr, ggstatsplot, corrplot, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gtsummary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="getting-the-data-into-r-environment" class="level1">
@@ -805,9 +816,8 @@ Projected CRS: WGS 84 / UTM zone 36S
 <section id="exploratory-data-analysis-eda" class="level1">
 <h1>6. Exploratory Data Analysis (EDA)</h1>
 <p>Use statistical graphics functions of ggplot2 package to perform EDA</p>
-</section>
-<section id="eda-using-statistical-graphics" class="level1">
-<h1>6.1 EDA using statistical graphics</h1>
+<section id="eda-using-statistical-graphics" class="level2">
+<h2 class="anchored" data-anchor-id="eda-using-statistical-graphics">6.1 EDA using statistical graphics</h2>
 <p>Plot the distribution of accounts by using appropriate Exploratory Data Analysis (EDA) as shown in the code chunk below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span><span class="st">`</span><span class="at">savings_account_pct</span><span class="st">`</span>)) <span class="sc">+</span></span>
@@ -819,8 +829,9 @@ Projected CRS: WGS 84 / UTM zone 36S
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0B2130"</span>, <span class="at">fill=</span><span class="st">"#AB88BA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><img src="images/clipboard-2396109935.png" class="img-fluid"></p>
+</section>
 <section id="multiple-histogram-plots-distribution-of-variables" class="level2">
-<h2 class="anchored" data-anchor-id="multiple-histogram-plots-distribution-of-variables">6.2Multiple Histogram Plots distribution of variables</h2>
+<h2 class="anchored" data-anchor-id="multiple-histogram-plots-distribution-of-variables">6.2 Multiple Histogram Plots distribution of variables</h2>
 <p>Draw a few multiple histograms (also known as trellis plot) by using ggarrange() of ggpubr package to analysis the variables.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>LOG_age_band <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_age_band</span><span class="st">`</span>)) <span class="sc">+</span> </span>
@@ -873,14 +884,8 @@ Projected CRS: WGS 84 / UTM zone 36S
 <span id="cb32-48"><a href="#cb32-48" aria-hidden="true" tabindex="-1"></a>          pay_slip_doc_pct, self_sustaining_pct, financial_advice_pct, save_money_pct, </span>
 <span id="cb32-49"><a href="#cb32-49" aria-hidden="true" tabindex="-1"></a>          save_money_commercial_bank_pct, save_money_SACCO_pct, save_money_mobile_money_pct, </span>
 <span id="cb32-50"><a href="#cb32-50" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Take-Home_Ex03_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
 </div>
-</div>
-</div>
+<p><img src="images/clipboard-1805352332.png" class="img-fluid" width="914"></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>LOG_last_amt_saved <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_last_amt_saved</span><span class="st">`</span>)) <span class="sc">+</span> </span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>) </span>
@@ -929,18 +934,225 @@ Projected CRS: WGS 84 / UTM zone 36S
 <span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a>          LOG_distance_commerical_bank, LOG_distance_SACCOS, LOG_distance_ATM, LOG_distance_mobile_money, </span>
 <span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a>          savings_account_pct, joint_account_pct,</span>
 <span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Take-Home_Ex03_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
 </div>
-</div>
-</div>
-<p>The plots show that the majority of people lack insurance, savings, and joint accounts. Many respondents also feel they do not have enough money and would like to seek financial advice. Additionally, a large portion of those surveyed report that bank branches and ATMs are located relatively far from their homes.</p>
-
-
+<p><img src="images/clipboard-3608888018.png" class="img-fluid" width="738">The plots show that the majority of people lack insurance, savings, and joint accounts. Many respondents also feel they do not have enough money and would like to seek financial advice. Additionally, a large portion of those surveyed report that bank branches and ATMs are located relatively far from their homes.</p>
 </section>
+</section>
+<section id="correlation-analysis---ggstatsplot-methods" class="level1">
+<h1>7. Correlation Analysis - ggstatsplot methods</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrmat</span>(uganda_data_fin[, <span class="dv">47</span><span class="sc">:</span><span class="dv">59</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="images/clipboard-4134350256.png" class="img-fluid"></p>
+</section>
+<section id="hedonic-pricing-modelling-in-r" class="level1">
+<h1>8. Hedonic Pricing Modelling in R</h1>
+<section id="simple-linear-regression-method" class="level2">
+<h2 class="anchored" data-anchor-id="simple-linear-regression-method">8.1 Simple Linear Regression Method</h2>
+<p>Build a simple linear regression model by using savings_account_pct as the dependent variable and LOG_distance_commerical_bank as the independent variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>uganda.slr <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula=</span>savings_account_pct <span class="sc">~</span> LOG_distance_commerical_bank, <span class="at">data =</span> uganda_data.sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uganda.slr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = savings_account_pct ~ LOG_distance_commerical_bank, 
+    data = uganda_data.sf)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0309296  0.0005565  0.0005565  0.0019347  0.0033128 
+
+Coefficients:
+                              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                  0.0596595  0.0002987 199.745  &lt; 2e-16 ***
+LOG_distance_commerical_bank 0.0019882  0.0002574   7.723 1.51e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.005854 on 3174 degrees of freedom
+Multiple R-squared:  0.01845,   Adjusted R-squared:  0.01814 
+F-statistic: 59.65 on 1 and 3174 DF,  p-value: 1.509e-14</code></pre>
+</div>
+</div>
+<p>The output report reveals that the SELLING_PRICE can be explained by using the formula:</p>
+<pre><code>      *y = 0.0596595 + 0.0019882x1*</code></pre>
+<p>The R-squared of 0.01845 reveals that the simple regression model built is able to explain about 1.845% of the percentage of having savings account.</p>
+<p>Since p-value is way bigger than 0.0001, we will not reject the null hypothesis that mean is not a good estimator of percentage of having savings account.</p>
+</section>
+<section id="multiple-linear-regression-method" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-linear-regression-method">8.2 Multiple Linear Regression Method</h2>
+<p>The code chunk below using lm() to calibrate the multiple linear regression model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>sa_mlr <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> savings_account_pct <span class="sc">~</span> LOG_age_band <span class="sc">+</span> gender_pct <span class="sc">+</span> LOG_education_level <span class="sc">+</span> LOG_employment_status <span class="sc">+</span> mobile_user_pct <span class="sc">+</span> national_ic_doc_pct <span class="sc">+</span> passport_doc_pct <span class="sc">+</span> utilities_bill_do_pct <span class="sc">+</span> pay_slip_doc_pct <span class="sc">+</span> self_sustaining_pct <span class="sc">+</span> financial_advice_pct <span class="sc">+</span>save_money_pct <span class="sc">+</span> save_money_commercial_bank_pct <span class="sc">+</span> save_money_SACCO_pct <span class="sc">+</span> save_money_mobile_money_pct <span class="sc">+</span> LOG_last_amt_saved <span class="sc">+</span> LOG_last_amt_borrowed <span class="sc">+</span> borrow_money_commercial_bank_pct <span class="sc">+</span> borrow_money_SACCO_pct <span class="sc">+</span> borrow_money_mobile_money_pct <span class="sc">+</span> LOG_last_amt_sent <span class="sc">+</span> LOG_last_amt_received <span class="sc">+</span> LOG_distance_commerical_bank <span class="sc">+</span> LOG_distance_SACCOS <span class="sc">+</span> LOG_distance_ATM <span class="sc">+</span> LOG_distance_mobile_money <span class="sc">+</span> joint_account_pct, </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data=</span>uganda_data.sf)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sa_mlr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = savings_account_pct ~ LOG_age_band + gender_pct + 
+    LOG_education_level + LOG_employment_status + mobile_user_pct + 
+    national_ic_doc_pct + passport_doc_pct + utilities_bill_do_pct + 
+    pay_slip_doc_pct + self_sustaining_pct + financial_advice_pct + 
+    save_money_pct + save_money_commercial_bank_pct + save_money_SACCO_pct + 
+    save_money_mobile_money_pct + LOG_last_amt_saved + LOG_last_amt_borrowed + 
+    borrow_money_commercial_bank_pct + borrow_money_SACCO_pct + 
+    borrow_money_mobile_money_pct + LOG_last_amt_sent + LOG_last_amt_received + 
+    LOG_distance_commerical_bank + LOG_distance_SACCOS + LOG_distance_ATM + 
+    LOG_distance_mobile_money + joint_account_pct, data = uganda_data.sf)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.032541 -0.000754 -0.000117  0.000530  0.016876 
+
+Coefficients:
+                                   Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                       2.212e-02  1.009e-02   2.193  0.02841 *  
+LOG_age_band                     -1.489e-04  2.251e-04  -0.661  0.50854    
+gender_pct                       -6.663e-03  5.831e-03  -1.143  0.25325    
+LOG_education_level              -1.725e-04  1.855e-04  -0.930  0.35259    
+LOG_employment_status             6.847e-05  1.123e-04   0.610  0.54194    
+mobile_user_pct                  -7.065e-03  7.521e-03  -0.939  0.34755    
+national_ic_doc_pct              -1.000e-03  8.438e-03  -0.119  0.90567    
+passport_doc_pct                  4.086e-02  1.547e-02   2.642  0.00828 ** 
+utilities_bill_do_pct             2.092e-02  1.186e-02   1.763  0.07792 .  
+pay_slip_doc_pct                  4.974e-02  1.600e-02   3.110  0.00189 ** 
+self_sustaining_pct               2.396e-02  8.176e-03   2.931  0.00341 ** 
+financial_advice_pct              2.178e-03  6.152e-03   0.354  0.72338    
+save_money_pct                   -6.590e-02  1.206e-02  -5.463 5.04e-08 ***
+save_money_commercial_bank_pct    1.816e-01  1.099e-02  16.530  &lt; 2e-16 ***
+save_money_SACCO_pct              2.195e-01  1.037e-02  21.158  &lt; 2e-16 ***
+save_money_mobile_money_pct      -1.070e-02  7.546e-03  -1.418  0.15632    
+LOG_last_amt_saved                5.387e-04  1.739e-04   3.098  0.00197 ** 
+LOG_last_amt_borrowed             4.239e-05  3.228e-05   1.313  0.18920    
+borrow_money_commercial_bank_pct  8.934e-02  2.279e-02   3.920 9.03e-05 ***
+borrow_money_SACCO_pct            9.115e-02  2.028e-02   4.494 7.23e-06 ***
+borrow_money_mobile_money_pct     4.941e-02  1.743e-02   2.835  0.00461 ** 
+LOG_last_amt_sent                 5.258e-05  3.416e-05   1.539  0.12381    
+LOG_last_amt_received            -2.109e-05  3.265e-05  -0.646  0.51834    
+LOG_distance_commerical_bank      1.280e-03  4.694e-04   2.727  0.00643 ** 
+LOG_distance_SACCOS              -4.183e-05  2.315e-04  -0.181  0.85664    
+LOG_distance_ATM                 -6.954e-04  4.648e-04  -1.496  0.13473    
+LOG_distance_mobile_money        -4.169e-06  2.132e-04  -0.020  0.98440    
+joint_account_pct                -6.535e-02  1.570e-01  -0.416  0.67730    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.004901 on 3148 degrees of freedom
+Multiple R-squared:  0.3177,    Adjusted R-squared:  0.3118 
+F-statistic: 54.28 on 27 and 3148 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The Multiple R-squared is 0.3177, suggesting that around 31.7% of the variability in savings_account_pct is explained by the predictor variables in the model. The Adjusted R-squared is 0.3118, which accounts for the number of predictors, confirming that the model provides a modest fit.</p>
+<p>Whereas, The F-statistic of 54.28 with a very low p-value (&lt; 2.2e-16) indicates that the model is statistically significant overall, meaning at least one of the predictors significantly impacts the savings_account_pct.</p>
+<section id="key-predictors" class="level3">
+<h3 class="anchored" data-anchor-id="key-predictors">Key Predictors</h3>
+<p>The coefficients tell us the direction and strength of each predictor’s relationship with <code>savings_account_pct</code>. Here are some significant predictors:</p>
+<ol type="1">
+<li><p><strong>Passport Documentation</strong> (<code>passport_doc_pct</code>, p = 0.00828):</p>
+<ul>
+<li>Positive relationship (Estimate = 0.0409): A higher percentage of individuals with passport documentation is associated with an increase in <code>savings_account_pct</code>.</li>
+</ul></li>
+<li><p><strong>Payslip Documentation</strong> (<code>pay_slip_doc_pct</code>, p = 0.00189):</p>
+<ul>
+<li>Positive relationship (Estimate = 0.0497): A higher percentage of individuals with pay slip documentation correlates with a higher percentage of savings accounts. This might suggest that stable income documentation positively influences savings account ownership.</li>
+</ul></li>
+<li><p><strong>Self-Sustaining Percentage</strong> (<code>self_sustaining_pct</code>, p = 0.00341):</p>
+<ul>
+<li>Positive relationship (Estimate = 0.0239): This suggests that communities with higher self-sustaining individuals are more likely to have savings accounts.</li>
+</ul></li>
+<li><p><strong>Saving with Commercial Banks and SACCOs</strong>:</p>
+<ul>
+<li><p><strong>Save Money<br>
+</strong>(<code>save_money_pct,</code>p = 5.04e-08, Estimate = -0.06590): has a negative coefficient, implying that higher rates of people saving money in general are associated with a lower savings account percentage, possibly indicating other informal</p></li>
+<li><p><strong>Save Money with Commercial Bank Percentage</strong> (<code>save_money_commercial_bank_pct</code>, p &lt; 2e-16, Estimate = 0.1816): Strong positive relationship, indicating that those who save with commercial banks are highly likely to have a savings account.</p></li>
+<li><p><strong>Save Money with SACCO Percentage</strong> (<code>save_money_SACCO_pct</code>, p &lt; 2e-16, Estimate = 0.2195): Also a strong positive relationship, reinforcing that participation in SACCOs (Savings and Credit Cooperative Organizations) is a strong indicator of savings account ownership.</p></li>
+</ul></li>
+<li><p><strong>Borrowing from Commercial Banks and SACCOs</strong>:</p>
+<ul>
+<li><p><strong>Borrow Money from Commercial Bank Percentage</strong> (<code>borrow_money_commercial_bank_pct</code>, p = 9.03e-05, Estimate = 0.0893): Indicates a positive association with savings account ownership.</p></li>
+<li><p><strong>Borrow Money from SACCO Percentage</strong> (<code>borrow_money_SACCO_pct</code>, p = 7.23e-06, Estimate = 0.0912): Similar positive relationship, suggesting that access to borrowing services is linked to having savings accounts.</p></li>
+</ul></li>
+<li><p><strong>Distance to Commercial Bank</strong> (<code>LOG_distance_commercial_bank</code>, p = 0.00643):</p>
+<ul>
+<li>Positive relationship (Estimate = 0.0013): As the log-distance to commercial banks increases, there’s a small but significant increase in the savings account percentage, which might suggest limited access drives individuals to hold savings accounts if they are already banked.</li>
+</ul></li>
+<li><p><strong>Last Amount Saved</strong> (<code>LOG_last_amt_saved</code>, p = 0.00197):</p>
+<ul>
+<li>Positive relationship (Estimate = 0.00054): The log of the last amount saved has a slight positive effect on savings account ownership, suggesting that recent saving activity is associated with having a savings account.</li>
+</ul></li>
+</ol>
+</section>
+<section id="non-significant-predictors" class="level3">
+<h3 class="anchored" data-anchor-id="non-significant-predictors">Non-significant Predictors</h3>
+<p>Some predictors, such as <code>gender_pct</code>, <code>LOG_education_level</code>, and <code>LOG_age_band</code>, show non-significant effects (high p-values). This may suggest that demographic factors like age, gender, and education do not directly impact the likelihood of savings account ownership in this context.</p>
+<ul>
+<li><p>Documentation (like passports and pay slips) and income stability appear to be important indicators of savings account ownership.</p></li>
+<li><p>Engagement with formal and semi-formal financial services, such as commercial banks and SACCOs, positively influences the likelihood of having a savings account.</p></li>
+<li><p>Access to borrowing services is also positively linked to savings account ownership, suggesting that people who have access to credit may be more financially integrated.</p></li>
+<li><p>Distance to financial services can have a minor influence, suggesting a possible need for financial services closer to communities to further increase account ownership rates.</p></li>
+</ul>
+<p>In conclusion, the model suggests that factors related to financial habits (saving and borrowing with formal institutions) and access to financial documentation have significant impacts on the likelihood of savings account ownership in Uganda.</p>
+</section>
+</section>
+</section>
+<section id="preparing-publication-quality-table-olsrr-method" class="level1">
+<h1>9. Preparing Publication Quality Table: olsrr method</h1>
+<p>With reference to the report above, it is clear that not all the independent variables are statistically significant. We will revised the model by removing those variables which are not statistically significant.</p>
+<p>Now, we are ready to calibrate the revised model by using the code chunk below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>sa_mlr1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> savings_account_pct <span class="sc">~</span> passport_doc_pct <span class="sc">+</span> pay_slip_doc_pct  <span class="sc">+</span> self_sustaining_pct <span class="sc">+</span> save_money_pct <span class="sc">+</span> save_money_commercial_bank_pct <span class="sc">+</span> save_money_SACCO_pct <span class="sc">+</span> LOG_last_amt_saved <span class="sc">+</span> borrow_money_commercial_bank_pct <span class="sc">+</span> borrow_money_SACCO_pct <span class="sc">+</span> borrow_money_mobile_money_pct <span class="sc">+</span> LOG_distance_commerical_bank, </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">data=</span>uganda_data.sf)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ols_regress</span>(sa_mlr1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                          Model Summary                            
+------------------------------------------------------------------
+R                       0.560       RMSE                    0.005 
+R-Squared               0.314       MSE                     0.000 
+Adj. R-Squared          0.312       Coef. Var               7.928 
+Pred R-Squared          0.298       AIC                -24754.869 
+MAE                     0.002       SBC                -24676.045 
+------------------------------------------------------------------
+ RMSE: Root Mean Square Error 
+ MSE: Mean Square Error 
+ MAE: Mean Absolute Error 
+ AIC: Akaike Information Criteria 
+ SBC: Schwarz Bayesian Criteria 
+
+                                ANOVA                                  
+----------------------------------------------------------------------
+               Sum of                                                 
+              Squares          DF    Mean Square       F         Sig. 
+----------------------------------------------------------------------
+Regression      0.035          11          0.003    131.713    0.0000 
+Residual        0.076        3164          0.000                      
+Total           0.111        3175                                     
+----------------------------------------------------------------------
+
+                                             Parameter Estimates                                              
+-------------------------------------------------------------------------------------------------------------
+                           model      Beta    Std. Error    Std. Beta      t        Sig      lower     upper 
+-------------------------------------------------------------------------------------------------------------
+                     (Intercept)     0.017         0.002                  8.139    0.000     0.013     0.021 
+                passport_doc_pct     0.047         0.015        0.049     3.112    0.002     0.017     0.076 
+                pay_slip_doc_pct     0.054         0.016        0.053     3.412    0.001     0.023     0.084 
+             self_sustaining_pct     0.023         0.008        0.044     2.841    0.005     0.007     0.038 
+                  save_money_pct    -0.066         0.011       -0.168    -5.772    0.000    -0.088    -0.043 
+  save_money_commercial_bank_pct     0.183         0.011        0.299    17.371    0.000     0.163     0.204 
+            save_money_SACCO_pct     0.219         0.010        0.353    21.723    0.000     0.200     0.239 
+              LOG_last_amt_saved     0.001         0.000        0.097     3.502    0.000     0.000     0.001 
+borrow_money_commercial_bank_pct     0.095         0.023        0.066     4.208    0.000     0.051     0.140 
+          borrow_money_SACCO_pct     0.096         0.020        0.075     4.761    0.000     0.056     0.135 
+   borrow_money_mobile_money_pct     0.050         0.017        0.044     2.914    0.004     0.016     0.083 
+    LOG_distance_commerical_bank     0.001         0.000        0.044     2.937    0.003     0.000     0.001 
+-------------------------------------------------------------------------------------------------------------</code></pre>
+</div>
+</div>
+<p>After added the independent variables which are statistically significant, there are no improvement in the R-Squared and Adjusted R-Squared. Furthermore, Predicted R-Squared (of 0.298) indicating that the model may perform slightly less effectively on unseen data. Both RMSE (of 0.005) and MAE (of 0.002) giving an idea of the typical error magnitude. However, AIC and SIC show lower values indicates a better fit given model complexity.</p>
+
+
 </section>
 
 </main> <!-- /main -->
