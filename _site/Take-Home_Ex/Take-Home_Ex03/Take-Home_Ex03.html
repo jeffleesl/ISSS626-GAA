@@ -290,8 +290,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#importing-the-aspatial-data-finscope-uganda" id="toc-importing-the-aspatial-data-finscope-uganda" class="nav-link" data-scroll-target="#importing-the-aspatial-data-finscope-uganda">5.2 Importing the aspatial data, FinScope Uganda</a>
   <ul class="collapse">
   <li><a href="#variables-to-consider-for-financial-inclusion" id="toc-variables-to-consider-for-financial-inclusion" class="nav-link" data-scroll-target="#variables-to-consider-for-financial-inclusion">5.2.1 Variables to Consider for Financial Inclusion</a></li>
+  <li><a href="#convert-to-percentage-and-log-transformations" id="toc-convert-to-percentage-and-log-transformations" class="nav-link" data-scroll-target="#convert-to-percentage-and-log-transformations">5.2.2 Convert to Percentage and Log-Transformations</a></li>
   </ul></li>
   <li><a href="#converting-aspatial-data-frame-into-a-sf-object" id="toc-converting-aspatial-data-frame-into-a-sf-object" class="nav-link" data-scroll-target="#converting-aspatial-data-frame-into-a-sf-object">5.3 Converting aspatial data frame into a sf object</a></li>
+  </ul></li>
+  <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda">6. Exploratory Data Analysis (EDA)</a></li>
+  <li><a href="#eda-using-statistical-graphics" id="toc-eda-using-statistical-graphics" class="nav-link" data-scroll-target="#eda-using-statistical-graphics">6.1 EDA using statistical graphics</a>
+  <ul class="collapse">
+  <li><a href="#multiple-histogram-plots-distribution-of-variables" id="toc-multiple-histogram-plots-distribution-of-variables" class="nav-link" data-scroll-target="#multiple-histogram-plots-distribution-of-variables">6.2Multiple Histogram Plots distribution of variables</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -342,7 +348,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="the-task" class="level1">
 <h1>2. The Task</h1>
-<p>In this take-home exercise, we are required to build an explanatory model to determine factors affecting financial inclusion by using geographical weighted regression methods.</p>
+<p>In this take-home exercise, we are required to build an explanatory model to determine factors affecting <a href="https://www.bis.org/ifc/publ/ifcb47p.pdf">financial inclusion</a> by using geographical weighted regression methods.</p>
 </section>
 <section id="the-data" class="level1">
 <h1>3. The Data</h1>
@@ -465,14 +471,8 @@ PROJCRS["WGS 84 / UTM zone 36S",
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(boundaries) <span class="sc">+</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Take-Home_Ex03_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
 </div>
-</div>
-</div>
+<p><img src="images/clipboard-1138447629.png" class="img-fluid"></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Convert to multipolygon to individual polygon</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>boundaries_sf <span class="ot">&lt;-</span> boundaries <span class="sc">%&gt;%</span> </span>
@@ -498,14 +498,8 @@ sub-geometries for which they may not be constant</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(boundaries_cleaned) <span class="sc">+</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Take-Home_Ex03_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
 </div>
-</div>
-</div>
+<p><img src="images/clipboard-367677706.png" class="img-fluid"></p>
 </section>
 <section id="importing-the-aspatial-data-finscope-uganda" class="level2">
 <h2 class="anchored" data-anchor-id="importing-the-aspatial-data-finscope-uganda">5.2 Importing the aspatial data, FinScope Uganda</h2>
@@ -561,7 +555,8 @@ lgl  (23): f3_2_14, f3_2_15, f3_3_14, f3_3_15, f3_5_14, f3_5_15, g12_2_1, g1...
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <ul>
-<li>Distance to nearest bank or financial institution from Home (Commerical Nank, SACCO and Mobile Money)</li>
+<li><p>Distance to nearest bank or financial institution from Home (Commercial Bank, SACCO and Mobile Money)</p></li>
+<li><p>Distance to nearest ATM from Home</p></li>
 </ul>
 </div>
 <div id="tabset-1-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-5-tab">
@@ -583,9 +578,11 @@ lgl  (23): f3_2_14, f3_2_15, f3_3_14, f3_3_15, f3_5_14, f3_5_15, g12_2_1, g1...
 </div>
 </div>
 </div>
+<section id="rename-the-variables" class="level4">
+<h4 class="anchored" data-anchor-id="rename-the-variables">5.2.1.1 Rename the Variables</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>uganda_data_new <span class="ot">&lt;-</span> uganda_data <span class="sc">%&gt;%</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">11</span><span class="sc">:</span><span class="dv">17</span>, <span class="dv">20</span>, <span class="dv">23</span><span class="sc">:</span><span class="dv">28</span>, <span class="dv">30</span><span class="sc">:</span><span class="dv">34</span>, <span class="dv">36</span><span class="sc">:</span><span class="dv">37</span>, <span class="dv">40</span><span class="sc">:</span><span class="dv">43</span>, <span class="dv">45</span><span class="sc">:</span><span class="dv">63</span>, <span class="dv">65</span>, <span class="dv">67</span><span class="sc">:</span><span class="dv">90</span>, <span class="dv">93</span><span class="sc">:</span><span class="dv">94</span>, <span class="dv">96</span>, <span class="dv">98</span><span class="sc">:</span><span class="dv">167</span>, <span class="dv">169</span><span class="sc">:</span><span class="dv">230</span>, <span class="dv">232</span><span class="sc">:</span><span class="dv">234</span>, <span class="dv">236</span><span class="sc">:</span><span class="dv">238</span>, <span class="dv">240</span><span class="sc">:</span><span class="dv">241</span>, <span class="dv">243</span><span class="sc">:</span><span class="dv">342</span>, <span class="dv">344</span><span class="sc">:</span><span class="dv">364</span>, <span class="dv">366</span><span class="sc">:</span><span class="dv">384</span>, <span class="dv">386</span><span class="sc">:</span><span class="dv">438</span>, <span class="dv">440</span><span class="sc">:</span><span class="dv">444</span>, <span class="dv">446</span>, <span class="dv">448</span><span class="sc">:</span><span class="dv">674</span>, <span class="dv">677</span><span class="sc">:</span><span class="dv">679</span>, <span class="dv">681</span><span class="sc">:</span><span class="dv">686</span>)) <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>uganda_data_rename <span class="ot">&lt;-</span> uganda_data <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">11</span><span class="sc">:</span><span class="dv">17</span>, <span class="dv">20</span>, <span class="dv">23</span><span class="sc">:</span><span class="dv">28</span>, <span class="dv">30</span><span class="sc">:</span><span class="dv">34</span>, <span class="dv">36</span><span class="sc">:</span><span class="dv">37</span>, <span class="dv">40</span><span class="sc">:</span><span class="dv">43</span>, <span class="dv">45</span><span class="sc">:</span><span class="dv">63</span>, <span class="dv">65</span>, <span class="dv">67</span><span class="sc">:</span><span class="dv">90</span>, <span class="dv">93</span><span class="sc">:</span><span class="dv">94</span>, <span class="dv">96</span>, <span class="dv">98</span><span class="sc">:</span><span class="dv">167</span>, <span class="dv">169</span><span class="sc">:</span><span class="dv">230</span>, <span class="dv">232</span><span class="sc">:</span><span class="dv">234</span>, <span class="dv">236</span><span class="sc">:</span><span class="dv">238</span>, <span class="dv">240</span><span class="sc">:</span><span class="dv">241</span>, <span class="dv">243</span><span class="sc">:</span><span class="dv">342</span>, <span class="dv">344</span><span class="sc">:</span><span class="dv">364</span>, <span class="dv">366</span><span class="sc">:</span><span class="dv">384</span>, <span class="dv">386</span><span class="sc">:</span><span class="dv">438</span>, <span class="dv">440</span><span class="sc">:</span><span class="dv">444</span>, <span class="dv">448</span><span class="sc">:</span><span class="dv">473</span>, <span class="dv">476</span><span class="sc">:</span><span class="dv">674</span>, <span class="dv">677</span><span class="sc">:</span><span class="dv">679</span>, <span class="dv">681</span><span class="sc">:</span><span class="dv">686</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_band =</span> c1,</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> c2,</span>
@@ -612,16 +609,36 @@ lgl  (23): f3_2_14, f3_2_15, f3_3_14, f3_3_15, f3_5_14, f3_5_15, g12_2_1, g1...
 <span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">own_insurance =</span> j1,</span>
 <span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">distance_commerical_bank =</span> k1_1_1,</span>
 <span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">distance_SACCOS =</span> k1_1_7,</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">distance_mobile_money =</span> k1_1_9,</span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">latitude =</span> hh_gps_latitude,</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">longitude =</span> hh_gps_longitude,</span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">county_name =</span> s1aq2b</span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">distance_ATM =</span> k1_1_8,</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">distance_mobile_money =</span> k1_1_9,</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">savings_account =</span> kcb1_1_1,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">joint_account =</span> kcb1_1_2, </span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">latitude =</span> hh_gps_latitude,</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">longitude =</span> hh_gps_longitude,</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">county_name =</span> s1aq2b</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="clean-the-variables" class="level4">
+<h4 class="anchored" data-anchor-id="clean-the-variables">5.2.1.1 Clean the Variables</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>uganda_data_new <span class="ot">&lt;-</span> uganda_data_new <span class="sc">%&gt;%</span></span>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>uganda_data_new <span class="ot">&lt;-</span> uganda_data_rename <span class="sc">%&gt;%</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(longitude) <span class="sc">&amp;</span> longitude <span class="sc">!=</span> <span class="st">""</span>,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(latitude) <span class="sc">&amp;</span> latitude <span class="sc">!=</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span><span class="fu">is.na</span>(latitude) <span class="sc">&amp;</span> latitude <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace_na</span>(<span class="fu">list</span>(</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_commercial_bank =</span> <span class="dv">2</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_SACCO =</span> <span class="dv">2</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_mobile_money =</span> <span class="dv">2</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">last_amt_saved =</span> <span class="dv">9</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">last_amt_borrowed =</span> <span class="dv">998</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrow_money_commercial_bank =</span> <span class="dv">2</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrow_money_SACCO =</span> <span class="dv">2</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrow_money_mobile_money =</span> <span class="dv">2</span>,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">last_amt_sent =</span> <span class="dv">998</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">last_amt_received =</span> <span class="dv">998</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(savings_account, joint_account), </span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(.) <span class="sc">|</span> . <span class="sc">==</span> <span class="st">""</span>, <span class="dv">2</span>, .)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(uganda_data_new<span class="sc">$</span>longitude) <span class="co">#see the data in XCOORD column</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -639,79 +656,109 @@ lgl  (23): f3_2_14, f3_2_15, f3_3_14, f3_3_15, f3_5_14, f3_5_15, g12_2_1, g1...
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(uganda_data_new)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>    HH_ID                age            Region          Rural_Urban       
- Length:3176        Min.   : 16.00   Length:3176        Length:3176       
- Class :character   1st Qu.: 25.00   Class :character   Class :character  
- Mode  :character   Median : 34.00   Mode  :character   Mode  :character  
-                    Mean   : 37.86                                        
-                    3rd Qu.: 48.00                                        
-                    Max.   :100.00                                        
-                                                                          
-    age_band         gender      education_level employment_status
- Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   : 1.00    
- 1st Qu.:3.000   1st Qu.:1.000   1st Qu.:2.000   1st Qu.: 1.00    
- Median :4.000   Median :2.000   Median :3.000   Median : 2.00    
- Mean   :3.986   Mean   :1.552   Mean   :3.169   Mean   : 3.67    
- 3rd Qu.:5.000   3rd Qu.:2.000   3rd Qu.:4.000   3rd Qu.: 5.00    
- Max.   :7.000   Max.   :2.000   Max.   :9.000   Max.   :99.00    
-                                                                  
-  mobile_user    national_ic_doc  passport_doc  utilities_bill_doc
- Min.   :1.000   Min.   :1.000   Min.   :1.00   Min.   :1.000     
- 1st Qu.:1.000   1st Qu.:1.000   1st Qu.:2.00   1st Qu.:2.000     
- Median :1.000   Median :1.000   Median :2.00   Median :2.000     
- Mean   :1.273   Mean   :1.171   Mean   :1.96   Mean   :1.926     
- 3rd Qu.:2.000   3rd Qu.:1.000   3rd Qu.:2.00   3rd Qu.:2.000     
- Max.   :2.000   Max.   :2.000   Max.   :2.00   Max.   :2.000     
-                                                                  
-  pay_slip_doc   self_sustaining financial_advice   save_money  
- Min.   :1.000   Min.   :1.000   Min.   :1.000    Min.   :1.00  
- 1st Qu.:2.000   1st Qu.:2.000   1st Qu.:1.000    1st Qu.:1.00  
- Median :2.000   Median :2.000   Median :1.000    Median :1.00  
- Mean   :1.964   Mean   :1.846   Mean   :1.401    Mean   :1.36  
- 3rd Qu.:2.000   3rd Qu.:2.000   3rd Qu.:2.000    3rd Qu.:2.00  
- Max.   :2.000   Max.   :2.000   Max.   :2.000    Max.   :2.00  
-                                                                
- save_money_commercial_bank save_money_SACCO save_money_mobile_money
- Min.   :1.000              Min.   :1.000    Min.   :1.000          
- 1st Qu.:2.000              1st Qu.:2.000    1st Qu.:1.000          
- Median :2.000              Median :2.000    Median :2.000          
- Mean   :1.837              Mean   :1.842    Mean   :1.591          
- 3rd Qu.:2.000              3rd Qu.:2.000    3rd Qu.:2.000          
- Max.   :2.000              Max.   :2.000    Max.   :2.000          
- NA's   :1143               NA's   :1143     NA's   :1143           
- last_amt_saved  last_amt_borrowed borrow_money_commercial_bank
- Min.   :1.000   Min.   :  1.00    Min.   :1.000               
- 1st Qu.:1.000   1st Qu.:  1.00    1st Qu.:2.000               
- Median :1.000   Median :  2.00    Median :2.000               
- Mean   :2.198   Mean   : 88.72    Mean   :1.899               
- 3rd Qu.:3.000   3rd Qu.:  3.00    3rd Qu.:2.000               
- Max.   :9.000   Max.   :998.00    Max.   :2.000               
- NA's   :1143    NA's   :1877      NA's   :2629                
- borrow_money_SACCO borrow_money_mobile_money last_amt_sent   
- Min.   :1.00       Min.   :1.000             Min.   :  1.00  
- 1st Qu.:2.00       1st Qu.:2.000             1st Qu.:  1.00  
- Median :2.00       Median :2.000             Median :  1.00  
- Mean   :1.87       Mean   :1.832             Mean   : 65.63  
- 3rd Qu.:2.00       3rd Qu.:2.000             3rd Qu.:  2.00  
- Max.   :2.00       Max.   :2.000             Max.   :998.00  
- NA's   :2629       NA's   :2629              NA's   :1762    
- last_amt_received own_insurance   distance_commerical_bank distance_SACCOS
- Min.   :  1.00    Min.   :1.000   Min.   :1.000            Min.   :1.000  
- 1st Qu.:  1.00    1st Qu.:2.000   1st Qu.:2.000            1st Qu.:2.000  
- Median :  1.00    Median :2.000   Median :4.000            Median :2.000  
- Mean   : 80.83    Mean   :1.974   Mean   :3.176            Mean   :2.508  
- 3rd Qu.:  3.00    3rd Qu.:2.000   3rd Qu.:4.000            3rd Qu.:4.000  
- Max.   :998.00    Max.   :2.000   Max.   :4.000            Max.   :4.000  
- NA's   :1489                                                              
- distance_mobile_money    latitude         longitude     county_name       
- Min.   :1.000         Min.   :-1.4128   Min.   : 0.00   Length:3176       
- 1st Qu.:1.000         1st Qu.: 0.2393   1st Qu.:30.99   Class :character  
- Median :1.000         Median : 0.7726   Median :32.54   Mode  :character  
- Mean   :1.655         Mean   : 0.9945   Mean   :31.53                     
- 3rd Qu.:2.000         3rd Qu.: 1.9143   3rd Qu.:33.52                     
- Max.   :4.000         Max.   : 3.6876   Max.   :34.96                     
-                                                                           </code></pre>
+<pre><code>    HH_ID              Region          Rural_Urban           age_band    
+ Length:3176        Length:3176        Length:3176        Min.   :1.000  
+ Class :character   Class :character   Class :character   1st Qu.:3.000  
+ Mode  :character   Mode  :character   Mode  :character   Median :4.000  
+                                                          Mean   :3.986  
+                                                          3rd Qu.:5.000  
+                                                          Max.   :7.000  
+     gender      education_level employment_status  mobile_user   
+ Min.   :1.000   Min.   :1.000   Min.   : 1.00     Min.   :1.000  
+ 1st Qu.:1.000   1st Qu.:2.000   1st Qu.: 1.00     1st Qu.:1.000  
+ Median :2.000   Median :3.000   Median : 2.00     Median :1.000  
+ Mean   :1.552   Mean   :3.169   Mean   : 3.67     Mean   :1.273  
+ 3rd Qu.:2.000   3rd Qu.:4.000   3rd Qu.: 5.00     3rd Qu.:2.000  
+ Max.   :2.000   Max.   :9.000   Max.   :99.00     Max.   :2.000  
+ national_ic_doc  passport_doc  utilities_bill_doc  pay_slip_doc  
+ Min.   :1.000   Min.   :1.00   Min.   :1.000      Min.   :1.000  
+ 1st Qu.:1.000   1st Qu.:2.00   1st Qu.:2.000      1st Qu.:2.000  
+ Median :1.000   Median :2.00   Median :2.000      Median :2.000  
+ Mean   :1.171   Mean   :1.96   Mean   :1.926      Mean   :1.964  
+ 3rd Qu.:1.000   3rd Qu.:2.00   3rd Qu.:2.000      3rd Qu.:2.000  
+ Max.   :2.000   Max.   :2.00   Max.   :2.000      Max.   :2.000  
+ self_sustaining financial_advice   save_money   save_money_commercial_bank
+ Min.   :1.000   Min.   :1.000    Min.   :1.00   Min.   :1.000             
+ 1st Qu.:2.000   1st Qu.:1.000    1st Qu.:1.00   1st Qu.:2.000             
+ Median :2.000   Median :1.000    Median :1.00   Median :2.000             
+ Mean   :1.846   Mean   :1.401    Mean   :1.36   Mean   :1.896             
+ 3rd Qu.:2.000   3rd Qu.:2.000    3rd Qu.:2.00   3rd Qu.:2.000             
+ Max.   :2.000   Max.   :2.000    Max.   :2.00   Max.   :2.000             
+ save_money_SACCO save_money_mobile_money last_amt_saved  last_amt_borrowed
+ Min.   :1.000    Min.   :1.000           Min.   :1.000   Min.   :  1.0    
+ 1st Qu.:2.000    1st Qu.:1.000           1st Qu.:1.000   1st Qu.:  3.0    
+ Median :2.000    Median :2.000           Median :3.000   Median :998.0    
+ Mean   :1.899    Mean   :1.738           Mean   :4.646   Mean   :626.1    
+ 3rd Qu.:2.000    3rd Qu.:2.000           3rd Qu.:9.000   3rd Qu.:998.0    
+ Max.   :2.000    Max.   :2.000           Max.   :9.000   Max.   :998.0    
+ borrow_money_commercial_bank borrow_money_SACCO borrow_money_mobile_money
+ Min.   :1.000                Min.   :1.000      Min.   :1.000            
+ 1st Qu.:2.000                1st Qu.:2.000      1st Qu.:2.000            
+ Median :2.000                Median :2.000      Median :2.000            
+ Mean   :1.983                Mean   :1.978      Mean   :1.971            
+ 3rd Qu.:2.000                3rd Qu.:2.000      3rd Qu.:2.000            
+ Max.   :2.000                Max.   :2.000      Max.   :2.000            
+ last_amt_sent   last_amt_received own_insurance   distance_commerical_bank
+ Min.   :  1.0   Min.   :  1.0     Min.   :1.000   Min.   :1.000           
+ 1st Qu.:  1.0   1st Qu.:  1.0     1st Qu.:2.000   1st Qu.:2.000           
+ Median :998.0   Median :997.0     Median :2.000   Median :4.000           
+ Mean   :582.9   Mean   :510.8     Mean   :1.974   Mean   :3.176           
+ 3rd Qu.:998.0   3rd Qu.:998.0     3rd Qu.:2.000   3rd Qu.:4.000           
+ Max.   :998.0   Max.   :998.0     Max.   :2.000   Max.   :4.000           
+ distance_SACCOS  distance_ATM   distance_mobile_money savings_account
+ Min.   :1.000   Min.   :1.000   Min.   :1.000         Min.   :1.000  
+ 1st Qu.:2.000   1st Qu.:2.000   1st Qu.:1.000         1st Qu.:2.000  
+ Median :2.000   Median :4.000   Median :1.000         Median :2.000  
+ Mean   :2.508   Mean   :3.152   Mean   :1.655         Mean   :1.963  
+ 3rd Qu.:4.000   3rd Qu.:4.000   3rd Qu.:2.000         3rd Qu.:2.000  
+ Max.   :4.000   Max.   :4.000   Max.   :4.000         Max.   :2.000  
+ joint_account    latitude         longitude     county_name       
+ Min.   :1     Min.   :-1.4128   Min.   : 0.00   Length:3176       
+ 1st Qu.:2     1st Qu.: 0.2393   1st Qu.:30.99   Class :character  
+ Median :2     Median : 0.7726   Median :32.54   Mode  :character  
+ Mean   :2     Mean   : 0.9945   Mean   :31.53                     
+ 3rd Qu.:2     3rd Qu.: 1.9143   3rd Qu.:33.52                     
+ Max.   :2     Max.   : 3.6876   Max.   :34.96                     </code></pre>
 </div>
+</div>
+</section>
+</section>
+<section id="convert-to-percentage-and-log-transformations" class="level3">
+<h3 class="anchored" data-anchor-id="convert-to-percentage-and-log-transformations">5.2.2 Convert to Percentage and Log-Transformations</h3>
+<p>This will help to perform the geographical weighted regression methods later.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>uganda_data_fin <span class="ot">&lt;-</span> uganda_data_new <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_age_band =</span> <span class="fu">log</span>(age_band),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender_pct =</span> gender <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_education_level =</span> <span class="fu">log</span>(education_level),</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_employment_status =</span> <span class="fu">log</span>(employment_status),</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mobile_user_pct =</span> mobile_user <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">national_ic_doc_pct =</span> national_ic_doc <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">passport_doc_pct =</span> passport_doc <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">utilities_bill_do_pct =</span> utilities_bill_doc <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">pay_slip_doc_pct =</span> pay_slip_doc <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">self_sustaining_pct =</span> self_sustaining <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">financial_advice_pct =</span> financial_advice <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_pct =</span> save_money <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_commercial_bank_pct =</span> save_money_commercial_bank <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_SACCO_pct =</span> save_money_SACCO <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_mobile_money_pct =</span> save_money_mobile_money <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_last_amt_saved =</span> <span class="fu">log</span>(last_amt_saved),</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_last_amt_borrowed =</span> <span class="fu">log</span>(last_amt_borrowed),</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrow_money_commercial_bank_pct =</span> borrow_money_commercial_bank <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrow_money_SACCO_pct =</span> borrow_money_SACCO <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrow_money_mobile_money_pct =</span> borrow_money_mobile_money <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_last_amt_sent =</span> <span class="fu">log</span>(last_amt_sent),</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_last_amt_received =</span> <span class="fu">log</span>(last_amt_received),</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">own_insurance_pct =</span> own_insurance <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_distance_commerical_bank =</span> <span class="fu">log</span>(distance_commerical_bank),</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_distance_SACCOS =</span> <span class="fu">log</span>(distance_SACCOS),</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_distance_ATM =</span> <span class="fu">log</span>(distance_ATM),</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">LOG_distance_mobile_money =</span> <span class="fu">log</span>(distance_mobile_money),</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">savings_account_pct =</span> savings_account <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">joint_account_pct =</span> joint_account <span class="sc">/</span> <span class="dv">3176</span> <span class="sc">*</span> <span class="dv">100</span> </span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -719,51 +766,178 @@ lgl  (23): f3_2_14, f3_2_15, f3_3_14, f3_3_15, f3_5_14, f3_5_15, g12_2_1, g1...
 <h2 class="anchored" data-anchor-id="converting-aspatial-data-frame-into-a-sf-object">5.3 Converting aspatial data frame into a sf object</h2>
 <p>Currently, the uganda_data_new tibble data frame is aspatial. We will convert it to a sf object. The code chunk below converts uganda_data_new data frame into a simple feature data frame by using st_as_sf() of sf packages.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>uganda_data.sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(uganda_data_new,</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>),</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">32736</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace_na</span>(<span class="fu">list</span>(</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_commercial_bank =</span> <span class="dv">2</span>,</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_SACCO =</span> <span class="dv">2</span>,</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_money_mobile_money =</span> <span class="dv">2</span>,</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">last_amt_saved =</span> <span class="dv">9</span>,</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">last_amt_borrowed =</span> <span class="dv">998</span>,</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrow_money_commercial_bank =</span> <span class="dv">2</span>,</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrow_money_SACCO =</span> <span class="dv">2</span>,</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrow_money_mobile_money =</span> <span class="dv">2</span>,</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">last_amt_sent =</span> <span class="dv">998</span>,</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">last_amt_received =</span> <span class="dv">998</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>uganda_data.sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(uganda_data_fin,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>, <span class="st">"latitude"</span>),</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">32736</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notice that st_transform() of sf package is used to convert the coordinates from wgs84 (i.e.&nbsp;crs:4326) to Arc 1960 (i.e.&nbsp;crs=32736).</p>
 <p>Next, head() is used to list the content of uganda_data.sf object.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(uganda_data.sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(uganda_data.sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Simple feature collection with 6 features and 31 fields
+<pre><code>Simple feature collection with 6 features and 62 fields
 Geometry type: POINT
 Dimension:     XY
 Bounding box:  xmin: 572616.1 ymin: 10295290 xmax: 572903.6 ymax: 10295980
 Projected CRS: WGS 84 / UTM zone 36S
-# A tibble: 6 × 32
-  HH_ID    age Region   Rural_Urban age_band gender education_level
-  &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;           &lt;dbl&gt;
-1 001001    32 NORTHERN Urban              4      2               6
-2 001019    37 NORTHERN Urban              4      2               2
-3 001028    25 NORTHERN Urban              3      2               1
-4 001037    32 NORTHERN Urban              4      1               2
-5 001040    40 NORTHERN Urban              4      2               3
-6 001047    16 NORTHERN Urban              1      1               2
-# ℹ 25 more variables: employment_status &lt;dbl&gt;, mobile_user &lt;dbl&gt;,
-#   national_ic_doc &lt;dbl&gt;, passport_doc &lt;dbl&gt;, utilities_bill_doc &lt;dbl&gt;,
-#   pay_slip_doc &lt;dbl&gt;, self_sustaining &lt;dbl&gt;, financial_advice &lt;dbl&gt;,
-#   save_money &lt;dbl&gt;, save_money_commercial_bank &lt;dbl&gt;, save_money_SACCO &lt;dbl&gt;,
+# A tibble: 6 × 63
+  HH_ID  Region   Rural_Urban age_band gender education_level employment_status
+  &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;           &lt;dbl&gt;             &lt;dbl&gt;
+1 001001 NORTHERN Urban              4      2               6                 1
+2 001019 NORTHERN Urban              4      2               2                 5
+3 001028 NORTHERN Urban              3      2               1                 5
+4 001037 NORTHERN Urban              4      1               2                 1
+5 001040 NORTHERN Urban              4      2               3                 4
+6 001047 NORTHERN Urban              1      1               2                 9
+# ℹ 56 more variables: mobile_user &lt;dbl&gt;, national_ic_doc &lt;dbl&gt;,
+#   passport_doc &lt;dbl&gt;, utilities_bill_doc &lt;dbl&gt;, pay_slip_doc &lt;dbl&gt;,
+#   self_sustaining &lt;dbl&gt;, financial_advice &lt;dbl&gt;, save_money &lt;dbl&gt;,
+#   save_money_commercial_bank &lt;dbl&gt;, save_money_SACCO &lt;dbl&gt;,
 #   save_money_mobile_money &lt;dbl&gt;, last_amt_saved &lt;dbl&gt;,
 #   last_amt_borrowed &lt;dbl&gt;, borrow_money_commercial_bank &lt;dbl&gt;,
 #   borrow_money_SACCO &lt;dbl&gt;, borrow_money_mobile_money &lt;dbl&gt;, …</code></pre>
 </div>
 </div>
+<p>Notice that the output is in point feature data frame.</p>
+</section>
+</section>
+<section id="exploratory-data-analysis-eda" class="level1">
+<h1>6. Exploratory Data Analysis (EDA)</h1>
+<p>Use statistical graphics functions of ggplot2 package to perform EDA</p>
+</section>
+<section id="eda-using-statistical-graphics" class="level1">
+<h1>6.1 EDA using statistical graphics</h1>
+<p>Plot the distribution of accounts by using appropriate Exploratory Data Analysis (EDA) as shown in the code chunk below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span><span class="st">`</span><span class="at">savings_account_pct</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"light blue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="images/clipboard-1926521833.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span><span class="st">`</span><span class="at">save_money_mobile_money_pct</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0B2130"</span>, <span class="at">fill=</span><span class="st">"#AB88BA"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="images/clipboard-2396109935.png" class="img-fluid"></p>
+<section id="multiple-histogram-plots-distribution-of-variables" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-histogram-plots-distribution-of-variables">6.2Multiple Histogram Plots distribution of variables</h2>
+<p>Draw a few multiple histograms (also known as trellis plot) by using ggarrange() of ggpubr package to analysis the variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>LOG_age_band <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_age_band</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>gender_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">gender_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>LOG_education_level <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_education_level</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>LOG_employment_status <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_employment_status</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>)  </span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>mobile_user_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">mobile_user_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>) </span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>national_ic_doc_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">national_ic_doc_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>) </span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>passport_doc_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">passport_doc_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>) </span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>utilities_bill_do_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">utilities_bill_do_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>) </span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>pay_slip_doc_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">pay_slip_doc_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>) </span>
+<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a>self_sustaining_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">self_sustaining_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>) </span>
+<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a>financial_advice_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">financial_advice_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>)    </span>
+<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>save_money_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">save_money_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>)    </span>
+<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>save_money_commercial_bank_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">save_money_commercial_bank_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>)   </span>
+<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb32-40"><a href="#cb32-40" aria-hidden="true" tabindex="-1"></a>save_money_SACCO_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">save_money_SACCO_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-41"><a href="#cb32-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>) </span>
+<span id="cb32-42"><a href="#cb32-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-43"><a href="#cb32-43" aria-hidden="true" tabindex="-1"></a>save_money_mobile_money_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">save_money_mobile_money_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb32-44"><a href="#cb32-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"#FFC166"</span>) </span>
+<span id="cb32-45"><a href="#cb32-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-46"><a href="#cb32-46" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(LOG_age_band, gender_pct, LOG_education_level, LOG_employment_status, </span>
+<span id="cb32-47"><a href="#cb32-47" aria-hidden="true" tabindex="-1"></a>          mobile_user_pct, national_ic_doc_pct, passport_doc_pct, utilities_bill_do_pct, </span>
+<span id="cb32-48"><a href="#cb32-48" aria-hidden="true" tabindex="-1"></a>          pay_slip_doc_pct, self_sustaining_pct, financial_advice_pct, save_money_pct, </span>
+<span id="cb32-49"><a href="#cb32-49" aria-hidden="true" tabindex="-1"></a>          save_money_commercial_bank_pct, save_money_SACCO_pct, save_money_mobile_money_pct, </span>
+<span id="cb32-50"><a href="#cb32-50" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex03_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>LOG_last_amt_saved <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_last_amt_saved</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>) </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>LOG_last_amt_borrowed <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_last_amt_borrowed</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>borrow_money_commercial_bank_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">borrow_money_commercial_bank_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>borrow_money_SACCO_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">borrow_money_SACCO_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>borrow_money_mobile_money_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">borrow_money_mobile_money_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>LOG_last_amt_sent <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_last_amt_sent</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>LOG_last_amt_received <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_last_amt_received</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>own_insurance_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">own_insurance_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>LOG_distance_commerical_bank <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_distance_commerical_bank</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>LOG_distance_SACCOS <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_distance_SACCOS</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>LOG_distance_ATM <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_distance_ATM</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>LOG_distance_mobile_money <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">LOG_distance_mobile_money</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a>savings_account_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">savings_account_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a>joint_account_pct <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>uganda_data.sf, <span class="fu">aes</span>(<span class="at">x=</span> <span class="st">`</span><span class="at">joint_account_pct</span><span class="st">`</span>)) <span class="sc">+</span> </span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins=</span><span class="dv">20</span>, <span class="at">color=</span><span class="st">"#0A1E0F"</span>, <span class="at">fill=</span><span class="st">"#A9CB9F"</span>)</span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(LOG_last_amt_saved, LOG_last_amt_borrowed, borrow_money_commercial_bank_pct, borrow_money_SACCO_pct, </span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a>          borrow_money_mobile_money_pct, LOG_last_amt_sent, LOG_last_amt_received, own_insurance_pct, </span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a>          LOG_distance_commerical_bank, LOG_distance_SACCOS, LOG_distance_ATM, LOG_distance_mobile_money, </span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a>          savings_account_pct, joint_account_pct,</span>
+<span id="cb33-47"><a href="#cb33-47" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Take-Home_Ex03_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The plots show that the majority of people lack insurance, savings, and joint accounts. Many respondents also feel they do not have enough money and would like to seek financial advice. Additionally, a large portion of those surveyed report that bank branches and ATMs are located relatively far from their homes.</p>
 
 
 </section>
