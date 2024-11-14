@@ -841,7 +841,6 @@ summary(gwr_adaptive_sa$SDF$yhat)
 
 The code chunks below is used to create an interactive point symbol map.
 
-
 ```{r}
 tmap_mode("view")
 tmap_options(check.and.fix = TRUE)
@@ -861,7 +860,6 @@ tmap_mode("plot")
 ## 11.5 Visualising coefficient estimates
 
 The code chunks below is used to create an interactive point symbol map.
-
 
 ```{r}
 tmap_mode("view")
