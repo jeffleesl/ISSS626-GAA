@@ -43,7 +43,7 @@ Before we start the exercise, we will need to import necessary R packages first.
     Use the code chunk below to install and launch the below R packages.
 
 ```{r}
-pacman::p_load(olsrr, ggstatsplot, corrplot, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gtsummary)
+pacman::p_load(olsrr, ggstatsplot, corrplot, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gtsummary, performance, see, sfdep)
 ```
 
 # 5. Getting the Data Into R Environment
@@ -466,12 +466,12 @@ ggarrange(LOG_last_amt_saved, LOG_last_amt_borrowed, borrow_money_commercial_ban
 
 ```{r}
 #| eval: false
-ggcorrmat(uganda_data_fin[, 47:59])
+#| fig-width: 15
+#| fig-height: 12
+ggcorrmat(uganda_data_fin[, 36:62])
 ```
 
-![](images/clipboard-4134350256.png)
-
-# 8. Hedonic Pricing Modelling in R
+# ![](images/clipboard-1675436395.png)8. Hedonic Pricing Modelling in R
 
 ## 8.1 Simple Linear Regression Method
 
@@ -578,3 +578,236 @@ ols_regress(sa_mlr1)
 
 After added the independent variables which are statistically significant, there are no improvement in the R-Squared and Adjusted R-Squared. Furthermore, Predicted R-Squared (of 0.298) indicating that the model may perform slightly less effectively on unseen data. Both RMSE (of 0.005) and MAE (of 0.002) giving an idea of the typical error magnitude. However, AIC and SIC show lower values indicates a better fit given model complexity.
 
+The regression analysis suggests that several factors significantly influence the dependent variable, with certain predictors like `save_money_SACCO_pct` and `save_money_commercial_bank_pct` having particularly strong positive effects, while `save_money_pct` has a negative impact. The overall model explains a moderate portion of variance in the dependent variable and is statistically significant, but there may be additional variables not included in this analysis that could improve predictive power further.
+
+# 10. Check for Multicolinearuty
+
+```{r}
+ols_vif_tol(sa_mlr1)
+```
+
+All between 1 and 5 suggests moderate correlation, which may not be problematic.
+
+```{r}
+ols_vif_tol(sa_mlr)
+```
+
+All between 1 and 5 suggests moderate correlation, which may not be problematic.
+
+## 10.1 Test for Non-Linearity
+
+```{r}
+#| eval: false
+ols_plot_resid_fit(sa_mlr1)
+```
+
+![](images/clipboard-3111929160.png)
+
+## 10.2 Variable selection
+
+```{r}
+sa_fw_mlr <- ols_step_forward_p(
+  sa_mlr1,
+  p_val = 0.05,
+  details = FALSE)
+```
+
+```{r}
+#| eval: false
+#| fig-width: 12
+#| fig-height: 10
+plot(sa_fw_mlr)
+```
+
+![](images/clipboard-339378667.png)
+
+## 10.3 Visualising model parameters
+
+```{r}
+#| eval: false
+ggcoefstats(sa_mlr1,
+            sort = "ascending")
+```
+
+![](images/clipboard-3938789220.png)
+
+## 10.4 Test for Normality Assumption
+
+The code chunk below uses ols_plot_resid_hist() of olsrr package to perform normality assumption test.
+
+```{r}
+#| eval: false
+ols_plot_resid_hist(sa_mlr1)
+```
+
+![](images/clipboard-2743153307.png)
+
+The figure reveals that the residual of the multiple linear regression model (i.e. sa.mlr1) is resemble normal distribution.
+
+For formal statistical test methods, the ols_test_normality() of olsrr package can be used as shown in the code chun below.
+
+```{r}
+ols_test_normality(sa_mlr1)
+```
+
+The summary table above reveals that the p-values of the four tests are way smaller than the alpha value of 0.05. Hence we will reject the null hypothesis and infer that there is statistical evidence that the residual are not normally distributed.
+
+## 10.5 Testing for Spatial Autocorrelation
+
+In order to perform spatial autocorrelation test, we need to convert uganda_data.sf from sf data frame into a SpatialPointsDataFrame.
+
+```{r}
+mlr.output <- as.data.frame(sa_mlr1$residuals)
+```
+
+Next, we will join the newly created data frame with uganda_data.sf object.
+
+```{r}
+uganda_data.res.sf <- cbind(uganda_data.sf, 
+                        sa_mlr1$residuals) %>%
+rename(`MLR_RES` = `sa_mlr1.residuals`)
+```
+
+The code chunk below will be used to perform the data conversion process.
+```{r}
+uganda_sa.sp <- as_Spatial(uganda_data.res.sf)
+uganda_sa.sp
+```
+
+The code churn below will turn on the interactive mode of tmap.
+
+```{r}
+tmap_mode("view")
+```
+
+The code chunks below is used to create an interactive point symbol map.
+
+```{r}
+tm_shape(boundaries_cleaned)+
+  tmap_options(check.and.fix = TRUE) +
+  tm_polygons(alpha = 0.4) +
+tm_shape(uganda_data.res.sf) +  
+  tm_dots(col = "MLR_RES",
+          alpha = 0.6,
+          style="quantile") +
+  tm_view(set.zoom.limits = c(11,14))
+```
+
+```{r}
+tmap_mode("plot")
+```
+
+## 10.6 Spatial stationary test
+
+First, we will compute the distance-based weight matrix by using dnearneigh() function of spdep.
+```{r}
+uganda_data_res_sf <- uganda_data.res.sf %>%
+  mutate(nb = st_knn(geometry, k=6,
+                     longlat = FALSE),
+         wt = st_weights(nb,
+                         style = "W"),
+         .before = 1)
+```
+
+Next, global_moran_perm() of sfdep is used to perform global Moran permutation test.
+
+```{r}
+global_moran_perm(uganda_data_res_sf$MLR_RES, 
+                  uganda_data_res_sf$nb, 
+                  uganda_data_res_sf$wt, 
+                  alternative = "two.sided", 
+                  nsim = 99)
+```
+
+
+# 11. Building Hedonic Pricing Models using GWmodel
+
+## 11.1 Building Fixed Bandwidth GWR Model
+
+In the code chunk below bw.gwr() of GWModel package is used to determine the optimal fixed bandwidth to use in the model. Notice that the argument adaptive is set to FALSE indicates that we are interested to compute the fixed bandwidth.
+
+```{r}
+bw_fixed_sa <- bw.gwr(formula = savings_account_pct ~ passport_doc_pct + 
+                        pay_slip_doc_pct  + self_sustaining_pct + save_money_pct + 
+                        save_money_commercial_bank_pct + save_money_SACCO_pct + LOG_last_amt_saved + 
+                        borrow_money_commercial_bank_pct + borrow_money_SACCO_pct + 
+                        borrow_money_mobile_money_pct + LOG_distance_commerical_bank, 
+                    data=uganda_data_res_sf,
+                    approach="CV", 
+                    kernel="gaussian", 
+                    adaptive=FALSE, 
+                    longlat=FALSE)
+```
+
+
+## 11.2 GWModel method - fixed bandwith
+
+Use the code chunk below to calibrate the gwr model using fixed bandwidth and gaussian kernel.
+
+```{r}
+gwr.fixed_sa <- gwr.basic(formula = savings_account_pct ~ passport_doc_pct + 
+                        pay_slip_doc_pct  + self_sustaining_pct + save_money_pct + 
+                        save_money_commercial_bank_pct + save_money_SACCO_pct + LOG_last_amt_saved + 
+                        borrow_money_commercial_bank_pct + borrow_money_SACCO_pct + 
+                        borrow_money_mobile_money_pct + LOG_distance_commerical_bank, 
+                    data = uganda_data_res_sf,
+                    bw = bw_fixed_sa, 
+                    kernel = "gaussian",
+                    longlat = FALSE)
+```
+
+The output is saved in a list of class “gwrm”. The code below can be used to display the model output.
+
+```{r}
+gwr.fixed_sa
+```
+The report shows that the AICc of the gwr is -24754.87 which is slightly smaller than the global multiple linear regression model of  -24754.869.
+
+## 11.3 Building Adaptive Bandwidth GWR Model
+
+Calibrate the gwr-based hedonic pricing model by using adaptive bandwidth approach.
+
+### 11.3.1 Computing the adaptive bandwidth
+
+Use `bw.gwr()` to determine the recommended data point to use.
+
+The code chunk used look very similar to the one used to compute the fixed bandwidth except the `adaptive` argument has changed to **TRUE**.
+
+```{r}
+bw.adaptive_sa <- bw.gwr(formula = savings_account_pct ~ passport_doc_pct + 
+                        pay_slip_doc_pct  + self_sustaining_pct + save_money_pct + 
+                        save_money_commercial_bank_pct + save_money_SACCO_pct + LOG_last_amt_saved + 
+                        borrow_money_commercial_bank_pct + borrow_money_SACCO_pct + 
+                        borrow_money_mobile_money_pct + LOG_distance_commerical_bank, 
+                    data=uganda_data_res_sf,
+                    approach="CV", 
+                    kernel="gaussian", 
+                    adaptive=TRUE, 
+                    longlat=FALSE)
+```
+The result shows that the 764 is the recommended data points to be used.
+
+### 11.3.2 Constructing the adaptive bandwidth gwr model
+
+```{r}
+gwr_adaptive_sa <- gwr.basic(formula = savings_account_pct ~ passport_doc_pct + 
+                        pay_slip_doc_pct  + self_sustaining_pct + save_money_pct + 
+                        save_money_commercial_bank_pct + save_money_SACCO_pct + LOG_last_amt_saved + 
+                        borrow_money_commercial_bank_pct + borrow_money_SACCO_pct + 
+                        borrow_money_mobile_money_pct + LOG_distance_commerical_bank, 
+                  data=uganda_data.sf,
+                  bw=bw.adaptive_sa, 
+                  kernel = 'gaussian', 
+                  adaptive=TRUE, 
+                  longlat = FALSE)
+```
+
+The code below can be used to display the model output.
+
+```{r}
+gwr_adaptive_sa
+```
+
+### 11.3.4 Visualising GWR Output
+
+To visualise the fields in SDF, we need to first covert it into sf data.frame by using the code chunk below.
