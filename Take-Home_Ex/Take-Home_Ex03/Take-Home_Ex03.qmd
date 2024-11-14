@@ -471,7 +471,9 @@ ggarrange(LOG_last_amt_saved, LOG_last_amt_borrowed, borrow_money_commercial_ban
 ggcorrmat(uganda_data_fin[, 36:62])
 ```
 
-# ![](images/clipboard-1675436395.png)8. Hedonic Pricing Modelling in R
+![](images/clipboard-1675436395.png)
+
+# 8. Hedonic Pricing Modelling in R
 
 ## 8.1 Simple Linear Regression Method
 
@@ -669,6 +671,7 @@ rename(`MLR_RES` = `sa_mlr1.residuals`)
 ```
 
 The code chunk below will be used to perform the data conversion process.
+
 ```{r}
 uganda_sa.sp <- as_Spatial(uganda_data.res.sf)
 uganda_sa.sp
@@ -700,6 +703,7 @@ tmap_mode("plot")
 ## 10.6 Spatial stationary test
 
 First, we will compute the distance-based weight matrix by using dnearneigh() function of spdep.
+
 ```{r}
 uganda_data_res_sf <- uganda_data.res.sf %>%
   mutate(nb = st_knn(geometry, k=6,
@@ -719,7 +723,6 @@ global_moran_perm(uganda_data_res_sf$MLR_RES,
                   nsim = 99)
 ```
 
-
 # 11. Building Hedonic Pricing Models using GWmodel
 
 ## 11.1 Building Fixed Bandwidth GWR Model
@@ -738,7 +741,6 @@ bw_fixed_sa <- bw.gwr(formula = savings_account_pct ~ passport_doc_pct +
                     adaptive=FALSE, 
                     longlat=FALSE)
 ```
-
 
 ## 11.2 GWModel method - fixed bandwith
 
@@ -761,7 +763,8 @@ The output is saved in a list of class “gwrm”. The code below can be used to
 ```{r}
 gwr.fixed_sa
 ```
-The report shows that the AICc of the gwr is -24754.87 which is slightly smaller than the global multiple linear regression model of  -24754.869.
+
+The report shows that the AICc of the gwr is -24754.87 which is slightly smaller than the global multiple linear regression model of -24754.869.
 
 ## 11.3 Building Adaptive Bandwidth GWR Model
 
@@ -785,6 +788,7 @@ bw.adaptive_sa <- bw.gwr(formula = savings_account_pct ~ passport_doc_pct +
                     adaptive=TRUE, 
                     longlat=FALSE)
 ```
+
 The result shows that the 764 is the recommended data points to be used.
 
 ### 11.3.2 Constructing the adaptive bandwidth gwr model
@@ -811,3 +815,77 @@ gwr_adaptive_sa
 ### 11.3.4 Visualising GWR Output
 
 To visualise the fields in SDF, we need to first covert it into sf data.frame by using the code chunk below.
+
+```{r}
+gwr_adaptive_output <- as.data.frame(
+  gwr_adaptive_sa$SDF) %>%
+  select(-c(2:15))
+```
+
+```{r}
+gwr_sf_adaptive <- cbind(uganda_data.sf,
+                         gwr_adaptive_output)
+```
+
+Next, glimpse() is used to display the content of uganda_data.sf.adaptive sf data frame.
+
+```{r}
+glimpse(gwr_sf_adaptive)
+```
+
+```{r}
+summary(gwr_adaptive_sa$SDF$yhat)
+```
+
+## 11.4 Visualising local R2
+
+The code chunks below is used to create an interactive point symbol map.
+
+
+```{r}
+tmap_mode("view")
+tmap_options(check.and.fix = TRUE)
+tm_shape(boundaries_sf)+
+  tm_polygons(alpha = 0.1) +
+tm_shape(gwr_sf_adaptive) +  
+  tm_dots(col = "Local_R2",
+          border.col = "gray60",
+          border.lwd = 1) +
+  tm_view(set.zoom.limits = c(11,14))
+```
+
+```{r}
+tmap_mode("plot")
+```
+
+## 11.5 Visualising coefficient estimates
+
+The code chunks below is used to create an interactive point symbol map.
+
+
+```{r}
+tmap_mode("view")
+passport_doc_pct_SE <- tm_shape(boundaries_cleaned)+
+  tm_polygons(alpha = 0.1) +
+tm_shape(gwr_sf_adaptive) +  
+  tm_dots(col = "passport_doc_pct_SE",
+          border.col = "gray60",
+          border.lwd = 1) +
+  tm_view(set.zoom.limits = c(11,14))
+
+passport_doc_pct_TV <- tm_shape(boundaries_cleaned)+
+  tm_polygons(alpha = 0.1) +
+tm_shape(gwr_sf_adaptive) +  
+  tm_dots(col = "passport_doc_pct_TV",
+          border.col = "gray60",
+          border.lwd = 1) +
+  tm_view(set.zoom.limits = c(11,14))
+
+tmap_arrange(passport_doc_pct_SE, passport_doc_pct_TV, 
+             asp=1, ncol=2,
+             sync = TRUE)
+```
+
+```{r}
+tmap_mode("plot")
+```
