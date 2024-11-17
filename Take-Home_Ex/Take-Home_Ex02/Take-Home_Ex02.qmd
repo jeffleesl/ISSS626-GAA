@@ -65,7 +65,7 @@ Before we start the exercise, we will need to import necessary R packages first.
     Use the code chunk below to install and launch the below R packages.
 
 ```{r}
-pacman::p_load(sf, sfdep, tmap, lubridate, plotly, tidyverse, ggplot2, Kendall)
+pacman::p_load(sf, sfdep, spdep, tmap, lubridate, plotly, tidyverse, ggplot2, Kendall)
 ```
 
 # 6. Getting the Data Into R Environment
@@ -126,7 +126,7 @@ After reshaping, select only the relevant columns (`revenue_all`) for your analy
 tourism_data_new <- tourism_data_wide %>%
   select(date, province_thai, province_eng, region_eng, revenue_all) %>%
   mutate(
-    continuous_month = (as.numeric(format(date, "%Y")) - 2019) * 12 + as.numeric(format(date, "%m")),
+    #continuous_month = (as.numeric(format(date, "%Y")) - 2019) * 12 + as.numeric(format(date, "%m")),
     Year_num = year(date),  # Extract the year
     Month_num = month(date),  # Extract numeric month
     Month_fac = month(date, label = TRUE, abbr = TRUE),  # Extract abbreviated month as factor
@@ -136,7 +136,6 @@ tourism_data_new <- tourism_data_wide %>%
 
 print(tourism_data_new)
 ```
-
 
 ### 6.1.2 Thailand - Subnational Administrative Boundaries
 
@@ -364,7 +363,7 @@ tm_shape(tourism_sf_2022) +
 #### 7.1.1.3 Post COVID (Year 2023)
 
 ```{r}
-
+#| eval: false
 #| fig-width: 10
 #| fig-height: 10
 tmap_mode("plot")
@@ -392,27 +391,26 @@ tm_shape(tourism_sf_2023) +
 
 # Year 2019
 tourism_sf_avg_2019 <- tourism_sf_2019 %>%
-  group_by(province_thai) %>%
+  group_by(province_eng) %>%
   summarize(average_revenue_all = mean(revenue_all, na.rm = TRUE))
 
 # Year 2020
 tourism_sf_avg_2020 <- tourism_sf_2020 %>%
-  group_by(province_thai) %>%
+  group_by(province_eng) %>%
   summarize(average_revenue_all = mean(revenue_all, na.rm = TRUE))
 
 # Year 2021
 tourism_sf_avg_2021 <- tourism_sf_2021 %>%
-  group_by(province_thai) %>%
+  group_by(province_eng) %>%
   summarize(average_revenue_all = mean(revenue_all, na.rm = TRUE))
 
 # Year 2022
 tourism_sf_avg_2022 <- tourism_sf_2022 %>%
-  group_by(province_thai) %>%
+  group_by(province_eng) %>%
   summarize(average_revenue_all = mean(revenue_all, na.rm = TRUE))
-
-# Year 2022
+# Year 2023
 tourism_sf_avg_2023 <- tourism_sf_2023 %>%
-  group_by(province_thai) %>%
+  group_by(province_eng) %>%
   summarize(average_revenue_all = mean(revenue_all, na.rm = TRUE))
 
 ```
@@ -423,24 +421,24 @@ tourism_sf_avg_2023 <- tourism_sf_2023 %>%
 # Join the average revenue back to the spatial data
 
 # Year 2019
-tourism_sf_avg_2019 <- left_join(st_drop_geometry(tourism_sf_2019), tourism_sf_avg_2019, by = "province_thai")
-tourism_sf_avg_2019 <- st_as_sf(tourism_sf_avg_2019)
+all_tourism_sf_avg_2019 <- left_join(st_drop_geometry(tourism_sf_2019), tourism_sf_avg_2019, by = "province_eng")
+all_tourism_sf_avg_2019 <- st_as_sf(all_tourism_sf_avg_2019)
 
 # Year 2020
-tourism_sf_avg_2020 <- left_join(st_drop_geometry(tourism_sf_2020), tourism_sf_avg_2020, by = "province_thai")
-tourism_sf_avg_2020 <- st_as_sf(tourism_sf_avg_2020)
+all_tourism_sf_avg_2020 <- left_join(st_drop_geometry(tourism_sf_2020), tourism_sf_avg_2020, by = "province_eng")
+all_tourism_sf_avg_2020 <- st_as_sf(all_tourism_sf_avg_2020)
 
 # Year 2021
-tourism_sf_avg_2021 <- left_join(st_drop_geometry(tourism_sf_2021), tourism_sf_avg_2021, by = "province_thai")
-tourism_sf_avg_2021 <- st_as_sf(tourism_sf_avg_2021)
+all_tourism_sf_avg_2021 <- left_join(st_drop_geometry(tourism_sf_2021), tourism_sf_avg_2021, by = "province_eng")
+all_tourism_sf_avg_2021 <- st_as_sf(all_tourism_sf_avg_2021)
 
 # Year 2022
-tourism_sf_avg_2022 <- left_join(st_drop_geometry(tourism_sf_2022), tourism_sf_avg_2022, by = "province_thai")
-tourism_sf_avg_2022 <- st_as_sf(tourism_sf_avg_2022)
+all_tourism_sf_avg_2022 <- left_join(st_drop_geometry(tourism_sf_2022), tourism_sf_avg_2022, by = "province_eng")
+all_tourism_sf_avg_2022 <- st_as_sf(all_tourism_sf_avg_2022)
 
 # Year 2023
-tourism_sf_avg_2023 <- left_join(st_drop_geometry(tourism_sf_2023), tourism_sf_avg_2023, by = "province_thai")
-tourism_sf_avg_2023 <- st_as_sf(tourism_sf_avg_2023)
+all_tourism_sf_avg_2023 <- left_join(st_drop_geometry(tourism_sf_2023), tourism_sf_avg_2023, by = "province_eng")
+all_tourism_sf_avg_2023 <- st_as_sf(all_tourism_sf_avg_2023)
 
 ```
 
@@ -451,7 +449,7 @@ tourism_sf_avg_2023 <- st_as_sf(tourism_sf_avg_2023)
 ```{r}
 #| eval: false
 tmap_mode("plot")
-tm_shape(tourism_sf_avg_2019) +
+tm_shape(all_tourism_sf_avg_2019) +
   tm_fill("average_revenue_all",   # Use average revenue
           style = "quantile",      # Use quantile classification
           palette = "Blues",       # Choose color palette
@@ -474,7 +472,7 @@ tm_shape(tourism_sf_avg_2019) +
 ```{r}
 #| eval: false
 tmap_mode("plot")
-tm_shape(tourism_sf_avg_2020) +
+tm_shape(all_tourism_sf_avg_2020) +
   tm_fill("average_revenue_all",   # Use average revenue
           style = "quantile",      # Use quantile classification
           palette = "Oranges",       # Choose color palette
@@ -494,7 +492,7 @@ tm_shape(tourism_sf_avg_2020) +
 ```{r}
 #| eval: false
 tmap_mode("plot")
-tm_shape(tourism_sf_avg_2021) +
+tm_shape(all_tourism_sf_avg_2021) +
   tm_fill("average_revenue_all",   # Use average revenue
           style = "quantile",      # Use quantile classification
           palette = "Greens",       # Choose color palette
@@ -515,7 +513,7 @@ tm_shape(tourism_sf_avg_2021) +
 ```{r}
 #| eval: false
 tmap_mode("plot")
-tm_shape(tourism_sf_avg_2022) +
+tm_shape(all_tourism_sf_avg_2022) +
   tm_fill("average_revenue_all",   # Use average revenue
           style = "quantile",      # Use quantile classification
           palette = "Reds",       # Choose color palette
@@ -538,7 +536,7 @@ tm_shape(tourism_sf_avg_2022) +
 ```{r}
 #| eval: false
 tmap_mode("plot")
-tm_shape(tourism_sf_avg_2023) +
+tm_shape(all_tourism_sf_avg_2023) +
   tm_fill("average_revenue_all",   # Use average revenue
           style = "quantile",      # Use quantile classification
           palette = "Purples",       # Choose color palette
@@ -560,74 +558,19 @@ tm_shape(tourism_sf_avg_2023) +
 
 The analysis highlights that revenue and average revenue generated by the tourism industry were significantly higher in the pre-COVID period (Year 2019) compared to the COVID period and the post-COVID period (Year 2020-2023). The tourism board would likely aim to restore revenue levels to those observed before the pandemic. Before proceeding to the Global Spatial Autocorrelation Analysis, it is advisable to use the average revenue generated by the tourism industry in 2019 as a benchmark.
 
-```{r}
-tourism_sf_2019 <- tourism_sf_2019[!st_is_empty(tourism_sf_2019$geometry), , drop = FALSE]
-```
-
-```{r}
-class(tourism_sf_2019) # check if the class is an sf object
-```
-
-```{r}
-glimpse(tourism_sf_2019) #confirm that the geometry column exists and is an sfc (simple feature geometry)
-```
-
-```{r}
-#wm_q <- tourism_sf_avg_2019 %>%
-    #mutate(
-        #nb = list(st_contiguity(geometry)),   # Wrap in `list` to store complex objects
-        #wt = list(st_weights(nb[[1]], style = "W")),  # Use extracted neighbors
-        #.before = 1
-    #)
-
-```
-
 ## 9.1 Deriving Queen’s contiguity weights: sfdep methods
 
 ```{r}
-#wm_q <- tourism_sf_2019 %>%
-  #mutate(
-        #nb = st_contiguity(geometry),   # Calculate neighbors using Queen's contiguity
-        #wt = st_weights(nb, style = "W"),  # Calculate weights with style "W", allowing zero for zones without neighbors
-        #.before = 1
-    #)
+wm_q <- tourism_sf_avg_2019 %>%
+  mutate(
+        nb = st_contiguity(geometry),   # Calculate neighbors using Queen's contiguity
+        wt = st_weights(nb, style = "W", allow_zero = TRUE),  # Calculate weights with style "W", allowing zero for zones without neighbors
+        .before = 1
+    )
 ```
 
 ```{r}
-#wm_q <- tourism_sf_avg_2019 %>%
-  #mutate(
-        #nb = st_contiguity(geometry),   # Calculate neighbors using Queen's contiguity
-        #wt = st_weights(nb, style = "W", allow_zero = TRUE),  # Calculate weights with style "W", allowing zero for zones without neighbors
-        #.before = 1
-    #)
-```
-
-```{r}
-#wm_q <- tourism_sf %>%
-  #mutate(nb = st_contiguity(geometry),
-       #  wt = st_weights(nb, style = "W")) %>%
-#  select(nb, wt, everything()) 
-```
-
-```{r}
-#tourism_q <- st_contiguity (tourism_sf, queen=TRUE)
-#summary(wm_q)
-```
-
-```{r}
-#tourism_wm_rs <- st_weights(tourism_q, style="W")
-```
-
-```{r}
-#wm_q <- tourism_sf %>%
- # mutate(nb = tourism_q,
-   #      wt = tourism_wm_rs,
-   #      .before = 1) 
-```
-
-```{r}
-#wm_q
-
+wm_q
 ```
 
 ## 9.2 Computing Global Moran’ I
@@ -635,45 +578,48 @@ glimpse(tourism_sf_2019) #confirm that the geometry column exists and is an sfc 
 In the code chunk below, global_moran() function is used to compute the Moran’s I value. Different from spdep package, the output is a tibble data.frame.
 
 ```{r}
-#moranI <- global_moran(wm_q$revenue_all,
-      #                 wm_q$nb,
-      #                 wm_q$wt)
-#glimpse(moranI)
+moranI <- global_moran(wm_q$average_revenue_all,
+                       wm_q$nb,
+                       wm_q$wt,
+                  zero.policy=TRUE)
+glimpse(moranI)
 
 ```
+
+Since I is slightly negative (−0.0296), it suggests weak dispersion or no significant spatial pattern in the `average_revenue_all` variable across the geographic entities.
+
+K=48.2 refers to the total number of observations used in the calculation.
 
 ## 9.3 Performing Global Moran’sI test
 
 In general, Moran’s I test will be performed instead of just computing the Moran’s I statistics. With sfdep package, Moran’s I test can be performed by using global_moran_test() as shown in the code chunk below.
 
 ```{r}
-#global_moran_test(wm_q$revenue_all,
-            #      wm_q$nb,
-           #       wm_q$wt)
+global_moran_test(wm_q$average_revenue_all,
+                  wm_q$nb,
+                  wm_q$wt,
+                  zero.policy=TRUE)
 ```
+
+The Moran's I statistic is −0.02925, slightly negative and close to zero. This aligns with the earlier result, indicating weak dispersion or no significant spatial autocorrelation. This is is not statistically significant (p-value =0.6339).
+
+There is insufficient evidence to reject the null hypothesis of spatial randomness for the variable `average_revenue_all`.
+
+The spatial distribution of `average_revenue_all` appears random, with no meaningful clustering or dispersion.
 
 ## 9.4 Global Moran’I permutation test
 
 Next, global_moran_perm() is used to perform Monte Carlo simulation.
 
 ```{r}
-#global_moran_perm(wm_q$revenue_all,
-             #     wm_q$nb,
-             #     wm_q$wt,
-             #     nsim =99)
+global_moran_perm(wm_q$average_revenue_all,
+                  wm_q$nb,
+                  wm_q$wt,
+                  zero.policy=TRUE,
+                  nsim =99)
 ```
 
-The statistical report on previous tab shows that the p-value is smaller than alpha value of 0.05. Hence, we have enough statistical evidence to reject the null hypothesis that the spatial distribution of total revenue are resemble random distribution (i.e. independent from spatial). Because the Moran’s I statistics is greater than 0. We can infer that the spatial distribution shows sign of clustering.
-
-```{r}
-# Global Moran's I for tourism data
-#global_moran_test <- tourism_sf %>%
-  #global_moran(variable = "no_tourist_all", nb = tourism_neighbors)
-
-# Print the results
-#global_moran_test
-
-```
+The statistical report on previous tab shows that the p-value is bigger than alpha value of 0.05. Hence, we have not enough statistical evidence to reject the null hypothesis that the spatial distribution of total revenue are resemble random distribution (i.e. independent from spatial). Because the Moran’s I statistics is lesser than 0. We can infer that the spatial distribution shows no sign of clustering.
 
 # 10. Local Spatial Autocorrelation Analysis
 
@@ -682,11 +628,11 @@ The statistical report on previous tab shows that the p-value is smaller than al
 In this section, we compute Local Moran’s I of total revenue at province level by using local_moran() of sfdep package.
 
 ```{r}
-#lisa <- wm_q %>%
- # mutate(local_moran = local_moran(
-  #  revenue_all, nb, wt, nsim = 99),
-  #  .before = 1) %>%
- # unnest(local_moran)
+lisa <- wm_q %>%
+ mutate(local_moran = local_moran(
+  average_revenue_all, nb, wt, zero.policy=TRUE, nsim = 99),
+    .before = 1) %>%
+  unnest(local_moran)
 
 ```
 
@@ -695,16 +641,20 @@ In this section, we compute Local Moran’s I of total revenue at province level
 In this code chunk below, tmap functions are used prepare a choropleth map by using value in the ii field.
 
 ```{r}
-#tmap_mode("plot")
-#tm_shape(lisa) +
- # tm_fill("ii") +
-  #tm_borders(alpha = 0.5) +
- # tm_facets("Month_year") +
- # tm_view(set.zoom.limits = c(6,8)) +
- # tm_layout(
-  #  main.title = "local Moran's I of Total Revenue",
-  #  main.title.size = 2)
+#| eval: false
+#| fig-width: 8
+#| fig-height: 12
+tmap_mode("plot")
+tm_shape(lisa) +
+  tm_fill("ii") +
+  tm_borders(alpha = 0.5) +
+  tm_view(set.zoom.limits = c(6,8)) +
+  tm_layout(
+    main.title = "local Moran's I of \n Total Average Revenue",
+    main.title.size = 2)
 ```
+
+![](images/clipboard-194156232.png)
 
 ## 10.3 Visualising p-value of local Moran’s I
 
